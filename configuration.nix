@@ -64,7 +64,7 @@
   users.users.florian = {
     isNormalUser = true;
     initialPassword = "";
-    extraGroups = [ "wheel" "networkmanager" "uinput"];
+    extraGroups = [ "wheel" "networkmanager" "uinput" "input"];
   };
 
   # List packages installed in system profile. To search, run:
