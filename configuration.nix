@@ -91,6 +91,10 @@
 
   # List services that you want to enable:
 
+  services.udev.extraRules = ''
+     KERNEL=="uinput", "MODE=0660", "GROUP=uinput", OPTIONS+="static_node=uinput"
+  '';
+
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
@@ -107,8 +111,6 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
-
-  # 
 
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = false;
