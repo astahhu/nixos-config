@@ -65,7 +65,10 @@
     isNormalUser = true;
     initialPassword = "";
     extraGroups = [ "wheel" "networkmanager" "uinput" "input"];
+    shell = pkgs.fish
   };
+
+  
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -74,6 +77,7 @@
     wget
     git
     starship
+    fish
     wayfire
     firefox
     lsd
