@@ -17,6 +17,7 @@
   services.pipewire.enable = true;
   services.pipewire.audio.enable = true;
   services.pipewire.pulse.enable = true;
+  service.mpd.enable = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
