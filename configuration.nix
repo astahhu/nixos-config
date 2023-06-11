@@ -92,7 +92,7 @@
   # List services that you want to enable:
 
   services.udev.extraRules = ''
-     KERNEL=="uinput", "MODE=0660", "GROUP=uinput", OPTIONS+="static_node=uinput"
+     KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
   '';
 
   # Enable the OpenSSH daemon.
