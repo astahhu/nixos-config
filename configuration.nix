@@ -65,7 +65,7 @@
     isNormalUser = true;
     initialPassword = "";
     extraGroups = [ "wheel" "networkmanager" "uinput" "input"];
-    shell = pkgs.fish
+    shell = pkgs.fish;
   };
 
   
