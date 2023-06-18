@@ -13,6 +13,15 @@
 
   # Desktop
   programs.sway.enable = true;
+  programs.hyprland = {
+    enable = true;
+    xwayland = {
+      enable = true;
+      hidpi = true;
+   };
+   
+  };
+
   xdg.portal.wlr.enable = true;
   services.pipewire.enable = true;
   services.pipewire.audio.enable = true;
