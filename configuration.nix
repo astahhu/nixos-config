@@ -22,7 +22,6 @@
    
   };
 
-  xdg.portal.wlr.enable = true;
   services.pipewire.enable = true;
   services.pipewire.audio.enable = true;
   services.pipewire.pulse.enable = true;
