@@ -9,18 +9,11 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./fonts.nix
+      ./desktop/hyprland.nix
     ];
 
   # Desktop
   programs.sway.enable = true;
-  programs.hyprland = {
-    enable = true;
-    xwayland = {
-      enable = true;
-      hidpi = true;
-   };
-   
-  };
 
   services.pipewire.enable = true;
   services.pipewire.audio.enable = true;
@@ -82,14 +75,10 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    libsForQt5.qt5.qtwayland
-    qt6.qtwayland
-    kitty
     wget
     git
     starship
     wayfire
-    firefox
     lsd
     tree
     home-manager
