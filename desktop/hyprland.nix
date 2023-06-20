@@ -10,9 +10,12 @@
   };
 
   environment.systemPackages = with pkgs; [
+    swaylock
     libsForQt5.qt5.qtwayland
     qt6.qtwayland
-    kitty
+    kitty # Terminal Emulator
     firefox
+    grim # Screenshots
+    slurp # Select Screen Area for Screenschots etc.
   ];
 }
