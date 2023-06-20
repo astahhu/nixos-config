@@ -12,6 +12,7 @@
   environment.systemPackages = with pkgs; [
     swaylock
     libsForQt5.qt5.qtwayland
+    hyprpicker
     hyprland-contrib.packages.${system}.grimblast
     qt6.qtwayland
     kitty # Terminal Emulator
