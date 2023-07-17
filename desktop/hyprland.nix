@@ -15,6 +15,7 @@
   };
 
   in {
+  services.udisks2.enable = true;
   programs.hyprland = {
     enable = true;
     xwayland = {
@@ -25,6 +26,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    udiskie
     configure-gtk
     swaylock
     libsForQt5.qt5.qtwayland
