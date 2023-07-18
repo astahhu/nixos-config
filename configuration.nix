@@ -46,6 +46,7 @@
   
   # Networking
   networking.hostName = "Kakariko"; # Define your hostname.
+  networking.firewall.enable = true;
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
   services.tailscale.enable = true;
 
