@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       ./fonts.nix
       ./desktop/hyprland.nix
+      ./services/tailscale.nix
     ];
 
   # Desktop
@@ -46,6 +47,7 @@
   # Networking
   networking.hostName = "Kakariko"; # Define your hostname.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  services.tailscale.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
