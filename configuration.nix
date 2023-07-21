@@ -11,6 +11,7 @@
       ./fonts.nix
       ./desktop/hyprland.nix
       ./services/tailscale.nix
+      ./cli/better-tools.nix
     ];
 
   # Desktop
@@ -46,7 +47,7 @@
   
   # Networking
   networking.hostName = "Kakariko"; # Define your hostname.
-  networking.firewall.enable = true;
+  networking.firewall.enable = false;
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
   services.tailscale.enable = true;
 
@@ -63,6 +64,10 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.printing.drivers = [ 
+    pkgs.epson-escpr
+    pkgs.epson-escpr2
+  ];
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
   # for a WiFi printer
