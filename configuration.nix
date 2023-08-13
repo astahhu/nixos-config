@@ -89,14 +89,13 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     git
-    starship
     wayfire
     lsd
-    tree
     home-manager
   ];
 
   programs.fish.enable = true;
+  users.defaultUserShell = pkgs.fish;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

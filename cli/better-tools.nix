@@ -1,11 +1,11 @@
 { config, pkgs, ... }: 
 {
-    environment.systemPackages = with pkgs; [
-      netcat
-      curl
-      bat
-      lsd
-      most
+  environment.systemPackages = with pkgs; [
+    netcat
+    curl
+    bat
+    lsd
+    most
   ];
 
   programs.fish.enable=true;
@@ -14,4 +14,6 @@
     tree = "lsd --tree";
     cat = "bat";
   };
+
+  programs.starship.enable = true;
 }
