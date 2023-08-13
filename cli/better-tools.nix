@@ -11,6 +11,7 @@
   programs.fish.enable=true;
   programs.fish.shellAliases= {
     ls = "lsd";
+    tree = "lsd --tree";
     cat = "bat";
   };
 }
