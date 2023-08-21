@@ -14,9 +14,6 @@
       ./cli/better-tools.nix
     ];
 
-  # Desktop
-  programs.sway.enable = true;
-
   services.pipewire.enable = true;
   services.pipewire.audio.enable = true;
   services.pipewire.pulse.enable = true;
@@ -104,6 +101,10 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+
+  services.logind.extraConfig = ''
+    HandleLidSwitch=lock
+  '';
 
   # List services that you want to enable:
 

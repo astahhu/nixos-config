@@ -21,5 +21,10 @@
       success_symbol = "➜";
       error_symbol = "➜";
     };
+    
+    nix_shell = {
+      symbol = " ";
+      heuristic = true;
+    };
   };
 }
