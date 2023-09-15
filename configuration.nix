@@ -25,6 +25,8 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   boot.loader.efi.canTouchEfiVariables = true;
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
   # grub
   boot.loader.grub = {
@@ -105,6 +107,8 @@
   services.logind.extraConfig = ''
     HandleLidSwitch=lock
   '';
+
+   security.pam.services.swaylock = {}; 
 
   # List services that you want to enable:
 
