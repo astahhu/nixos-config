@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       ./fonts.nix
       ./desktop/gnome.nix
+      ./desktop/programs.nix
       ./services/tailscale.nix
       ./cli/better-tools.nix
     ];
@@ -88,7 +89,6 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     git
-    wayfire
     lsd
     home-manager
   ];

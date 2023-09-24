@@ -36,7 +36,6 @@
     qt6.qtwayland
     glib
     kitty # Terminal Emulator
-    firefox
     grim # Screenshots
     slurp # Select Screen Area for Screenschots etc.
     dracula-theme # gtk theme
