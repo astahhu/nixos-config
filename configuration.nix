@@ -104,12 +104,6 @@
   #   enableSSHSupport = true;
   # };
 
-  services.logind.extraConfig = ''
-    HandleLidSwitch=lock
-  '';
-
-   security.pam.services.swaylock = {}; 
-
   # List services that you want to enable:
 
   services.udev.extraRules = ''

@@ -26,6 +26,12 @@
    
   };
 
+  services.logind.extraConfig = ''
+    HandleLidSwitch=lock
+  '';
+
+   security.pam.services.swaylock = {}; 
+
   environment.systemPackages = with pkgs; [
     udiskie
     configure-gtk
