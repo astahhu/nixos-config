@@ -9,7 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./fonts.nix
-      ./desktop/hyprland.nix
+      ./desktop/gnome.nix
       ./services/tailscale.nix
       ./cli/better-tools.nix
     ];
