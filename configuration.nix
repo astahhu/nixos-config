@@ -91,6 +91,8 @@
     git
     lsd
     home-manager
+    onlyoffice-bin_7_4
+    davinci-resolve
   ];
 
   programs.fish.enable = true;
