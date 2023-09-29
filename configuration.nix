@@ -93,6 +93,7 @@
     home-manager
     onlyoffice-bin_7_4
     davinci-resolve
+    mesa
     rocm-opencl-runtime
   ];
 
