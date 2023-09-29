@@ -93,11 +93,11 @@
     home-manager
     onlyoffice-bin_7_4
     davinci-resolve
+    rocm-opencl-runtime
   ];
 
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
-  services.xmr-stak.openclSupport = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
