@@ -17,11 +17,13 @@
 
   services.pipewire.enable = true;
   services.pipewire.audio.enable = true;
+  services.pipewire.alsa.enable = true;
   services.pipewire.pulse.enable = true;
   services.mpd = {
     enable = true;
     startWhenNeeded = true;
   };
+  nixpkgs.config.allowUnfree = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -71,7 +73,21 @@
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
   # for a WiFi printer
+  services.xmr-stak.openclSupport = true;
   services.avahi.openFirewall = true;
+  hardware.opengl.extraPackages = with pkgs;[
+    mesa
+    rocm-opencl-icd
+    amdvlk
+    qt6.full
+    log4cxx
+    rocm-device-libs
+    rocm-thunk
+    rocm-core
+    rocm-runtime
+    rocm-device-libs
+    rocm-opencl-runtime
+  ];
 
   # User Account
   users.users.florian = {
@@ -88,6 +104,7 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
+    sox
     git
     lsd
     home-manager
@@ -95,6 +112,7 @@
     davinci-resolve
     mesa
     rocm-opencl-runtime
+    streamdeck-ui
   ];
 
   programs.fish.enable = true;
