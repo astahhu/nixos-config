@@ -27,17 +27,24 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  boot.loader.efi.canTouchEfiVariables = true;
   hardware.bluetooth.enable = true;
+  # Yubikey
+  services.pcscd.enable = true;
   services.blueman.enable = true;
 
   # grub
-  boot.loader.grub = {
-    enable = true;
-    efiSupport = true;
-    enableCryptodisk = true;
-    device = "nodev";
-  };
+  boot.loader.systemd-boot.enable = true;
+  boot.kernelParams = ["quiet"];
+  # boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.efi.efiSysMountPoint = "/boot";
+  # boot.plymouth.enable = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.grub = {
+  #   enable = true;
+  #   efiSupport = true;
+  #   enableCryptodisk = true;
+  #   device = "nodev";
+  # };
 
   # luks
   boot.initrd.luks.devices = {
@@ -46,6 +53,8 @@
       preLVM = true;
     };
   };
+  boot.initrd.systemd.enable = true;
+  boot.plymouth.enable = true;
   
   # Networking
   networking.hostName = "Kakariko"; # Define your hostname.
@@ -59,7 +68,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
-    font = "Lat2-Terminus16";
+  #  font = "Lat2-Terminus16";
     keyMap = "us";
     # useXkbConfig = true; # use xkbOptions in tty.
   };
@@ -74,6 +83,7 @@
   services.avahi.nssmdns = true;
   # for a WiFi printer
   services.xmr-stak.openclSupport = true;
+  virtualisation.libvirtd.enable = true;
   services.avahi.openFirewall = true;
   hardware.opengl.extraPackages = with pkgs;[
     mesa
@@ -108,14 +118,15 @@
     git
     lsd
     home-manager
-    onlyoffice-bin_7_4
     davinci-resolve
     mesa
     rocm-opencl-runtime
+    gnome.gnome-boxes
     streamdeck-ui
   ];
 
   programs.fish.enable = true;
+  programs.java.enable = true;
   users.defaultUserShell = pkgs.fish;
 
   # Some programs need SUID wrappers, can be configured further or are
