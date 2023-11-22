@@ -87,15 +87,15 @@
   services.avahi.openFirewall = true;
   hardware.opengl.extraPackages = with pkgs;[
     mesa
-    rocm-opencl-icd
     amdvlk
     qt6.full
     log4cxx
-    rocm-device-libs
-    rocm-thunk
-    rocm-core
-    rocm-runtime
-    rocm-device-libs
+    rocm-opencl-icd
+    rocmPackages.rocm-device-libs
+    rocmPackages.rocm-thunk
+    rocmPackages.rocm-core
+    rocmPackages.rocm-runtime
+    rocmPackages.rocm-device-libs
     rocm-opencl-runtime
   ];
 
