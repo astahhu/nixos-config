@@ -4,6 +4,7 @@
     extensions = with pkgs.vscode-extensions; [
       rust-lang.rust-analyzer
       jnoortheen.nix-ide
+      AtomMaterial.a-file-icon-vscode
       redhat.vscode-xml
     ];
     userSettings = {
