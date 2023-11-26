@@ -12,27 +12,28 @@
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, stylix, hyprland-contrib,... }: {
+  outputs = { self, nixpkgs, stylix, hyprland-contrib, sops-nix,... }: {
     
     nixosConfigurations.Kakariko = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [ 
         stylix.nixosModules.stylix
         ./configuration.nix
+        ./kakariko-hardware-configuration.nix
+        sops-nix.nixosModules.sops
+      ];
+      specialArgs = {inherit hyprland-contrib;};
+    };
+
+    nixosConfigurations.HyruleCity = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [ 
+        stylix.nixosModules.stylix
+        ./configuration.nix
+        ./hyrule-city-hardware-configuration.nix
         sops-nix.nixosModules.sops
       ];
       specialArgs = {inherit hyprland-contrib;};
     };
   };
-
-  nixosConfigurations.HyruleCity = nixpkgs.lib.nixosSystem {
-    system = "x86_64-linux";
-    modules = [ 
-      stylix.nixosModules.stylix
-      ./configuration.nix
-      ./hyrule-city-hardware-configuration.nix
-      sops-nix.nixosModules.sops
-    ];
-    specialArgs = {inherit hyprland-contrib;};
-  }
 }
