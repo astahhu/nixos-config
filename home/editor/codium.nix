@@ -1,7 +1,6 @@
 { pkgs, ...} : {
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium;
     extensions = with pkgs.vscode-extensions; [
       rust-lang.rust-analyzer
       jnoortheen.nix-ide
@@ -15,6 +14,9 @@
         "editor.defaultFormatter"= "redhat.vscode-xml";
       };
       "[nix]"."editor.tabSize" = 2;
+      "telemetry.telemetryLevel" = "off";
+      "extensions.autoCheckUpdates" = false;
+      "extensions.autoUpdate" = false;
     };
   };
 }
