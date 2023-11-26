@@ -3,7 +3,7 @@
   services.xserver.desktopManager.gnome.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   hardware.pulseaudio.enable = false;
-  
+  stylix.targets.gnome.enable = true;
   stylix.image = pkgs.fetchurl {
     url = "https://www.pixelstalk.net/wp-content/uploads/2016/05/Epic-Anime-Awesome-Wallpapers.jpg";
     sha256 = "enQo3wqhgf0FEPHj2coOCvo7DuZv+x5rL/WIo4qPI50=";
