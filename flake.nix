@@ -12,7 +12,7 @@
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, stylix, hyprland-contrib, sops-nix,... }: {
+  outputs = { self, nixpkgs, stylix, hyprland-contrib, sops-nix, home-manager, ... }: {
     
     nixosConfigurations.Kakariko = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -21,6 +21,7 @@
         ./configuration.nix
         ./kakariko-hardware-configuration.nix
         sops-nix.nixosModules.sops
+        home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit hyprland-contrib;};
     };

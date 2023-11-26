@@ -1,11 +1,13 @@
 { config, pkgs, ... }: 
 {
   environment.systemPackages = with pkgs; [
-    netcat
     curl
     bat
     lsd
     most
+    btop
+    jq
+    tmux
   ];
 
   programs.fish.enable=true;
@@ -13,6 +15,9 @@
     ls = "lsd";
     tree = "lsd --tree";
     cat = "bat";
+    gs = "git status";
+    top = "btop";
+    gl = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
   };
 
   programs.starship.enable = true;

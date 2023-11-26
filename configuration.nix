@@ -96,7 +96,9 @@
     extraGroups = [ "wheel" "networkmanager" "uinput" "input"];
     shell = pkgs.fish;
   };
-
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.users.florian = import ./home/florian.nix;
   
 
   # List packages installed in system profile. To search, run:
