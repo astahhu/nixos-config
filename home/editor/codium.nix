@@ -25,6 +25,7 @@
       extensions.autoCheckUpdates = false;
       extensions.autoUpdate = false;
       workbench.iconTheme = "a-file-icon-vscode";
+      window.zoomLevel = 1;
     };
   };
 }
