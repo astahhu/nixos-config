@@ -14,16 +14,16 @@
       }
     ];
     userSettings = {
-      "editor.fontLigatures" = true;
-      "git.confirmSync" = false;
-      "terminal.integrated.fontLigatures" = true;
-      "[xml]"= {
-        "editor.defaultFormatter"= "redhat.vscode-xml";
+      editor.fontLigatures = true;
+      git.confirmSync = false;
+      terminal.integrated.fontLigatures = true;
+      "[xml]" = {
+        editor.defaultFormatter= "redhat.vscode-xml";
       };
-      "[nix]"."editor.tabSize" = 2;
-      "telemetry.telemetryLevel" = "off";
-      "extensions.autoCheckUpdates" = false;
-      "extensions.autoUpdate" = false;
+      "[nix]".editor.tabSize = 2;
+      telemetry.telemetryLevel = "off";
+      extensions.autoCheckUpdates = false;
+      extensions.autoUpdate = false;
       workbench.iconTheme = "a-file-icon-vscode";
     };
   };
