@@ -28,23 +28,14 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   hardware.bluetooth.enable = true;
+  
   # Yubikey
   services.pcscd.enable = true;
   services.blueman.enable = true;
 
-  # grub
+  # Boot
   boot.loader.systemd-boot.enable = true;
   boot.kernelParams = ["quiet"];
-  # boot.loader.efi.canTouchEfiVariables = true;
-  # boot.loader.efi.efiSysMountPoint = "/boot";
-  # boot.plymouth.enable = true;
-  # boot.loader.efi.canTouchEfiVariables = true;
-  # boot.loader.grub = {
-  #   enable = true;
-  #   efiSupport = true;
-  #   enableCryptodisk = true;
-  #   device = "nodev";
-  # };
 
   # luks
   boot.initrd.luks.devices = {
