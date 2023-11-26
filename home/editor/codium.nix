@@ -4,8 +4,14 @@
     extensions = with pkgs.vscode-extensions; [
       rust-lang.rust-analyzer
       jnoortheen.nix-ide
-      AtomMaterial.a-file-icon-vscode
       redhat.vscode-xml
+    ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+      {
+        name = "a-file-icon-vscode";
+        publisher = "AtomMaterial";
+        version = "1.2.0";
+        sha256 = "sha256-PgvhqqMvIvBej96mnoNMgtniuKHzlu+XB1rbSLqPF7E=";
+      }
     ];
     userSettings = {
       "editor.fontLigatures" = true;
@@ -18,6 +24,7 @@
       "telemetry.telemetryLevel" = "off";
       "extensions.autoCheckUpdates" = false;
       "extensions.autoUpdate" = false;
+      workbench.iconTheme = "a-file-icon-vscode";
     };
   };
 }
