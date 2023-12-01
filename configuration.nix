@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, hyprland-contrib, ... }:
+{ config, pkgs, hyprland-contrib, lib, ... }:
 
 {
   imports =
@@ -14,15 +14,17 @@
       ./cli/better-tools.nix
     ];
 
-  services.pipewire.enable = true;
-  services.pipewire.audio.enable = true;
-  services.pipewire.alsa.enable = true;
-  services.pipewire.pulse.enable = true;
+  services = {
+    pipewire.enable = true;
+    pipewire.audio.enable = true;
+    pipewire.alsa.enable = true;
+    pipewire.pulse.enable = true;
+  };
   services.mpd = {
     enable = true;
     startWhenNeeded = true;
   };
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = true; 
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -115,11 +117,22 @@
     rocm-opencl-runtime
     gnome.gnome-boxes
     streamdeck-ui
+    (stdenv.mkDerivation {
+      name = "gsconnect-v56";
+      src = fetchzip {
+          stripRoot=false;
+          url = "https://extensions.gnome.org/extension-data/gsconnectandyholmes.github.io.v56.shell-extension.zip";
+          hash = "sha256-DNZFtntNdMmfG1Va1FQhqGolDtEB++JAEZEfO5+iRLg=";
+        };
+      dontBuild = true;
+      installPhase = ''
+          mkdir - p $out
+          cp -rv $src/* $out
+        '';
+    })
   ];
 
-  programs.fish.enable = true;
   programs.java.enable = true;
-  users.defaultUserShell = pkgs.fish;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
