@@ -5,6 +5,7 @@
       rust-lang.rust-analyzer
       jnoortheen.nix-ide
       redhat.vscode-xml
+      github.copilot
     ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       {
         name = "a-file-icon-vscode";
