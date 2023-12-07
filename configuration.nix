@@ -15,6 +15,7 @@
     ];
 
   services = {
+    fprintd.enable = true;
     pipewire.enable = true;
     pipewire.audio.enable = true;
     pipewire.alsa.enable = true;
