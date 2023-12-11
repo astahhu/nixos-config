@@ -6,6 +6,7 @@
       jnoortheen.nix-ide
       redhat.vscode-xml
       github.copilot
+      ms-azuretools.vscode-docker
     ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
       {
         name = "a-file-icon-vscode";
