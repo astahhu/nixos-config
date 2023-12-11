@@ -4,4 +4,8 @@
     onlyoffice-bin_7_5
     thunderbird
   ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-25.9.0"
+  ];
 }

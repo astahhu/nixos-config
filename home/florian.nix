@@ -15,15 +15,33 @@
     allowUnfree = true;
     allowUnfreePredicate = (_: true);
   };
-
+  
   home.packages = with pkgs; [
     texlive.combined.scheme-full
     obsidian
     python3
+    spot  
     dunst
+    gnomeExtensions.gsconnect
     yubioath-flutter
     kitty
   ];
+
+  dconf.settings = {
+    # ...
+    "org/gnome/shell" = {
+      favorite-apps = [
+        "firefox.desktop"
+        "code.desktop"
+        "org.gnome.Terminal.desktop"
+        "spot.desktop"
+        "org.gnome.Nautilus.desktop"
+      ];
+       enabled-extensions = [
+        "gsconnect@andyholmes.github.io"
+      ];
+    };
+  };
 
   programs.fish = {
     enable = true;

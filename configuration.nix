@@ -72,6 +72,7 @@
     pkgs.epson-escpr
     pkgs.epson-escpr2
   ];
+  virtualisation.docker.enable = true;
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
   # for a WiFi printer
@@ -115,22 +116,11 @@
     home-manager
     davinci-resolve
     mesa
+    docker-compose
+    gnomeExtensions.gsconnect
     rocm-opencl-runtime
     gnome.gnome-boxes
     streamdeck-ui
-    (stdenv.mkDerivation {
-      name = "gsconnect-v56";
-      src = fetchzip {
-          stripRoot=false;
-          url = "https://extensions.gnome.org/extension-data/gsconnectandyholmes.github.io.v56.shell-extension.zip";
-          hash = "sha256-DNZFtntNdMmfG1Va1FQhqGolDtEB++JAEZEfO5+iRLg=";
-        };
-      dontBuild = true;
-      installPhase = ''
-          mkdir - p $out
-          cp -rv $src/* $out
-        '';
-    })
   ];
 
   programs.java.enable = true;
