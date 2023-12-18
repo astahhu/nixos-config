@@ -34,7 +34,8 @@
         "firefox.desktop"
         "code.desktop"
         "org.gnome.Terminal.desktop"
-        "spot.desktop"
+        "dev.alextren.Spot.desktop"
+        "org.gnome.Console.desktop"
         "org.gnome.Nautilus.desktop"
       ];
        enabled-extensions = [
