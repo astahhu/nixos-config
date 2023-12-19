@@ -57,4 +57,14 @@
       fenv source ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh > /dev/null
       ";
   };
+  
+  programs.git = {
+    enable = true;
+    diff-so-fancy.enable = true;
+    aliases = {
+      lg = "log --color --graph --date=format:'%Y-%m-%d %H:%M:%S' --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'";
+    };
+    userName = "florian";
+    userEmail = "florian.schubert.sg@gmail.com";
+  };
 }
