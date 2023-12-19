@@ -33,6 +33,8 @@
         ./configuration.nix
         ./hyrule-city-hardware-configuration.nix
         sops-nix.nixosModules.sops
+        ./hyrule-city/nvidia-config.nix
+        home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit hyprland-contrib;};
     };

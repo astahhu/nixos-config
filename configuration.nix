@@ -40,17 +40,10 @@
   boot.kernelParams = ["quiet"];
 
   # luks
-  boot.initrd.luks.devices = {
-    cryptroot = {
-      device = "/dev/disk/by-uuid/639bca5e-580f-4bbd-9b12-1db78906d356";
-      preLVM = true;
-    };
-  };
   boot.initrd.systemd.enable = true;
   boot.plymouth.enable = true;
   
   # Networking
-  networking.hostName = "Kakariko"; # Define your hostname.
   networking.firewall.enable = false;
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
   services.tailscale.enable = true;
@@ -70,28 +63,14 @@
   services.printing.enable = true;
   services.printing.drivers = [ 
     pkgs.epson-escpr
-    pkgs.epson-escpr2
+    #pkgs.epson-escpr2
   ];
   virtualisation.docker.enable = true;
   services.avahi.enable = true;
-  services.avahi.nssmdns = true;
+  services.avahi.nssmdns4 = true;
   # for a WiFi printer
-  services.xmr-stak.openclSupport = true;
   virtualisation.libvirtd.enable = true;
   services.avahi.openFirewall = true;
-  hardware.opengl.extraPackages = with pkgs;[
-    mesa
-    amdvlk
-    qt6.full
-    log4cxx
-    rocm-opencl-icd
-    rocmPackages.rocm-device-libs
-    rocmPackages.rocm-thunk
-    rocmPackages.rocm-core
-    rocmPackages.rocm-runtime
-    rocmPackages.rocm-device-libs
-    rocm-opencl-runtime
-  ];
 
   # User Account
   users.users.florian = {
@@ -154,7 +133,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.10"; # Did you read the comment?
 
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = false;
