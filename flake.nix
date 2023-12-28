@@ -4,7 +4,7 @@
     hyprland-contrib.url = "github:hyprwm/contrib";
     hyprland-contrib.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = github:nix-community/home-manager;
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    #home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
@@ -34,6 +34,7 @@
         ./hyrule-city-hardware-configuration.nix
         sops-nix.nixosModules.sops
         ./hyrule-city/nvidia-config.nix
+        ./hyrule-city/steam.nix
         home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit hyprland-contrib;};
