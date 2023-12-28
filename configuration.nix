@@ -27,6 +27,13 @@
   };
   nixpkgs.config.allowUnfree = true; 
 
+  nix.registry = {
+    nixpkgs.to = {
+      type = "path";
+      path = pkgs.path;
+    };
+  };
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   hardware.bluetooth.enable = true;
