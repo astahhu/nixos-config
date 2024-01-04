@@ -18,6 +18,7 @@
     userSettings = {
       editor.fontLigatures = true;
       git.confirmSync = false;
+      git.autofetch = true;
       terminal.integrated.fontLigatures = true;
       "[xml]" = {
         editor.defaultFormatter= "redhat.vscode-xml";
