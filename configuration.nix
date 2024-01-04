@@ -131,7 +131,7 @@
         disable-ccid
       '';
     }
-  ]
+  ];
 
   # List services that you want to enable:
   services.udev.packages = [ pkgs.yubikey-personalization ];
