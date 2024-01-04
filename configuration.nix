@@ -40,6 +40,8 @@
   
   # Yubikey
   services.pcscd.enable = true;
+  
+  
   services.blueman.enable = true;
 
   # Boot
@@ -104,23 +106,35 @@
     mesa
     docker-compose
     gnomeExtensions.gsconnect
+    gnupg
+    opensc
+    gnupg-pkcs11-scd
+    pinentry-curses
     rocm-opencl-runtime
     gnome.gnome-boxes
     streamdeck-ui
   ];
 
   programs.java.enable = true;
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryFlavor = "curses";
+    enableSSHSupport = true;
+  };
+  ## Fix for GnuPG and PCSC colnflict
+  home-manager.sharedModules = [
+    { 
+      home.file.".gnupg/scdaemon.conf".text = ''
+        disable-ccid
+      '';
+    }
+  ]
 
   # List services that you want to enable:
-
+  services.udev.packages = [ pkgs.yubikey-personalization ];
   services.udev.extraRules = ''
      KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
   '';
