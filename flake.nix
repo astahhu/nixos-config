@@ -19,7 +19,7 @@
       modules = [ 
         stylix.nixosModules.stylix
         ./configuration.nix
-        ./kakariko-hardware-configuration.nix
+        ./kakariko/hardware-configuration.nix
         sops-nix.nixosModules.sops
         home-manager.nixosModules.home-manager
       ];
@@ -31,7 +31,7 @@
       modules = [ 
         stylix.nixosModules.stylix
         ./configuration.nix
-        ./hyrule-city-hardware-configuration.nix
+        ./hyrule-city/hardware-configuration.nix
         sops-nix.nixosModules.sops
         ./hyrule-city/nvidia-config.nix
         ./hyrule-city/steam.nix
