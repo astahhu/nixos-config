@@ -28,6 +28,8 @@
       extensions.autoUpdate = false;
       workbench.iconTheme = "a-file-icon-vscode";
       window.zoomLevel = 1;
+      explorer.confirmDragAndDrop = false;
+
     };
   };
 }
