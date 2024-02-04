@@ -18,9 +18,10 @@
       system = "x86_64-linux";
       modules = [ 
         stylix.nixosModules.stylix
+        sops-nix.nixosModules.sops
         ./configuration.nix
         ./kakariko/hardware-configuration.nix
-        sops-nix.nixosModules.sops
+        ./kakariko/boot.nix
         home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit hyprland-contrib;};
@@ -30,10 +31,11 @@
       system = "x86_64-linux";
       modules = [ 
         stylix.nixosModules.stylix
+        sops-nix.nixosModules.sops
         ./configuration.nix
         ./hyrule-city/hardware-configuration.nix
-        sops-nix.nixosModules.sops
         ./hyrule-city/nvidia-config.nix
+        ./hyrule-city/boot.nix
         ./hyrule-city/steam.nix
         home-manager.nixosModules.home-manager
       ];
