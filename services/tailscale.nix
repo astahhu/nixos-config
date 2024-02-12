@@ -1,6 +1,4 @@
-{ config, pkgs, ... }:
-
-{
+{ config, pkgs, ... }: {
   
   # always allow traffic from your Tailscale network
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
@@ -11,6 +9,11 @@
   
   # make the tailscale command usable to users
   environment.systemPackages = [ pkgs.tailscale ];
+
+  sops.secrets.tailscale-auth = {
+    format = "yaml";
+    sopsFile = ../secrets/common.yaml;
+  };
 
   # enable the tailscale service
   services.tailscale.enable = true;
@@ -39,7 +42,7 @@
       fi
 
       # otherwise authenticate with tailscale
-      ${tailscale}/bin/tailscale up -authkey tskey-auth-kNzV143CNTRL-3zdbixTM4THNVUbRttDvYHxGVcEUEkU4
+      ${tailscale}/bin/tailscale up --authkey file:${config.sops.secrets.tailscale-auth.path}
     '';
   };
 }
