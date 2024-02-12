@@ -40,17 +40,7 @@
   
   # Yubikey
   services.pcscd.enable = true;
-  
-  
   services.blueman.enable = true;
-
-  # Boot
-  boot.loader.systemd-boot.enable = true;
-  boot.kernelParams = ["quiet"];
-
-  # luks
-  boot.initrd.systemd.enable = true;
-  boot.plymouth.enable = true;
   
   # Networking
   networking.firewall.enable = false;
@@ -103,14 +93,12 @@
     lsd
     home-manager
     davinci-resolve
-    mesa
     docker-compose
     gnomeExtensions.gsconnect
     gnupg
     opensc
     gnupg-pkcs11-scd
     pinentry-curses
-    rocm-opencl-runtime
     gnome.gnome-boxes
     streamdeck-ui
   ];
