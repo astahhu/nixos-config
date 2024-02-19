@@ -62,7 +62,7 @@
   services.printing.enable = true;
   services.printing.drivers = [ 
     pkgs.epson-escpr
-    #pkgs.epson-escpr2
+    pkgs.epson-escpr2
   ];
   virtualisation.docker.enable = true;
   services.avahi.enable = true;
