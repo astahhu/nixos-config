@@ -75,7 +75,7 @@
   users.users.florian = {
     isNormalUser = true;
     initialPassword = "";
-    extraGroups = [ "wheel" "networkmanager" "uinput" "input"];
+    extraGroups = [ "wheel" "networkmanager" "uinput" "input" "docker"];
     shell = pkgs.fish;
   };
   home-manager.useGlobalPkgs = true;
@@ -92,7 +92,6 @@
     git
     lsd
     home-manager
-    davinci-resolve
     docker-compose
     gnomeExtensions.gsconnect
     gnupg
