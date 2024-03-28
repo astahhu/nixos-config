@@ -59,7 +59,6 @@
     nixosConfigurations.HyruleCity = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        nixvim.homeManagerModules.nixvim
         nixvim.nixosModules.nixvim
         stylix.nixosModules.stylix
         sops-nix.nixosModules.sops
@@ -73,6 +72,7 @@
       specialArgs = {inherit hyprland-contrib;};
     };
 
+    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
 
     devShells."x86_64-linux".default = with import nixpkgs {system = "x86_64-linux";};
       mkShell {

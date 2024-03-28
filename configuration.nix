@@ -8,14 +8,9 @@
   lib,
   ...
 }: {
-
   imports = [
     ./fonts.nix
-    ./modules/desktop/gnome.nix
-    ./modules/desktop/programs.nix
-    ./modules/services/tailscale.nix
-    ./modules/cli/better-tools.nix
-    ./modules/cli/nixvim.nix
+    ./modules/modules.nix
   ];
 
   myservices = {
@@ -24,7 +19,9 @@
 
   myprograms = {
     desktop.gnome.enable = true;
+    desktop.programs.enable = true;
     cli.better-tools.enable = true;
+    cli.nixvim.enable = true;
   };
 
   services = {

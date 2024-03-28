@@ -5,7 +5,6 @@
   lib,
   ...
 }: {
-
   options = {
     myprograms.desktop.gnome.enable = lib.mkEnableOption "Enable Gnome";
   };
@@ -24,7 +23,7 @@
     environment.gnome.excludePackages = with pkgs; [
       epiphany
     ];
-    
+
     stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/monokai.yaml";
     stylix.fonts.monospace = {
       package = pkgs.nerdfonts.override {

@@ -4,7 +4,6 @@
   lib,
   ...
 }: {
-
   options = {
     myservices.tailscale.enable = lib.mkEnableOption "Enable Tailscale";
   };
@@ -43,7 +42,7 @@
       script = with pkgs; ''
         # wait for tailscaled to settle
         sleep 2
-        
+
         # otherwise authenticate with tailscale
         ${tailscale}/bin/tailscale up --authkey file:${config.sops.secrets.tailscale-auth.path} --accept-routes --operator=florian
       '';

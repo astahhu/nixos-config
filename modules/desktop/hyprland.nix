@@ -2,6 +2,7 @@
   config,
   pkgs,
   hyprland-contrib,
+  lib,
   ...
 }: let
   configure-gtk = pkgs.writeTextFile {
@@ -18,35 +19,41 @@
     '';
   };
 in {
-  services.udisks2.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.enable = true;
-  programs.hyprland = {
-    enable = true;
-    xwayland = {
-      enable = true;
-    };
+  options = {
+    myprograms.desktop.hyprland.enable = lib.mkEnableOption "Enable Hyprland";
   };
 
-  services.logind.extraConfig = ''
-    HandleLidSwitch=lock
-  '';
+  config = lib.mkIf config.myprograms.desktop.hyprland.enable {
+    services.udisks2.enable = true;
+    services.xserver.displayManager.gdm.enable = true;
+    services.xserver.enable = true;
+    programs.hyprland = {
+      enable = true;
+      xwayland = {
+        enable = true;
+      };
+    };
 
-  security.pam.services.swaylock = {};
+    services.logind.extraConfig = ''
+      HandleLidSwitch=lock
+    '';
 
-  environment.systemPackages = with pkgs; [
-    udiskie
-    configure-gtk
-    swaylock
-    libsForQt5.qt5.qtwayland
-    hyprpicker
-    hyprland-contrib.packages.${system}.grimblast
-    qt6.qtwayland
-    glib
-    kitty # Terminal Emulator
-    grim # Screenshots
-    slurp # Select Screen Area for Screenschots etc.
-    dracula-theme # gtk theme
-    gnome3.adwaita-icon-theme
-  ];
+    security.pam.services.swaylock = {};
+
+    environment.systemPackages = with pkgs; [
+      udiskie
+      configure-gtk
+      swaylock
+      libsForQt5.qt5.qtwayland
+      hyprpicker
+      hyprland-contrib.packages.${system}.grimblast
+      qt6.qtwayland
+      glib
+      kitty # Terminal Emulator
+      grim # Screenshots
+      slurp # Select Screen Area for Screenschots etc.
+      dracula-theme # gtk theme
+      gnome3.adwaita-icon-theme
+    ];
+  };
 }
