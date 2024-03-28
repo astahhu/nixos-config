@@ -1,6 +1,15 @@
-{ config, pkgs, ... }: 
 {
-  environment.systemPackages = with pkgs; [
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
+  options = {
+    myprograms.cli.better-tools.enable = lib.mkEnableOption "Enable better cli Tools";
+  };
+  
+  config = {
+    environment.systemPackages = with pkgs; [
     curl
     bat
     lsd
@@ -15,8 +24,8 @@
   ];
 
   users.defaultUserShell = pkgs.fish;
-  programs.fish.enable=true;
-  programs.fish.shellAliases= {
+  programs.fish.enable = true;
+  programs.fish.shellAliases = {
     ls = "lsd";
     tree = "lsd --tree";
     cat = "bat";
@@ -36,10 +45,11 @@
       success_symbol = "➜";
       error_symbol = "➜";
     };
-    
+
     nix_shell = {
       symbol = " ";
       heuristic = false;
     };
+  };
   };
 }

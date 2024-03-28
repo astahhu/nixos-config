@@ -1,5 +1,8 @@
-{pkgs,stdenv,...}: {
+{
+  pkgs,
+  stdenv,
+  ...
+}: {
   environment.systemPackages = [
-    
   ];
 }

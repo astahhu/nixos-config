@@ -1,9 +1,12 @@
 keys:
-  - &admin_florian 8BAF9A2054C98791F510C72641120FB11592EAFF
+  - &admin_florian CFAA36038DF83F58F38090E2358EE66F828961B3
   - &hyrule_city 46ff20f9390ae67c03a2fd465422c3d5974a7622
+  - &kakariko c2f4281fb8b9d67c5cf75401d54d76b30f143460
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - pgp:
         - *admin_florian
         - *hyrule_city
+        - *kakariko 
+

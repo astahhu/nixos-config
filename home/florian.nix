@@ -1,5 +1,10 @@
-{ config, pkgs, services, stylix, ...} : {
-
+{
+  config,
+  pkgs,
+  services,
+  stylix,
+  ...
+}: {
   imports = [
     ./editor/intelij.nix
     ./editor/codium.nix
@@ -13,14 +18,13 @@
   home.homeDirectory = "/home/florian";
   nixpkgs.config = {
     allowUnfree = true;
-    allowUnfreePredicate = (_: true);
+    allowUnfreePredicate = _: true;
   };
-  
+
   home.packages = with pkgs; [
     texlive.combined.scheme-full
-    obsidian
     python3
-    spot  
+    spot
     dunst
     gnomeExtensions.gsconnect
     yubioath-flutter
@@ -38,7 +42,7 @@
         "org.gnome.Console.desktop"
         "org.gnome.Nautilus.desktop"
       ];
-       enabled-extensions = [
+      enabled-extensions = [
         "gsconnect@andyholmes.github.io"
       ];
     };
@@ -52,12 +56,12 @@
         src = pkgs.fishPlugins.foreign-env;
       }
     ];
-    shellInit =  "
+    shellInit = "
       set -p fish_function_path ${pkgs.fishPlugins.foreign-env}/share/fish/vendor_functions.d\n
       fenv source ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh > /dev/null
       ";
   };
-  
+
   programs.git = {
     enable = true;
     diff-so-fancy.enable = true;

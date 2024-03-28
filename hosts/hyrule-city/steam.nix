@@ -1,4 +1,10 @@
-{ config, pkgs, services, stylix, ...} : {
+{
+  config,
+  pkgs,
+  services,
+  stylix,
+  ...
+}: {
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
