@@ -17,7 +17,6 @@
       btop
       thefuck
       jq
-      zoxide
       tldr
       tmux
       duf
@@ -32,8 +31,10 @@
       gs = "git status";
       top = "btop";
       gl = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
+      vi = "nvim";
+      vim = "nvim";
     };
-
+    
     programs.tmux = {
       enable = true;
       clock24 = true;

@@ -47,6 +47,7 @@
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   hardware.bluetooth.enable = true;
+  programs.nano.enable = false;
 
   # Yubikey
   services.pcscd.enable = true;
@@ -94,20 +95,17 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  environment.systemPackages = with pkgs; [    
     wget
     sox
     git
     lsd
     home-manager
     docker-compose
-    gnomeExtensions.gsconnect
     gnupg
     opensc
     gnupg-pkcs11-scd
     pinentry-curses
-    gnome.gnome-boxes
     streamdeck-ui
   ];
 

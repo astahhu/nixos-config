@@ -35,7 +35,7 @@
 
     # Might be needed for some games to work properly.
     # It might reduce performance
-    # forceFullCompositionPipeline = true;
+    forceFullCompositionPipeline = true;
     # Enable the Nvidia settings menu,
     # accessible via `nvidia-settings`.
     nvidiaSettings = true;
