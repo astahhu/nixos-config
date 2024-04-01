@@ -1,7 +1,7 @@
 {
   pkgs,
   config,
-  nixvim,
+  inputs,
   system,
   lib,
   ...
@@ -9,6 +9,11 @@
   options = {
     myprograms.cli.nixvim.enable = lib.mkEnableOption "Enable nixvim";
   };
+
+  imports = [
+    # For NixOS
+    inputs.nixvim.nixosModules.nixvim
+  ];
 
   config = lib.mkIf config.myprograms.cli.nixvim.enable {
     environment.systemPackages = with pkgs; [
@@ -39,7 +44,7 @@
             gopls.enable = true;
 
             ccls.enable = true;
-	  
+
             ansiblels.enable = true;
 
             marksman.enable = true;

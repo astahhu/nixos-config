@@ -7,3 +7,14 @@ These are the Hosts:
 
 ## Modules
 I use Modules these are seperated by Desktop and CLI. CLI modules should be enabled on all Systems, while Desktop are only for my Laptop and my Desktop.
+
+## ToDos
+
+- [ ] Finish Nixvim
+- [x] Begin a Readme
+
+```rust
+fn main() {
+  println!("This is great");
+}
+```

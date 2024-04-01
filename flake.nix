@@ -31,7 +31,6 @@
     nixosConfigurations.Kakariko = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        nixvim.nixosModules.nixvim
         stylix.nixosModules.stylix
         sops-nix.nixosModules.sops
         ./configuration.nix
@@ -39,27 +38,24 @@
         ./hosts/kakariko/boot.nix
         home-manager.nixosModules.home-manager
       ];
-      specialArgs = {inherit hyprland-contrib;};
+      specialArgs = {inherit inputs;};
     };
 
-    nixosConfigurations.hateno = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.Hateno = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        nixvim.nixosModules.nixvim
         stylix.nixosModules.stylix
         sops-nix.nixosModules.sops
         ./hosts/hateno/configuration.nix
-        ./cli/better-tools.nix
-        ./hateno/hardware-configuration.nix
-        ./hateno/boot.nix
+        ./hosts/hateno/hardware-configuration.nix
+        ./hosts/hateno/boot.nix
       ];
-      specialArgs = {inherit hyprland-contrib;};
+      specialArgs = {inherit inputs;};
     };
 
     nixosConfigurations.HyruleCity = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        nixvim.nixosModules.nixvim
         stylix.nixosModules.stylix
         sops-nix.nixosModules.sops
         ./configuration.nix
@@ -69,7 +65,7 @@
         ./hosts/hyrule-city/steam.nix
         home-manager.nixosModules.home-manager
       ];
-      specialArgs = {inherit hyprland-contrib;};
+      specialArgs = {inherit inputs;};
     };
 
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;

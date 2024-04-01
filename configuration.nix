@@ -31,10 +31,12 @@
     pipewire.alsa.enable = true;
     pipewire.pulse.enable = true;
   };
+
   services.mpd = {
     enable = true;
     startWhenNeeded = true;
   };
+
   nixpkgs.config.allowUnfree = true;
 
   nix.registry = {
