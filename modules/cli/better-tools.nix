@@ -34,7 +34,7 @@
       vi = "nvim";
       vim = "nvim";
     };
-    
+
     programs.tmux = {
       enable = true;
       clock24 = true;

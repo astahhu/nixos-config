@@ -25,8 +25,8 @@
     ];
 
     environment.systemPackages = with pkgs; [
-       gnome.gnome-boxes
-       gnomeExtensions.gsconnect
+      gnome.gnome-boxes
+      gnomeExtensions.gsconnect
     ];
 
     stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/monokai.yaml";

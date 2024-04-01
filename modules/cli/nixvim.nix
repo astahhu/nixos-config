@@ -11,52 +11,87 @@
   };
 
   config = lib.mkIf config.myprograms.cli.nixvim.enable {
+    environment.systemPackages = with pkgs; [
+      ripgrep
+    ];
+
     programs.nixvim = {
       enable = true;
       plugins = {
         lualine.enable = true;
         lsp = {
-	  enable = true;
-	  servers = {
-	    lua-ls.enable = true;
+          enable = true;
+          servers = {
+            lua-ls.enable = true;
 
-	    rust-analyzer = {
-	      enable = true;
-	      installRustc = true;
-	      installCargo = true;
-	    };
-	    
-	    nixd.enable = true;
+            rust-analyzer = {
+              enable = true;
+              installRustc = true;
+              installCargo = true;
+            };
 
-	    java-language-server.enable = true;
+            nixd.enable = true;
 
-	    texlab.enable = true;
+            java-language-server.enable = true;
 
-	    gopls.enable = true;
+            texlab.enable = true;
 
-	    ccls.enable = true;
+            gopls.enable = true;
 
-	    ansiblels.enable = true;
+            ccls.enable = true;
+	  
+            ansiblels.enable = true;
 
-	    marksman.enable = true;
-	  };
-	};
+            marksman.enable = true;
+          };
+        };
 
-	treesitter.enable = true;
-	crates-nvim.enable = true;
+        telescope.enable = true;
+
+        oil.enable = true;
+
+        luasnip.enable = true;
+        treesitter.enable = true;
+        crates-nvim.enable = true;
+
+        rainbow-delimiters.enable = true;
         cmp = {
           enable = true;
-	  autoEnableSources = true;
+          autoEnableSources = true;
+
+          settings = {
+            mapping = {
+              "<C-Space>" = "cmp.mapping.complete()";
+              "<C-d>" = "cmp.mapping.scroll_docs(-4)";
+              "<C-e>" = "cmp.mapping.close()";
+              "<C-f>" = "cmp.mapping.scroll_docs(4)";
+              "<CR>" = "cmp.mapping.confirm({ select = true })";
+              "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+              "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+            };
+
+            sources = [
+              {name = "nvim_lsp";}
+              {name = "path";}
+              {name = "buffer";}
+              {name = "luasnip";}
+            ];
+          };
         };
-	bufferline.enable = true;
-	cmp-nvim-lsp.enable = true;
-	cmp-path.enable = true;
-	cmp-buffer.enable = true;
+        bufferline.enable = true;
       };
 
+      keymaps = [
+        {
+          action = "<cmd>Telescope live_grep<CR>";
+          key = "<leader>g";
+        }
+      ];
+
+      globals.mapleader = " ";
       options = {
         number = true;
-	shiftwidth = 2;
+        shiftwidth = 2;
       };
     };
   };
