@@ -46,12 +46,12 @@
             ccls.enable = true;
 
             ansiblels.enable = true;
-
+ 
             marksman.enable = true;
           };
         };
 
-        telescope.enable = true;
+	telescope.enable = true;
 
         oil.enable = true;
 
@@ -74,6 +74,12 @@
               "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
               "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
             };
+
+	    snippet.expand = ''
+	      function(args)
+		require('luasnip').lsp_expand(args.body)
+	      end
+	    '';
 
             sources = [
               {name = "nvim_lsp";}
