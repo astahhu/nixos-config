@@ -11,6 +11,8 @@
   config = {
     environment.systemPackages = with pkgs; [
       curl
+      nh
+      nix-output-monitor
       bat
       lsd
       most
