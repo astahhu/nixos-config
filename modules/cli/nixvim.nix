@@ -17,6 +17,7 @@
 
   config = lib.mkIf config.myprograms.cli.nixvim.enable {
     environment.systemPackages = with pkgs; [
+      cargo-nextest
       ripgrep
     ];
 
@@ -51,8 +52,14 @@
           };
         };
 
-	telescope.enable = true;
+	dap.enable = true;
+	neotest = {
+	  enable = true;
+	  adapters.rust.enable = true;
+	};
 
+	telescope.enable = true;
+	markdown-preview.enable = true;
         oil.enable = true;
 
         luasnip.enable = true;
@@ -83,6 +90,7 @@
 
             sources = [
               {name = "nvim_lsp";}
+	      {name = "clippy";}
               {name = "path";}
               {name = "buffer";}
               {name = "luasnip";}
@@ -97,6 +105,14 @@
           action = "<cmd>Telescope live_grep<CR>";
           key = "<leader>g";
         }
+	{
+	  action = "<cmd>edit .<CR>";
+	  key = "<leader>o";
+	}
+	{
+	  action = "<cmd>Neotest run<CR>";
+	  key = "<leader>t";
+	}
       ];
 
       globals.mapleader = " ";

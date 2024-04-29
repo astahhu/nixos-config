@@ -70,5 +70,8 @@
     };
     userName = "florian";
     userEmail = "florian.schubert.sg@gmail.com";
+    extraConfig = {
+      pull.rebase = true;
+    };
   };
 }
