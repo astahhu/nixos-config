@@ -1,9 +1,9 @@
 {
   inputs = {
-    nixpkgs.url = github:NixOs/nixpkgs;
+    nixpkgs.url = "github:NixOs/nixpkgs";
     hyprland-contrib.url = "github:hyprwm/contrib";
     hyprland-contrib.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = github:nix-community/home-manager;
+    home-manager.url = "github:nix-community/home-manager";
     #home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
@@ -15,6 +15,8 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -37,6 +39,7 @@
         ./hosts/kakariko/hardware-configuration.nix
         ./hosts/kakariko/boot.nix
         home-manager.nixosModules.home-manager
+	inputs.nix-index-database.nixosModules.nix-index
       ];
       specialArgs = {inherit inputs;};
     };
@@ -46,7 +49,8 @@
       modules = [
         stylix.nixosModules.stylix
         sops-nix.nixosModules.sops
-        ./hosts/hateno/configuration.nix
+        inputs.nix-index-database.nixosModules.nix-index
+	./hosts/hateno/configuration.nix
         ./hosts/hateno/hardware-configuration.nix
         ./hosts/hateno/boot.nix
       ];
@@ -58,6 +62,7 @@
       modules = [
         stylix.nixosModules.stylix
         sops-nix.nixosModules.sops
+	inputs.nix-index-database.nixosModules.nix-index
         ./configuration.nix
         ./hosts/hyrule-city/hardware-configuration.nix
         ./hosts/hyrule-city/nvidia-config.nix

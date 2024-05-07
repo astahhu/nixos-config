@@ -109,6 +109,7 @@
     gnupg-pkcs11-scd
     pinentry-curses
     streamdeck-ui
+    solaar
   ];
 
   programs.java.enable = true;

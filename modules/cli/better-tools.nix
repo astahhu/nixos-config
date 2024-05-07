@@ -41,7 +41,11 @@
       enable = true;
       clock24 = true;
     };
-
+    programs.command-not-found.enable = false;
+    programs.nix-index = {
+      enable = true;
+      enableFishIntegration = true;
+    };
     programs.starship.enable = true;
     programs.starship.settings = {
       character = {
