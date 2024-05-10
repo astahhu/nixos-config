@@ -11,7 +11,6 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
-
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sd_mod"];
   boot.initrd.kernelModules = ["dm-snapshot"];
   boot.kernelModules = ["kvm-amd"];
@@ -23,6 +22,19 @@
     options = [
       "subvol=nixroot"
     ];
+  };
+
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/b17196dc-1407-463e-9a6d-3ae850b8baf2";
+    fsType = "btrfs";
+    options = [
+      "subvol=nix"
+    ];
+  };
+
+  fileSystems."/btrfs-root" = {
+    device = "/dev/disk/by-uuid/b17196dc-1407-463e-9a6d-3ae850b8baf2";
+    fsType = "btrfs";
   };
 
   fileSystems."/boot" = {
