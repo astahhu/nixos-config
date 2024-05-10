@@ -73,11 +73,13 @@
       specialArgs = {inherit inputs;};
     };
 
-    stick = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.stick = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs; };
       modules = [
 	./hosts/stick/configuration.nix
 	./modules/modules.nix
+	sops-nix.nixosModules.sops
+	stylix.nixosModules.stylix
       ];
     };
 

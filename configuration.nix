@@ -59,7 +59,6 @@
   networking.firewall.enable = false;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   services.tailscale.enable = true;
-
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 

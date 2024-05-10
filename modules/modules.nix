@@ -6,5 +6,8 @@
     ./desktop/hyprland.nix
     ./desktop/programs.nix
     ./services/tailscale.nix
+    ./stylix.nix
   ];
+
+  myprograms.stylix.enable = true;
 }

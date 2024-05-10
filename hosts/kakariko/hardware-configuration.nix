@@ -18,8 +18,11 @@
   boot.extraModulePackages = [];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/d0a0b6ec-c4e5-4dc5-89a8-927e59d9d2c0";
-    fsType = "ext4";
+    device = "/dev/disk/by-uuid/b17196dc-1407-463e-9a6d-3ae850b8baf2";
+    fsType = "btrfs";
+    options = [
+      "subvol=nixroot"
+    ];
   };
 
   fileSystems."/boot" = {
