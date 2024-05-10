@@ -6,9 +6,7 @@
   ...
 }: {
   imports = [
-    ./editor/intelij.nix
     ./editor/codium.nix
-    ./editor/nvim.nix
     ./theme.nix
     ./languages/rust.nix
   ];
