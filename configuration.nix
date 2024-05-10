@@ -124,6 +124,9 @@
   ## Fix for GnuPG and PCSC colnflict
   home-manager.sharedModules = [
     {
+      home.sessionVariables = {
+	EDITOR = "nvim";
+      };
       home.file.".gnupg/scdaemon.conf".text = ''
         disable-ccid
       '';

@@ -20,14 +20,10 @@
   };
 
   outputs = {
-    self,
     nixpkgs,
     stylix,
-    hyprland-contrib,
     sops-nix,
     home-manager,
-    flake-utils,
-    nixvim,
     ...
   } @ inputs: {
     nixosConfigurations.Kakariko = nixpkgs.lib.nixosSystem {

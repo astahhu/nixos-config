@@ -21,6 +21,10 @@
       ripgrep
     ];
 
+    environment.variables = {
+      EDITOR = "nvim";
+    };
+
     programs.nixvim = {
       enable = true;
       plugins = {
