@@ -56,7 +56,7 @@
   services.blueman.enable = true;
 
   # Networking
-  networking.firewall.enable = false;
+  networking.firewall.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   services.tailscale.enable = true;
   # Set your time zone.
