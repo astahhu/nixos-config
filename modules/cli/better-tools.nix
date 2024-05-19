@@ -5,10 +5,13 @@
   ...
 }: {
   options = {
-    myprograms.cli.better-tools.enable = lib.mkEnableOption "Enable better cli Tools";
+    myprograms.cli.better-tools.enable = lib.mkEnableOption "Enable my default CLI Setup which should exist on any Machine";
   };
 
   config = {
+    
+    nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    
     environment.systemPackages = with pkgs; [
       curl
       nh
@@ -17,12 +20,13 @@
       lsd
       most
       btop
-      thefuck
       jq
       tldr
       tmux
       duf
     ];
+
+    programs.git.enable = true;
 
     users.defaultUserShell = pkgs.fish;
     programs.fish.enable = true;
@@ -41,11 +45,13 @@
       enable = true;
       clock24 = true;
     };
+
     programs.command-not-found.enable = false;
     programs.nix-index = {
       enable = true;
       enableFishIntegration = true;
     };
+
     programs.starship.enable = true;
     programs.starship.settings = {
       character = {

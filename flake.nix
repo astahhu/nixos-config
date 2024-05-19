@@ -47,8 +47,8 @@
         sops-nix.nixosModules.sops
         inputs.nix-index-database.nixosModules.nix-index
 	./hosts/hateno/configuration.nix
+	./modules/modules.nix
         ./hosts/hateno/hardware-configuration.nix
-        ./hosts/hateno/boot.nix
       ];
       specialArgs = {inherit inputs;};
     };

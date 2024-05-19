@@ -46,8 +46,6 @@
     };
   };
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
   hardware.bluetooth.enable = true;
   programs.nano.enable = false;
 
@@ -99,8 +97,6 @@
   environment.systemPackages = with pkgs; [
     wget
     sox
-    git
-    lsd
     home-manager
     docker-compose
     gnupg
