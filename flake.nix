@@ -27,7 +27,6 @@
     nixosConfigurations.Kakariko = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        sops-nix.nixosModules.sops
         ./configuration.nix
         ./hosts/kakariko/hardware-configuration.nix
         ./hosts/kakariko/boot.nix
@@ -39,7 +38,6 @@
     nixosConfigurations.Hateno = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        sops-nix.nixosModules.sops
 	inputs.home-manager.nixosModules.home-manager
 	./hosts/hateno/configuration.nix
 	./modules/modules.nix
@@ -51,7 +49,6 @@
     nixosConfigurations.HyruleCity = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        sops-nix.nixosModules.sops
         ./configuration.nix
         ./hosts/hyrule-city/hardware-configuration.nix
         ./hosts/hyrule-city/nvidia-config.nix
@@ -67,7 +64,6 @@
       modules = [
 	./hosts/stick/configuration.nix
 	./modules/modules.nix
-	sops-nix.nixosModules.sops
       ];
     };
 

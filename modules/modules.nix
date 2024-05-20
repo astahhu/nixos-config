@@ -1,5 +1,6 @@
-{lib, ...}: {
+{lib, inputs, ...}: {
   imports = [
+    inputs.sops-nix.nixosModules.sops
     ./cli/better-tools.nix
     ./cli/nixvim.nix
     ./desktop/gnome.nix
