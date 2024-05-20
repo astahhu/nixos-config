@@ -2,7 +2,6 @@
   pkgs,
   config,
   inputs,
-  system,
   lib,
   ...
 }: {
@@ -25,6 +24,14 @@
       EDITOR = "nvim";
     };
 
+    home-manager.sharedModules = [
+      {
+	home.sessionVariables = {
+	  EDITOR = "nvim";
+	};
+      }
+    ];
+
     programs.nixvim = {
       enable = true;
       plugins = {
@@ -40,7 +47,13 @@
               installCargo = true;
             };
 
-            nixd.enable = true;
+            nixd = {
+	      enable = true;
+	      settings = {
+	        #nixpkgs = "${inputs.nixpkgs}";
+	        formatting.command = [ "nixpkgs-fmt" ];
+	      };
+	    };
 
             java-language-server.enable = true;
 
@@ -120,7 +133,7 @@
       ];
 
       globals.mapleader = " ";
-      options = {
+      opts = {
         number = true;
         shiftwidth = 2;
       };

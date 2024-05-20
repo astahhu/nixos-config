@@ -8,7 +8,7 @@
     myprograms.cli.better-tools.enable = lib.mkEnableOption "Enable my default CLI Setup which should exist on any Machine";
   };
 
-  config = {
+  config = lib.mkIf config.myprograms.cli.better-tools.enable {
     
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
     

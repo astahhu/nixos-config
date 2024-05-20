@@ -1,4 +1,4 @@
-{...}: {
+{lib, ...}: {
   imports = [
     ./cli/better-tools.nix
     ./cli/nixvim.nix
@@ -9,5 +9,6 @@
     ./stylix.nix
   ];
 
-  myprograms.stylix.enable = true;
+  myprograms.stylix.enable = lib.mkDefault true;
+  myprograms.cli.better-tools.enable = lib.mkDefault true;
 }
