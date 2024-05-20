@@ -11,6 +11,8 @@
     cli.nixvim.enable = true;
   };
 
+  myservices.tailscaled.enable = true;
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
