@@ -23,9 +23,16 @@
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  environment.persistence."/fast_persistent" = {
+    hideMounts = true;
+    files = [
+      /etc/machine-id
+      /etc/ssh/ssh_host_ed25519_key.pub
+      /etc/ssh/ssh_host_ed25519_key
+      /etc/ssh/ssh_host_rsa_key
+      /etc/ssh/ssh_host_rsa_key.pub
+    ];
+  };
 
   # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
