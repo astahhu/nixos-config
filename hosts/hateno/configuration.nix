@@ -31,6 +31,7 @@
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_rsa_key" 
       "/etc/ssh/ssh_host_rsa_key.pub"
+      "/etc/shadow"
     ];
   };
 
@@ -67,14 +68,11 @@
   # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.alice = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  #   packages = with pkgs; [
-  #     firefox
-  #     tree
-  #   ];
-  # };
+  users.users.florian = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    initialPassword = "a";   
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
