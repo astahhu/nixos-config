@@ -46,6 +46,7 @@
         stylix.nixosModules.stylix
         sops-nix.nixosModules.sops
         inputs.nix-index-database.nixosModules.nix-index
+	home-manager.nixosModules.home-manager
 	./hosts/hateno/configuration.nix
 	./modules/modules.nix
         ./hosts/hateno/hardware-configuration.nix
