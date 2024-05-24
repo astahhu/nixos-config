@@ -17,15 +17,15 @@
   boot.extraModulePackages = [];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/b17196dc-1407-463e-9a6d-3ae850b8baf2";
+    device = "/dev/disk/by-label/nixos";
     fsType = "btrfs";
     options = [
-      "subvol=nixroot"
+      "subvol=root"
     ];
   };
 
   fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/b17196dc-1407-463e-9a6d-3ae850b8baf2";
+    device = "/dev/disk/by-label/nixos";
     fsType = "btrfs";
     options = [
       "subvol=nix"
@@ -33,18 +33,18 @@
   };
 
   fileSystems."/btrfs-root" = {
-    device = "/dev/disk/by-uuid/b17196dc-1407-463e-9a6d-3ae850b8baf2";
+    device = "/dev/disk/by-label/nixos";
     fsType = "btrfs";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/B0C5-E9E8";
+    device = "/dev/disk/by-label/boot";
     fsType = "vfat";
     options = ["fmask=0077" "dmask=0077" "defaults"];
   };
 
   swapDevices = [
-    {device = "/dev/disk/by-uuid/1133383e-1c96-4650-a991-db0536bfbed2";}
+    {device = "/dev/disk/by-label/swap";}
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
