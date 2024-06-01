@@ -33,7 +33,6 @@
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_rsa_key" 
       "/etc/ssh/ssh_host_rsa_key.pub"
-      "/etc/shadow"
     ];
   };
 
@@ -70,10 +69,17 @@
   # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+
+  sops.secrets.hateno-pass = {
+    format = "yaml";
+    file = "../../secrets/hateno_pass.yaml";
+    neededForUsers = true;
+  };
+
   users.users.florian = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    initialPassword = "a";
+    hashedPasswordFile = config.sops.secrets.hateno-pass.florian;
     uid = 1000;
     group = "florian";
   };
