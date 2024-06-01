@@ -11,7 +11,7 @@
     cli.nixvim.enable = true;
   };
 
-  myservices.tailscaled.enable = true;
+  myservices.tailscale.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -73,8 +73,11 @@
   users.users.florian = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    initialPassword = "a";   
+    initialPassword = "a";
+    uid = 1000;
+    group = "florian";
   };
+  users.groups.florian.gid = 1000;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
