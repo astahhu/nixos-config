@@ -33,7 +33,7 @@
     # ...
     "org/gnome/shell" = {
       favorite-apps = [
-        "firefox.desktop"
+        "firefox-esr.desktop"
         "code.desktop"
         "org.gnome.Terminal.desktop"
         "dev.alextren.Spot.desktop"
