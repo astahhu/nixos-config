@@ -1,11 +1,16 @@
 { pkgs, ...} : {
+  imports = [
+     ./hardware-configuration.nix
+  ];
   environment.systemPackages = [
     pkgs.btrfs-progs
   ];
 
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.networkmanager.enable = true;
-  networking.wireless.enable = false;
   myprograms.cli = {
     better-tools.enable = true;
     nixvim.enable = true;
@@ -17,13 +22,14 @@
         device = "/dev/null";
 	type = "disk";
 	content = {
+
 	  type = "gpt";
 	  partitions = {
 	    MBR = {
-	      type = "EF02";
-	      size = "1M";
-	      priority = 1;
-	    };
+              type = "EF02"; # for grub MBR
+              size = "1M";
+              priority = 1; # Needs to be first partition
+            };
 	    ESP = {
 	      type = "EF00";
 	      size = "500M";
@@ -38,10 +44,7 @@
 	    };
 	    luks = {
               size = "100%";
-              content = {
-                type = "luks";
-                name = "crypted2";
-		extraOpenArgs = [ "--allow-discards" ];
+		
 		content = {
                   type = "btrfs";
                   extraArgs = [ "-f" ];
@@ -57,12 +60,11 @@
                     };
                     "/swap" = {
                       mountpoint = "/.swapvol";
-                      swap.swapfile.size = "20M";
+                      swap.swapfile.size = "1G";
                     };
                   };
                 };
               };
-	    };
 	  };
 	};
       };

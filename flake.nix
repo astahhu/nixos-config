@@ -17,10 +17,9 @@
     flake-utils.url = "github:numtide/flake-utils";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-    impermanence = {
-      url = "github:nix-community/impermanence";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    impermanence.url = "github:nix-community/impermanence";
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -67,6 +66,8 @@
     nixosConfigurations.stick = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs; };
       modules = [
+	inputs.disko.nixosModules.disko
+        inputs.home-manager.nixosModules.home-manager
 	./hosts/stick/configuration.nix
 	./modules/modules.nix
       ];
