@@ -29,6 +29,9 @@
 	};
 	name = "FiraCode Nerd Font Mono";
       };
+
+      cursor.package = pkgs.banana-cursor;
+      cursor.name = "Banana";
     };
   };
 }
