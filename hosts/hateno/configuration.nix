@@ -12,7 +12,7 @@
   };
 
   jamesofscout.impermanence.enable = true;
-  jamesofscout.impermanence.default_path = "/fast_persistent";
+  jamesofscout.impermanence.defaultPath = "/fast_persistent";
 
   myservices.tailscale.enable = true;
 
@@ -30,16 +30,16 @@
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
 
-  sops.secrets.hateno-pass = {
+  sops.secrets.florian-pass = {
     format = "yaml"; 
-    path = "../../secrets/hateno_pass.yaml";
+    sopsFile = ../../secrets/florian.yaml;
     neededForUsers = true;
   };
 
   users.users.florian = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    hashedPasswordFile = config.sops.secrets.hateno-pass.florian;
+    hashedPasswordFile = config.sops.secrets.florian-pass.path;
     uid = 1000;
     group = "florian";
   };
