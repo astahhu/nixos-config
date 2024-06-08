@@ -24,7 +24,8 @@
 	# Color Profiles for Screens, Printers etc.
 	{ directory = "/var/lib/colord"; user = "colord"; group = "colord"; mode = "u=rwx,g=rx,o="; }
 	(lib.mkIf config.jamesofscout.impermanence.persistentFullHome "/home")
-	(lib.mkIf config.networking.networkmanager.enable "/var/lib/NetworkManager")
+	(lib.mkIf config.networking.networkmanager.enable "/etc/NetworkManager/system-connections")
+	(lib.mkIf config.services.printing.enable "/var/lib/cups")
       ];
       files = [
       ];
