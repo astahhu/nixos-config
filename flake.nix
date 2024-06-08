@@ -30,7 +30,7 @@
     nixosConfigurations.Kakariko = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./configuration.nix
+        ./hosts/kakariko/configuration.nix
         ./hosts/kakariko/hardware-configuration.nix
         ./hosts/kakariko/boot.nix
         inputs.home-manager.nixosModules.home-manager
@@ -41,7 +41,6 @@
     nixosConfigurations.Hateno = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        inputs.impermanence.nixosModules.impermanence
 	inputs.home-manager.nixosModules.home-manager
 	./hosts/hateno/configuration.nix
 	./modules/modules.nix

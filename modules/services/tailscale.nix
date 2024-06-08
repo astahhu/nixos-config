@@ -39,12 +39,12 @@
       serviceConfig.Type = "oneshot";
 
       # have the job run this shell script
-      script = with pkgs; ''
+      script = ''
         # wait for tailscaled to settle
         sleep 2
 
         # otherwise authenticate with tailscale
-        ${tailscale}/bin/tailscale up --authkey file:${config.sops.secrets.tailscale-auth.path} --accept-routes --operator=florian
+        ${pkgs.tailscale}/bin/tailscale up --authkey file:${config.sops.secrets.tailscale-auth.path} --accept-routes --operator=florian
       '';
     };
   };

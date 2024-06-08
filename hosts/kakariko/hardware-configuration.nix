@@ -24,12 +24,60 @@
     ];
   };
 
+  boot.initrd.systemd.services.cleanRoot = {
+    description = "Clean Root Directory and Backup current Root";
+    wantedBy = [
+      "initrd.target"
+    ];
+    after = [
+      #LUKS Decryption
+      "systemd-cryptsetup@cryptroot.service"
+    ];
+    before = [
+      "sysroot.mount"
+    ];
+    unitConfig.DefaultDependencies = "no";
+    serviceConfig.Type = "oneshot";
+    script = ''
+      # Scan for new LVM file systems
+      vgscan
+      vgchange -ay
+
+      # Backup previous root
+      mkdir /btrfs_tmp
+      mount /dev/disk/by-label/nixos /btrfs_tmp
+      if [[ -e /btrfs_tmp/root ]]; then
+	  mkdir -p /btrfs_tmp/old_roots
+	  timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
+	  mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+      fi
+
+      delete_subvolume_recursively() {
+	  IFS=$'\n'
+	  for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+	      delete_subvolume_recursively "/btrfs_tmp/$i"
+	  done
+	  btrfs subvolume delete "$1"
+      }
+
+      # Delete root older than 30 days
+      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+	  delete_subvolume_recursively "$i"
+      done
+
+      btrfs subvolume create /btrfs_tmp/root
+      umount /btrfs_tmp
+    '';
+  };
+
+
   fileSystems."/nix" = {
     device = "/dev/disk/by-label/nixos";
     fsType = "btrfs";
     options = [
       "subvol=nix"
     ];
+    neededForBoot = true;
   };
 
   fileSystems."/btrfs-root" = {
@@ -41,6 +89,13 @@
     device = "/dev/disk/by-label/boot";
     fsType = "vfat";
     options = ["fmask=0077" "dmask=0077" "defaults"];
+  };
+
+  fileSystems."/persistent" = {
+    device = "/dev/disk/by-label/nixos";
+    fsType = "btrfs";
+    options = [ "subvol=persistent" ];
+    neededForBoot = true;
   };
 
   swapDevices = [

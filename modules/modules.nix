@@ -8,6 +8,7 @@
     ./desktop/programs.nix
     ./services/tailscale.nix
     ./stylix.nix
+    ./impermanence.nix
   ];
 
   myprograms.stylix.enable = lib.mkDefault true;

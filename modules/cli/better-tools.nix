@@ -54,6 +54,14 @@
       enable = true;
       enableFishIntegration = true;
     };
+
+    nix.registry = {
+      nixpkgs.to = {
+	type = "path";
+	path = pkgs.path;
+      };
+    };
+
     programs.nix-index-database.comma.enable = true;
 
     programs.starship.enable = true;
