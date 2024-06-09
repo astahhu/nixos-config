@@ -9,6 +9,7 @@
     ./services/tailscale.nix
     ./stylix.nix
     ./impermanence.nix
+    ./yubikey-gpg.nix
   ];
 
   myprograms.stylix.enable = lib.mkDefault true;

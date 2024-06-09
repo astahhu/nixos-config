@@ -10,6 +10,8 @@
     ./modules/modules.nix
   ];
 
+  jamesofscout.yubikey-gpg.enable = true;
+
   myservices = {
     tailscale.enable = true;
   };
@@ -46,8 +48,6 @@
   hardware.bluetooth.enable = true;
   programs.nano.enable = false;
 
-  # Yubikey
-  services.pcscd.enable = true;
   services.blueman.enable = true;
 
   # Networking
@@ -94,12 +94,7 @@
   environment.systemPackages = with pkgs; [
     wget
     sox
-    home-manager
     docker-compose
-    gnupg
-    opensc
-    gnupg-pkcs11-scd
-    pinentry-curses
     streamdeck-ui
     solaar
   ];
@@ -109,19 +104,6 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    pinentryPackage = pkgs.pinentry-curses;
-    enableSSHSupport = true;
-  };
-  ## Fix for GnuPG and PCSC colnflict
-  home-manager.sharedModules = [
-    {
-      home.file.".gnupg/scdaemon.conf".text = ''
-        disable-ccid
-      '';
-    }
-  ];
 
   # List services that you want to enable:
   services.udev.packages = [pkgs.yubikey-personalization];
