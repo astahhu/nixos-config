@@ -16,6 +16,8 @@
     persistentFullHome = true;
     defaultPath = "/persistent";
   };
+
+  jamesofscout.yubikey-gpg.enable = true;
   myservices = {
     tailscale.enable = true;
   };
@@ -45,8 +47,6 @@
   hardware.bluetooth.enable = true;
   programs.nano.enable = false;
 
-  # Yubikey
-  services.pcscd.enable = true;
   services.blueman.enable = true;
 
   # Networking
@@ -97,33 +97,12 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     sox
-    gnupg
-    opensc
-    gnupg-pkcs11-scd
-    pinentry-curses
     solaar
   ];
 
   programs.java.enable = true;
   programs.java.package = pkgs.jdk21;
   
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    pinentryPackage = pkgs.pinentry-curses;
-    enableSSHSupport = true;
-  };
-  ## Fix for GnuPG and PCSC colnflict
-  home-manager.sharedModules = [
-    {
-      home.file.".gnupg/scdaemon.conf".text = ''
-        disable-ccid
-      '';
-    }
-  ];
-
   # List services that you want to enable:
   services.udev.packages = [pkgs.yubikey-personalization];
   services.udev.extraRules = ''
