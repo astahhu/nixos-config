@@ -31,8 +31,8 @@
     ];
 
     # Use GPG Keys instead of SSH Keys
-    programs.ssh.startAgent = false;
-    environment.shellInit = ''
+    programs.ssh.startAgent = lib.mkIf config.services.openssh.enable false;
+    environment.shellInit = lib.mkIf config.services.openssh.enable ''
       gpg-connect-agent /bye
       export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
       echo UPDATESTARTUPTTY | gpg-connect-agent
