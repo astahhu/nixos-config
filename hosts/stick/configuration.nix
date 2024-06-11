@@ -42,29 +42,29 @@
                 ];
 	      };
 	    };
-	    luks = {
+	    root = {
               size = "100%";
-		
-		content = {
-                  type = "btrfs";
-                  extraArgs = [ "-f" ];
-                  subvolumes = {
-                    "/root" = {
-                      mountpoint = "/";
-                    };
-                    "/home" = {
-                      mountpoint = "/home";
-                    };
-                    "/nix" = {
-                      mountpoint = "/nix";
-                    };
-                    "/swap" = {
-                      mountpoint = "/.swapvol";
-                      swap.swapfile.size = "1G";
-                    };
-                  };
+	      content = {
+                
+	        type = "btrfs";
+		extraArgs = [ "-f" ];
+	      subvolumes = {
+                "/root" = {
+                   mountpoint = "/";
+                };
+                "/home" = {
+                  mountpoint = "/home";
+                };
+                "/nix" = {
+                  mountpoint = "/nix";
+                };
+                "/swap" = {
+                  mountpoint = "/.swapvol";
+                  swap.swapfile.size = "1G";
                 };
               };
+	      };
+            };
 	  };
 	};
       };

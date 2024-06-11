@@ -13,6 +13,7 @@
 
   config = lib.mkIf config.myprograms.stylix.enable {
     stylix = { 
+      enable = true;
       targets.gnome.enable = true;
       
       image = lib.mkDefault (pkgs.fetchurl {
