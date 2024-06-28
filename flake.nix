@@ -31,43 +31,12 @@
     sops-nix,
     ...
   } @ inputs: {
-    nixosConfigurations.Kakariko = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.it-laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        {
-          nix.settings = {
-            substituters = [ "https://cosmic.cachix.org/" ];
-            trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
-	  };
-        }
-        inputs.nixos-cosmic.nixosModules.default
-        ./hosts/kakariko/configuration.nix
-        ./hosts/kakariko/hardware-configuration.nix
-        ./hosts/kakariko/boot.nix
-        inputs.home-manager.nixosModules.home-manager
-      ];
-      specialArgs = {inherit inputs;};
-    };
-
-    nixosConfigurations.Hateno = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-	inputs.home-manager.nixosModules.home-manager
-	./hosts/hateno/configuration.nix
-	./modules/modules.nix
-        ./hosts/hateno/hardware-configuration.nix
-      ];
-      specialArgs = {inherit inputs;};
-    };
-
-    nixosConfigurations.HyruleCity = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [
-        ./configuration.nix
-        ./hosts/hyrule-city/hardware-configuration.nix
-        ./hosts/hyrule-city/nvidia-config.nix
-        ./hosts/hyrule-city/boot.nix
-        ./hosts/hyrule-city/steam.nix
+        ./hosts/it-laptop/configuration.nix
+        ./hosts/it-laptop/hardware-configuration.nix
+        ./hosts/it-laptop/boot.nix
         inputs.home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit inputs;};

@@ -23,14 +23,11 @@
   };
 
   myprograms = {
-    #desktop.gnome.enable = true;
+    desktop.gnome.enable = true;
     desktop.programs.enable = true;
     cli.better-tools.enable = true;
     cli.nixvim.enable = true;
   };
-
-  services.desktopManager.cosmic.enable = true;
-  services.displayManager.cosmic-greeter.enable = true;
 
   services = {
     fprintd.enable = false;
@@ -48,14 +45,11 @@
   nixpkgs.config.allowUnfree = true;
 
   hardware.bluetooth.enable = true;
-  programs.nano.enable = false;
-
-  services.blueman.enable = true;
-
+  programs.nano.enable = true;
   # Networking
+
   networking.firewall.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  services.tailscale.enable = true;
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
