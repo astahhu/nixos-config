@@ -23,11 +23,14 @@
   };
 
   myprograms = {
-    desktop.gnome.enable = true;
+    #desktop.gnome.enable = true;
     desktop.programs.enable = true;
     cli.better-tools.enable = true;
     cli.nixvim.enable = true;
   };
+
+  services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
 
   services = {
     fprintd.enable = false;
@@ -98,6 +101,7 @@
   environment.systemPackages = with pkgs; [
     sox
     solaar
+    wireguard-tools
   ];
 
   programs.java.enable = true;
