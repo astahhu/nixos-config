@@ -11,17 +11,13 @@
     ../../modules/modules.nix
   ];
 
-  jamesofscout.impermanence = {
-    enable = true; 
-    persistentFullHome = true;
-    defaultPath = "/persistent";
-  };
+  #jamesofscout.impermanence = {
+  #  enable = true; 
+  #  persistentFullHome = true;
+  #  defaultPath = "/persistent";
+  #};
 
   jamesofscout.yubikey-gpg.enable = true;
-  myservices = {
-    tailscale.enable = true;
-  };
-
   myprograms = {
     desktop.gnome.enable = true;
     desktop.programs.enable = true;
@@ -72,16 +68,10 @@
   virtualisation.libvirtd.enable = true;
   services.avahi.openFirewall = true;
 
-  sops.secrets.florian-pass = {
-    format = "yaml";
-    sopsFile = ../../secrets/florian.yaml;
-    neededForUsers = true;
-  };
-
   # User Account
   users.users.florian = {
     isNormalUser = true;
-    hashedPasswordFile = config.sops.secrets.florian-pass.path;
+    initialPassword = "password";
     extraGroups = ["wheel" "networkmanager" "uinput" "input" "docker"];
     shell = pkgs.fish;
   };

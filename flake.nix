@@ -1,8 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOs/nixpkgs";
-    hyprland-contrib.url = "github:hyprwm/contrib";
-    hyprland-contrib.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
@@ -20,10 +18,6 @@
     impermanence.url = "github:nix-community/impermanence";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-    nixos-cosmic = {
-      url = "github:lilyinstarlight/nixos-cosmic";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -34,7 +28,9 @@
     nixosConfigurations.it-laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./hosts/it-laptop/configuration.nix
+        inputs.disko.nixosModules.default
+        (import ./hosts/it-laptop/disko.nix { device = "/dev/nvme0n1"; })
+	./hosts/it-laptop/configuration.nix 
         ./hosts/it-laptop/hardware-configuration.nix
         ./hosts/it-laptop/boot.nix
         inputs.home-manager.nixosModules.home-manager
