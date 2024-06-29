@@ -10,8 +10,8 @@
       #inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
+    #sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    #sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
@@ -34,6 +34,15 @@
         ./hosts/it-laptop/hardware-configuration.nix
         ./hosts/it-laptop/boot.nix
         inputs.home-manager.nixosModules.home-manager
+      ];
+      specialArgs = {inherit inputs;};
+    };
+
+    nixosConfigurations.nix-nextcloud = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./hosts/nix-nextcloud/configuration.nix
+	./modules/modules.nix
       ];
       specialArgs = {inherit inputs;};
     };

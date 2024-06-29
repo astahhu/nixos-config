@@ -1,14 +1,11 @@
 keys:
-  - &admin_florian CFAA36038DF83F58F38090E2358EE66F828961B3
-  - &hyrule_city 46ff20f9390ae67c03a2fd465422c3d5974a7622
-  - &kakariko c2f4281fb8b9d67c5cf75401d54d76b30f143460
-  - &hateno 8fb02101da9000d19f9839072a4b97d507c725f0
+  ## Users
+  - &other_yubikey 6CC9DAFA22A1DB345F18A7AD5437D56471EC435B
+  ## Hosts
+  - &nix-nextcloud FE8BEEC49A55525A7ACD7E891A26C149D992F306
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - pgp:
-        - *admin_florian
-        - *hyrule_city
-        - *kakariko 
-        - *hateno
-
+        - *nix-nextcloud
+        - *other_yubikey

@@ -91,12 +91,6 @@
   programs.java.enable = true;
   programs.java.package = pkgs.jdk21;
   
-  # List services that you want to enable:
-  services.udev.packages = [pkgs.yubikey-personalization];
-  services.udev.extraRules = ''
-    KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
-  '';
-
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 

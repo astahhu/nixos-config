@@ -15,6 +15,10 @@
       yubikey-personalization
     ];
 
+    services.udev.extraRules = ''
+      KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
+    '';
+
 
     programs.gnupg.agent = {
       enable = true;
