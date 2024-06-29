@@ -43,6 +43,8 @@
       modules = [
         ./hosts/nix-nextcloud/configuration.nix
 	./modules/modules.nix
+	./users/admin-users.nix
+        inputs.home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit inputs;};
     };

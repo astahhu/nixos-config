@@ -19,7 +19,10 @@
 
   networking.hostName = "nix-nextcloud"; # Define your hostname.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
-  sops.defaultSopsFile = ./secrets/nix-nextcloud.json;
+  sops.defaultSopsFile = ../../secrets/nix-nextcloud.yaml;
+  sops.secrets.nextcloud-admin-pw = {
+    owner = "nextcloud";
+  };
   # services.nextcloud.database.createLocally = true;
   services.nextcloud = {
     enable = true;
@@ -37,7 +40,7 @@
       "pm.start_servers" = "50";
     };
     config = {
-      adminpassFile = config.sops.secrets.nextcloudAdminPw.path;
+      adminpassFile = config.sops.secrets.nextcloud-admin-pw.path;
       dbtype = "pgsql";
       dbhost = "/var/run/postgresql";
       dbuser = "postgres";
