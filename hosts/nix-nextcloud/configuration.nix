@@ -26,7 +26,7 @@
   # services.nextcloud.database.createLocally = true;
   services.nextcloud = {
     enable = true;
-    package = pkgs.nextcloud28;
+    package = pkgs.nextcloud29;
     hostName = "nextcloud.astahhu.de";
     https = true;
     configureRedis = true;
