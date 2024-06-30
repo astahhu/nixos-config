@@ -17,6 +17,11 @@
   # Enable VMWare Guest
   virtualisation.vmware.guest.enable = true;
 
+  # Install Samba to Connect to AD Shares
+  environment.systemPackages = [
+    pkgs.samba
+  ];
+
   networking.hostName = "nix-nextcloud"; # Define your hostname.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
   sops.defaultSopsFile = ../../secrets/nix-nextcloud.yaml;
@@ -28,6 +33,23 @@
     enable = true;
     package = pkgs.nextcloud29;
     hostName = "nextcloud.astahhu.de";
+
+    config = {
+      adminpassFile = config.sops.secrets.nextcloud-admin-pw.path;
+      dbtype = "pgsql";
+      dbhost = "/var/run/postgresql";
+      dbuser = "postgres";
+      dbname = "nextcloud";
+      extraTrustedDomains = [ "https://nix-nextcloud" ];
+    };
+    
+    phpOptions = {
+      "opcache.jit" = "1255";
+      "opcache.revalidate_freq" = "60";
+      "opcache.interned_strings_buffer" = "16";
+      "opcache.jit_buffer_size" = "128M";
+    };
+
     https = true;
     configureRedis = true;
     caching.apcu = true;
@@ -39,20 +61,8 @@
       "pm.min_spare_servers" = "50";
       "pm.start_servers" = "50";
     };
-    config = {
-      adminpassFile = config.sops.secrets.nextcloud-admin-pw.path;
-      dbtype = "pgsql";
-      dbhost = "/var/run/postgresql";
-      dbuser = "postgres";
-      dbname = "nextcloud";
-      extraTrustedDomains = [ "https://nix-nextcloud" ];
-    };
-    phpOptions = {
-      "opcache.jit" = "1255";
-      "opcache.revalidate_freq" = "60";
-      "opcache.interned_strings_buffer" = "16";
-      "opcache.jit_buffer_size" = "128M";
-    };	
+
+    
   };
   
   services.nginx.package = pkgs.nginxMainline;
