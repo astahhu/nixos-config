@@ -49,6 +49,19 @@
       specialArgs = {inherit inputs;};
     };
 
+    nixosConfigurations.nix-wordpress = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        inputs.disko.nixosModules.default
+        (import ./hosts/it-laptop/disko.nix { device = "/dev/sda"; })
+        ./hosts/nix-wordpress/configuration.nix
+	./modules/modules.nix
+	./users/admin-users.nix
+        inputs.home-manager.nixosModules.home-manager
+      ];
+      specialArgs = {inherit inputs;};
+    };
+
     nixosConfigurations.stick = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs; };
       modules = [

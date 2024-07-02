@@ -83,6 +83,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    samba
+    pinta
+    apache-directory-studio
     sox
     solaar
     wireguard-tools

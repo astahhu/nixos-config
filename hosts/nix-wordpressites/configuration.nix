@@ -10,7 +10,7 @@
   ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.grub.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Enable VMWare Guest
@@ -45,7 +45,7 @@
   jamesofscout.impermanence = {
     enable = true; 
     persistentFullHome = false;
-    defaultPath = "/persistent";
+    defaultPath = "/persist";
   };
 
   myprograms = {
@@ -65,13 +65,6 @@
     keyMap = "us";
   };
 
-  # User Account
-  users.users.florian = {
-    isNormalUser = true;
-    extraGroups = ["wheel"];
-    shell = pkgs.fish;
-  };
-  
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 

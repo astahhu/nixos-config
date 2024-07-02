@@ -34,7 +34,7 @@
 	  # ...
 	  "org/gnome/shell" = lib.mkDefault {
 	    favorite-apps = [
-	      (lib.mkIf config.myprograms.desktop.firefox.enable "firefox-esr.desktop")
+	      #(lib.mkIf config.myprograms.desktop.firefox.enable "firefox-esr.desktop")
 	      "org.gnome.Nautilus.desktop"
 	    ];
 	  };
