@@ -14,7 +14,10 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  sops.defaultSopsFile = ../../secrets/nix-wordpress.yaml;
+
   # Enable VMWare Guest
+  virtualisation.vmware.guest.enable = true;
 
   services.wordpress.sites."test.astahhu.de" = {
     plugins = {
@@ -39,7 +42,7 @@
     extraConfig = ''
       $_SERVER['HTTPS']='on';
     '';
-  };
+};
 
   jamesofscout.impermanence = {
     enable = true; 

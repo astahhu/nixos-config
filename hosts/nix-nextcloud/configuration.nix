@@ -41,7 +41,10 @@
       dbhost = "/var/run/postgresql";
       dbuser = "postgres";
       dbname = "nextcloud";
+      
       extraTrustedDomains = [ "https://nix-nextcloud" ];
+      trustedProxies = ["134.99.154.48"];
+
     };
     
     phpOptions = {
