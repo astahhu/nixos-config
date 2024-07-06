@@ -7,14 +7,14 @@
 }: {
   imports = [
     ../../modules/modules.nix
+    ./hardware-configuration.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.grub.enable = true;
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Enable VMWare Guest
-  virtualisation.vmware.guest.enable = true;
 
   services.wordpress.sites."test.astahhu.de" = {
     plugins = {
@@ -22,24 +22,23 @@
       static-mail-sender-configurator;
     };
 
-    extraConfig = ''
-      $_SERVER['HTTPS']='on';
+    database.createLocally = true;
+    database.name = "testastahhude";
 
-      //Enable the Static Mail Sender Configuration
-      if ( !defined('ABSPATH') )
-        define('ABSPATH', dirname(__FILE__) . '/');
-      require_once(ABSPATH . 'wp-settings.php');
-      require_once ABSPATH . 'wp-admin/includes/plugin.php';
-      activate_plugin( 'static-mail-sender-configurator/static-mail-sender-configurator.php' );
-  '';
 
     languages = [ pkgs.wordpressPackages.languages.de_DE ];
     settings = {
+      WP_DEBUG = true;
+      WP_DEBUG_LOG = true;
       WPLANG = "de_DE";
       ## Mail settings
       WP_MAIL_FROM = "noreply@astahhu.de";
       FORCE_SSL_ADMIN = true;
     };
+
+    extraConfig = ''
+      $_SERVER['HTTPS']='on';
+    '';
   };
 
   jamesofscout.impermanence = {
@@ -57,6 +56,7 @@
   # Networking
   networking.firewall.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+  networking.hostName = "nix-wordpress";
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
   # Select internationalisation properties.

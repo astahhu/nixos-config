@@ -11,7 +11,9 @@
         partitions = {
           esp = {
             name = "ESP";
-            size = "500M";
+	    priority = 1;
+	    start = "1M";
+            end = "500M";
             type = "EF00";
             content = {
               type = "filesystem";

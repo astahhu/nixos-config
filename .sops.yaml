@@ -3,9 +3,13 @@ keys:
   - &other_yubikey 6CC9DAFA22A1DB345F18A7AD5437D56471EC435B
   ## Hosts
   - &nix-nextcloud FE8BEEC49A55525A7ACD7E891A26C149D992F306
+  - &nix-wordpress 3d1454917d34d784e1f647af549c6c0cdb6eb39b
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - pgp:
         - *nix-nextcloud
+        - *other_yubikey
+      nix-wordpress:
+        - *nix-wordpress
         - *other_yubikey
