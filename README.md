@@ -1,20 +1,22 @@
-# This is my personal Nix Configuratione
-These are the Hosts:
+# These are NixOs Configuration for AStA Servers
+These are the current Hosts:
 
-- __Kakariko__ - My Laptop
-- __Hyrule City__ - My Desktop
-- __Hateno__ - My Server
+- __nix-nextcloud__ - Nextcloud Instance for AStA
+- __nix-wordpress__ - Worpress Hosts for AStA 
+
+## GOALS for Recovery/Deployment:
+To Recover a Machine from a failed State, only the explicit Persistend Data and the Current Configuration should be Needed. 
+
+All System Upgrades should happpen in these two Steps:
+
+1. Snapshot the Current State by Snapshoting each persistent Directory.
+2. Upgrade the Current System
 
 ## Modules
-I use Modules these are seperated by Desktop and CLI. CLI modules should be enabled on all Systems, while Desktop are only for my Laptop and my Desktop.
 
-## ToDos
 
-- [ ] Finish Nixvim
-- [x] Begin a Readme
+## TODOS:
+Setup Impermanence for all Systems.
 
-```rust
-fn main() {
-  println!("This is great");
-}
-```
+- [ ] nix-wordpress
+- [ ] nix-nextcloud
