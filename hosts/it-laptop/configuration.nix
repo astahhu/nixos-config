@@ -17,6 +17,7 @@
   #  defaultPath = "/persistent";
   #};
 
+  astahhu.development.vm.enable = true;
   jamesofscout.yubikey-gpg.enable = true;
   myprograms = {
     desktop.gnome.enable = true;

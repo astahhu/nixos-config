@@ -44,7 +44,7 @@
     '';
 };
 
-  jamesofscout.impermanence = {
+  astahhu.impermanence = {
     enable = true; 
     persistentFullHome = false;
     defaultPath = "/persist";

@@ -7,6 +7,7 @@
     ./desktop/hyprland.nix
     ./desktop/programs.nix
     ./services/tailscale.nix
+    ./development/vm.nix
     ./stylix.nix
     ./impermanence.nix
     ./yubikey-gpg.nix
