@@ -33,23 +33,24 @@ in {
 
   config = {
     astahhu.traefik.services = lib.attrsets.mapAttrs' (name: value:
-    lib.attrsets.nameValuePair (builtins.replaceStrings ["."] ["-"] ("wp-" + name))
-    {
-      router.rule = "Host(`${name}`) || Host(`www.${name}`)";
-      router.tls.enable = false;
-      servers = [
-	"http://${builtins.replaceStrings ["."] ["-"] ("wp-" + name)}"
-      ];
-    }) config.astahhu.wordpress.sites;
+      lib.attrsets.nameValuePair (builtins.replaceStrings ["."] ["-"] ("wp-" + name))
+      {
+        router.rule = "Host(`${name}`) || Host(`www.${name}`)";
+        router.tls.enable = false;
+        servers = [
+          "http://${builtins.replaceStrings ["."] ["-"] ("wp-" + name)}"
+        ];
+      })
+    config.astahhu.wordpress.sites;
 
     containers = lib.attrsets.mapAttrs' (name: value:
       lib.attrsets.nameValuePair (builtins.replaceStrings ["."] ["-"] ("wp-" + name))
       {
-	autoStart = true;
-	privateNetwork = true;
-	hostAddress = "192.168.100.10";
-        config = { pkgs, ... } : {
-	  networking.firewall.allowedTCPPorts = [ 80 ];
+        autoStart = true;
+        privateNetwork = true;
+        hostAddress = "192.168.100.10";
+        config = {pkgs, ...}: {
+          networking.firewall.allowedTCPPorts = [80];
           services.wordpress.sites."${name}" = {
             plugins = {
               inherit
@@ -75,6 +76,7 @@ in {
             '';
           };
         };
-      }) config.astahhu.wordpress.sites;
+      })
+    config.astahhu.wordpress.sites;
   };
 }

@@ -83,7 +83,7 @@
       default = {};
       description = ''
         A simple setup to configure http loadBalancer services and routers.
-    '';
+      '';
     };
   };
 
@@ -94,19 +94,23 @@
       enable = true;
       dynamicConfigOptions = {
         http = {
-          routers = lib.attrsets.mapAttrs (name: value:
-            lib.mkMerge [{
-              rule = value.router.rule;
-              priority = value.router.priority;
-              middlewares = value.router.middlewares;
-              service = name;
-              entryPoints = value.router.entryPoints;
-            }
-            (lib.mkIf value.router.tls.enable {
-              tls = value.router.tls.options;
-            })]
-	    )
-	    config.astahhu.traefik.services;
+          routers =
+            lib.attrsets.mapAttrs (
+              name: value:
+                lib.mkMerge [
+                  {
+                    rule = value.router.rule;
+                    priority = value.router.priority;
+                    middlewares = value.router.middlewares;
+                    service = name;
+                    entryPoints = value.router.entryPoints;
+                  }
+                  (lib.mkIf value.router.tls.enable {
+                    tls = value.router.tls.options;
+                  })
+                ]
+            )
+            config.astahhu.traefik.services;
           services =
             lib.attrsets.mapAttrs (name: value: {
               loadBalancer = {
