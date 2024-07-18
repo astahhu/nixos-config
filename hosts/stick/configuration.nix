@@ -1,6 +1,6 @@
-{ pkgs, ...} : {
+{pkgs, ...}: {
   imports = [
-     ./hardware-configuration.nix
+    ./hardware-configuration.nix
   ];
   environment.systemPackages = [
     pkgs.btrfs-progs
@@ -20,53 +20,51 @@
     disk = {
       main = {
         device = "/dev/null";
-	type = "disk";
-	content = {
-
-	  type = "gpt";
-	  partitions = {
-	    MBR = {
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            MBR = {
               type = "EF02"; # for grub MBR
               size = "1M";
               priority = 1; # Needs to be first partition
             };
-	    ESP = {
-	      type = "EF00";
-	      size = "500M";
-	      content = {
-	        type = "filesystem";
-		format = "vfat";
-		mountpoint = "/boot";
-		mountOptions = [
+            ESP = {
+              type = "EF00";
+              size = "500M";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot";
+                mountOptions = [
                   "defaults"
                 ];
-	      };
-	    };
-	    root = {
+              };
+            };
+            root = {
               size = "100%";
-	      content = {
-                
-	        type = "btrfs";
-		extraArgs = [ "-f" ];
-	      subvolumes = {
-                "/root" = {
-                   mountpoint = "/";
-                };
-                "/home" = {
-                  mountpoint = "/home";
-                };
-                "/nix" = {
-                  mountpoint = "/nix";
-                };
-                "/swap" = {
-                  mountpoint = "/.swapvol";
-                  swap.swapfile.size = "1G";
+              content = {
+                type = "btrfs";
+                extraArgs = ["-f"];
+                subvolumes = {
+                  "/root" = {
+                    mountpoint = "/";
+                  };
+                  "/home" = {
+                    mountpoint = "/home";
+                  };
+                  "/nix" = {
+                    mountpoint = "/nix";
+                  };
+                  "/swap" = {
+                    mountpoint = "/.swapvol";
+                    swap.swapfile.size = "1G";
+                  };
                 };
               };
-	      };
             };
-	  };
-	};
+          };
+        };
       };
     };
   };

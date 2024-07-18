@@ -12,7 +12,7 @@
   ];
 
   #jamesofscout.impermanence = {
-  #  enable = true; 
+  #  enable = true;
   #  persistentFullHome = true;
   #  defaultPath = "/persistent";
   #};
@@ -94,7 +94,7 @@
 
   programs.java.enable = true;
   programs.java.package = pkgs.jdk21;
-  
+
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 

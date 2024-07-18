@@ -1,5 +1,9 @@
-{ pkgs, config, lib, ... } : {
-
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}: {
   options = {
     myprograms.development.docker.enable = lib.mkEnableOption "Enable Docker and Docker Compose and Stuff";
   };

@@ -1,4 +1,8 @@
-{lib, inputs, ...}: {
+{
+  lib,
+  inputs,
+  ...
+}: {
   imports = [
     inputs.sops-nix.nixosModules.sops
     ./cli/better-tools.nix
@@ -7,6 +11,8 @@
     ./desktop/hyprland.nix
     ./desktop/programs.nix
     ./services/tailscale.nix
+    ./services/wordpress.nix
+    ./services/traefik.nix
     ./development/vm.nix
     ./stylix.nix
     ./impermanence.nix

@@ -26,9 +26,9 @@
 
     home-manager.sharedModules = [
       {
-	home.sessionVariables = {
-	  EDITOR = "nvim";
-	};
+        home.sessionVariables = {
+          EDITOR = "nvim";
+        };
       }
     ];
 
@@ -48,12 +48,12 @@
             };
 
             nixd = {
-	      enable = true;
-	      settings = {
-	        #nixpkgs = "${inputs.nixpkgs}";
-	        formatting.command = [ "nixpkgs-fmt" ];
-	      };
-	    };
+              enable = true;
+              settings = {
+                #nixpkgs = "${inputs.nixpkgs}";
+                formatting.command = ["nixpkgs-fmt"];
+              };
+            };
 
             java-language-server.enable = true;
 
@@ -64,19 +64,19 @@
             ccls.enable = true;
 
             ansiblels.enable = true;
- 
+
             marksman.enable = true;
           };
         };
 
-	dap.enable = true;
-	neotest = {
-	  enable = true;
-	  adapters.rust.enable = true;
-	};
+        dap.enable = true;
+        neotest = {
+          enable = true;
+          adapters.rust.enable = true;
+        };
 
-	telescope.enable = true;
-	markdown-preview.enable = true;
+        telescope.enable = true;
+        markdown-preview.enable = true;
         oil.enable = true;
 
         luasnip.enable = true;
@@ -99,15 +99,15 @@
               "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
             };
 
-	    snippet.expand = ''
-	      function(args)
-		require('luasnip').lsp_expand(args.body)
-	      end
-	    '';
+            snippet.expand = ''
+                   function(args)
+              require('luasnip').lsp_expand(args.body)
+                   end
+            '';
 
             sources = [
               {name = "nvim_lsp";}
-	      {name = "clippy";}
+              {name = "clippy";}
               {name = "path";}
               {name = "buffer";}
               {name = "luasnip";}
@@ -122,14 +122,14 @@
           action = "<cmd>Telescope live_grep<CR>";
           key = "<leader>g";
         }
-	{
-	  action = "<cmd>edit .<CR>";
-	  key = "<leader>o";
-	}
-	{
-	  action = "<cmd>Neotest run<CR>";
-	  key = "<leader>t";
-	}
+        {
+          action = "<cmd>edit .<CR>";
+          key = "<leader>o";
+        }
+        {
+          action = "<cmd>Neotest run<CR>";
+          key = "<leader>t";
+        }
       ];
 
       globals.mapleader = " ";

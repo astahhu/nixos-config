@@ -1,7 +1,4 @@
-{
-  device ? throw "Set this to your disk device, e.g. /dev/sda",
-  ...
-}: {
+{device ? throw "Set this to your disk device, e.g. /dev/sda", ...}: {
   disko.devices = {
     disk.main = {
       inherit device;
@@ -11,8 +8,8 @@
         partitions = {
           esp = {
             name = "ESP";
-	    priority = 1;
-	    start = "1M";
+            priority = 1;
+            start = "1M";
             end = "500M";
             type = "EF00";
             content = {

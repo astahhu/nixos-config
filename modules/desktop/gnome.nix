@@ -18,8 +18,7 @@
     };
     hardware.pulseaudio.enable = false;
 
-
-    environment.gnome.excludePackages = lib.mkIf  (!config.myprograms.desktop.firefox.enable) (with pkgs; [
+    environment.gnome.excludePackages = lib.mkIf (!config.myprograms.desktop.firefox.enable) (with pkgs; [
       epiphany
     ]);
 
@@ -30,19 +29,16 @@
 
     home-manager.sharedModules = [
       {
-	dconf.settings = {
-	  # ...
-	  "org/gnome/shell" = lib.mkDefault {
-	    favorite-apps = [
-	      #(lib.mkIf config.myprograms.desktop.firefox.enable "firefox-esr.desktop")
-	      "org.gnome.Nautilus.desktop"
-	    ];
-	  };
-	};
+        dconf.settings = {
+          # ...
+          "org/gnome/shell" = lib.mkDefault {
+            favorite-apps = [
+              #(lib.mkIf config.myprograms.desktop.firefox.enable "firefox-esr.desktop")
+              "org.gnome.Nautilus.desktop"
+            ];
+          };
+        };
       }
-
     ];
-
-
   };
 }
