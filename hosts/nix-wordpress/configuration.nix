@@ -23,6 +23,7 @@
   };
 
   astahhu.traefik.enable = true;
+  astahhu.traefik.letsencryptMail = "it@asta.hhu.de";
   astahhu.wordpress.sites."test.astahhu.de" = {};
 
   myprograms = {

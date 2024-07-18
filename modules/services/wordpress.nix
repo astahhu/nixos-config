@@ -48,8 +48,10 @@ in {
       {
         autoStart = true;
         privateNetwork = true;
-        hostAddress = "192.168.100.10";
-        config = {pkgs, ...}: {
+
+	hostAddress = "192.168.100.10";
+        localAddress = "192.168.100.11";
+	config = {pkgs, ...}: {
           networking.firewall.allowedTCPPorts = [80];
           services.wordpress.sites."${name}" = {
             plugins = {
