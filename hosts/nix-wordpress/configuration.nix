@@ -1,10 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ../../modules/modules.nix
     ./hardware-configuration.nix
@@ -19,36 +16,14 @@
   # Enable VMWare Guest
   virtualisation.vmware.guest.enable = true;
 
-  services.wordpress.sites."test.astahhu.de" = {
-    plugins = {
-      inherit (pkgs.wordpressPackages.plugins)
-      static-mail-sender-configurator;
-    };
-
-    database.createLocally = true;
-    database.name = "testastahhude";
-
-
-    languages = [ pkgs.wordpressPackages.languages.de_DE ];
-    settings = {
-      WP_DEBUG = true;
-      WP_DEBUG_LOG = true;
-      WPLANG = "de_DE";
-      ## Mail settings
-      WP_MAIL_FROM = "noreply@astahhu.de";
-      FORCE_SSL_ADMIN = true;
-    };
-
-    extraConfig = ''
-      $_SERVER['HTTPS']='on';
-    '';
-};
-
   astahhu.impermanence = {
-    enable = true; 
+    enable = true;
     persistentFullHome = false;
     defaultPath = "/persist";
   };
+
+  astahhu.traefik.enable = true;
+  astahhu.wordpress.sites."test.astahhu.de" = {};
 
   myprograms = {
     cli.better-tools.enable = true;

@@ -29,8 +29,8 @@
       system = "x86_64-linux";
       modules = [
         inputs.disko.nixosModules.default
-        (import ./hosts/it-laptop/disko.nix { device = "/dev/nvme0n1"; })
-	./hosts/it-laptop/configuration.nix 
+        (import ./hosts/it-laptop/disko.nix {device = "/dev/nvme0n1";})
+        ./hosts/it-laptop/configuration.nix
         ./hosts/it-laptop/hardware-configuration.nix
         ./hosts/it-laptop/boot.nix
         inputs.home-manager.nixosModules.home-manager
@@ -42,8 +42,8 @@
       system = "x86_64-linux";
       modules = [
         ./hosts/nix-nextcloud/configuration.nix
-	./modules/modules.nix
-	./users/admin-users.nix
+        ./modules/modules.nix
+        ./users/admin-users.nix
         inputs.home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit inputs;};
@@ -53,22 +53,22 @@
       system = "x86_64-linux";
       modules = [
         inputs.disko.nixosModules.default
-        (import ./hosts/it-laptop/disko.nix { device = "/dev/sda"; })
+        (import ./hosts/it-laptop/disko.nix {device = "/dev/sda";})
         ./hosts/nix-wordpress/configuration.nix
-	./modules/modules.nix
-	./users/admin-users.nix
+        ./modules/modules.nix
+        ./users/admin-users.nix
         inputs.home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit inputs;};
     };
 
     nixosConfigurations.stick = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; };
+      specialArgs = {inherit inputs;};
       modules = [
-	inputs.disko.nixosModules.disko
+        inputs.disko.nixosModules.disko
         inputs.home-manager.nixosModules.home-manager
-	./hosts/stick/configuration.nix
-	./modules/modules.nix
+        ./hosts/stick/configuration.nix
+        ./modules/modules.nix
       ];
     };
 
