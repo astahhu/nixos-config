@@ -13,9 +13,9 @@
     options = {
       baseDir = lib.mkOption {
         type = lib.types.str;
-        default = "";
+        default = "wordpress/${builtins.replaceStrings ["."] ["-"] name}";
         description = ''
-          The Directory where any Persistend Data for the Wordpress Container is Stored
+          The Directory where any Persistent Data for the Wordpress Container is Stored
         '';
       };
     };
@@ -32,6 +32,19 @@ in {
   };
 
   config = {
+    astahhu.impermanence.persistentSubvolumes =
+      lib.attrsets.mapAttrs' (name: value: {
+        name = value.baseDir;
+        value = {
+          mode = "0755";
+	  directories.wordpress = {
+	    mode = "0755";
+	    group = "root";
+	    owner = "root";
+	  };
+        };
+      })
+      config.astahhu.wordpress.sites;
     astahhu.traefik.services = lib.attrsets.mapAttrs' (name: value:
       lib.attrsets.nameValuePair (builtins.replaceStrings ["."] ["-"] ("wp-" + name))
       {
@@ -47,11 +60,29 @@ in {
       lib.attrsets.nameValuePair (builtins.replaceStrings ["."] ["-"] ("wp-" + name))
       {
         autoStart = true;
+        bindMounts.persistent = {
+          hostPath = "${config.astahhu.impermanence.defaultPath}/${value.baseDir}";
+          mountPoint = "/persist";
+	  isReadOnly = false;
+        };
+        bindMounts.wordpress = {
+          hostPath = "${config.astahhu.impermanence.defaultPath}/${value.baseDir}/wordpress";
+          mountPoint = "/var/lib/wordpress";
+	  isReadOnly = false;
+        };
         privateNetwork = true;
-
-	hostAddress = "192.168.100.10";
+        ephemeral = true;
+        hostAddress = "192.168.100.10";
         localAddress = "192.168.100.11";
-	config = {pkgs, ...}: {
+
+        config = {pkgs, ...}: {
+          systemd.services.symlink-dir = {
+            enable = true;
+            before = ["wordpress-init-${name}.service"];
+            wantedBy = ["wordpress-init-${name}.service"];
+            description = "Symlinks persitent Dir to wordpress";
+            serviceConfig.Type = "oneshot";
+          };
           networking.firewall.allowedTCPPorts = [80];
           services.wordpress.sites."${name}" = {
             plugins = {
@@ -78,7 +109,6 @@ in {
             '';
           };
         };
-      })
-    config.astahhu.wordpress.sites;
+      }) config.astahhu.wordpress.sites;
   };
 }

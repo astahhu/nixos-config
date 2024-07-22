@@ -14,11 +14,80 @@
     persistentFullHome = lib.mkEnableOption "Enable if simply all of Home should be Persistent";
     defaultPath = lib.mkOption {
       type = lib.types.str;
-      description = "The Path where all default System Files are Stored";
+      default = "/persist";
+      description = "The root persistent subvolume, all other persistent files MUST be mounted beneath it";
+    };
+
+    persistentSubvolumes = lib.mkOption {
+      type = lib.types.attrsOf (lib.types.submodule ({...}: {
+        options = {
+          owner = lib.mkOption {
+            type = lib.types.str;
+            default = "root";
+            description = ''
+              The owner of the subvolume
+            '';
+          };
+          group = lib.mkOption {
+            type = lib.types.str;
+            default = "root";
+            description = ''
+              The group of the subvolume
+            '';
+          };
+          mode = lib.mkOption {
+            type = lib.types.str;
+            default = "0700";
+            description = "The mode of the subvolume, default is 0700";
+          };
+          backup = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Whether this subvolume should be backuped, default is true";
+          };
+	  directories = lib.mkOption {
+	    type = lib.types.attrsOf( lib.types.submodule ({...} : {
+	      options = {
+	      owner = lib.mkOption {
+	        type = lib.types.str;
+		default = "root";
+	      };
+	      group = lib.mkOption {
+	        type = lib.types.str;
+		default = "root";
+	      };
+	      mode = lib.mkOption {
+	        type = lib.types.str;
+	        default = "0700";
+	      };
+	      };
+	    }));
+	    default = {};
+	    description = ''
+	      Directories that should be created per default inside the subvolume
+	    '';
+	  };
+        };
+      }));
+      default = "";
+      description = ''
+        Subvolumes that should be persistent.
+      '';
     };
   };
 
   config = lib.mkIf config.astahhu.impermanence.enable {
+    systemd.tmpfiles.rules = builtins.concatLists (lib.attrsets.mapAttrsToList (
+      name: value: 
+      [
+	"v ${config.astahhu.impermanence.defaultPath}/${name} ${value.mode} ${value.owner} ${value.group} -"
+      ] 
+      ++ lib.attrsets.mapAttrsToList (n: v:
+        "d ${config.astahhu.impermanence.defaultPath}/${name}/${n} ${v.mode} ${v.owner} ${v.group} -"
+      ) value.directories
+    )
+    config.astahhu.impermanence.persistentSubvolumes);
+
     environment.persistence."${config.astahhu.impermanence.defaultPath}/system" = {
       hideMounts = true;
       directories = [
