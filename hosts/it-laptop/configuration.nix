@@ -9,6 +9,7 @@
   imports = [
     ../../fonts.nix
     ../../modules/modules.nix
+    ../../users/admin-users.nix
   ];
 
   #jamesofscout.impermanence = {
@@ -69,18 +70,10 @@
   virtualisation.libvirtd.enable = true;
   services.avahi.openFirewall = true;
 
-  # User Account
-  users.users.florian = {
-    isNormalUser = true;
-    initialPassword = "password";
-    extraGroups = ["wheel" "networkmanager" "uinput" "input" "docker"];
-    shell = pkgs.fish;
-  };
-
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.florian = import ../../home/florian.nix;
-
+  astahhu.admin-users.florian.setPassword = false;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -99,8 +92,8 @@
   services.openssh.enable = true;
   security.pam.sshAgentAuth.enable = true;
   programs.ssh.extraConfig = ''
-  Host *
-    ForwardAgent = yes
+    Host *
+      ForwardAgent = yes
   '';
 
   # This value determines the NixOS release from which the default
