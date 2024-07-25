@@ -66,7 +66,7 @@
       modules = [
         inputs.disko.nixosModules.default
         (import ./modules/common/disko.nix {device = "/dev/sda";})
-        ./hosts/nix-samba-fs/configuration.nix
+        ./hosts/nix-samba/configuration.nix
         ./modules/modules.nix
         ./users/admin-users.nix
         inputs.home-manager.nixosModules.home-manager
