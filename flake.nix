@@ -64,6 +64,7 @@
     nixosConfigurations.nix-samba-fs = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        inputs.nix-tun.nixosModules.nix-tun
         inputs.disko.nixosModules.default
         (import ./modules/common/disko.nix {device = "/dev/sda";})
         ./hosts/nix-samba/configuration.nix
