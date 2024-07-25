@@ -65,7 +65,7 @@
       system = "x86_64-linux";
       modules = [
         inputs.disko.nixosModules.default
-        (import ./hosts/it-laptop/disko.nix {device = "/dev/sda";})
+        (import ./modules/common/disko.nix {device = "/dev/sda";})
         ./hosts/nix-samba-fs/configuration.nix
         ./modules/modules.nix
         ./users/admin-users.nix
