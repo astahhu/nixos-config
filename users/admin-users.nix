@@ -45,8 +45,6 @@
         hashedPasswordFile = lib.mkIf value.setPassword config.sops.secrets.florian-pass.path;
         extraGroups = [
           "wheel"
-          "input"
-          "uinput"
           (lib.mkIf config.virtualisation.docker.enable "docker")
           (lib.mkIf config.networking.networkmanager.enable "networkmanager")
           (lib.mkIf config.astahhu.development.vm.enable "libvirtd")

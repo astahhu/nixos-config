@@ -37,10 +37,17 @@ in {
         name = value.baseDir;
         value = {
           mode = "0755";
-	  directories.wordpress = {
-	    mode = "0755";
-	    group = "root";
-	    owner = "root";
+	  directories = {
+	    wordpress = {
+	      mode = "0755";
+	      group = "root";
+	      owner = "root";
+	    };
+	    mysql = {
+	      mode = "0700";
+	      owner = builtins.toString config.containers."${builtins.replaceStrings ["."] ["-"] ("wp-" + name)}".config.users.users.mysql.uid;
+	      group = builtins.toString config.containers."${builtins.replaceStrings ["."] ["-"] ("wp-" + name)}".config.users.groups.mysql.gid;
+	    };
 	  };
         };
       })
@@ -70,19 +77,17 @@ in {
           mountPoint = "/var/lib/wordpress";
 	  isReadOnly = false;
         };
+        bindMounts.mysql = {
+          hostPath = "${config.astahhu.impermanence.defaultPath}/${value.baseDir}/mysql";
+          mountPoint = "/var/lib/mysql";
+	  isReadOnly = false;
+        };
         privateNetwork = true;
         ephemeral = true;
         hostAddress = "192.168.100.10";
         localAddress = "192.168.100.11";
 
         config = {pkgs, ...}: {
-          systemd.services.symlink-dir = {
-            enable = true;
-            before = ["wordpress-init-${name}.service"];
-            wantedBy = ["wordpress-init-${name}.service"];
-            description = "Symlinks persitent Dir to wordpress";
-            serviceConfig.Type = "oneshot";
-          };
           networking.firewall.allowedTCPPorts = [80];
           services.wordpress.sites."${name}" = {
             plugins = {

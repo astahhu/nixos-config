@@ -10,8 +10,7 @@
       #inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix.url = "github:Mic92/sops-nix";
-    #sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    #sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
+    nix-tun.url = "github:nix-tun/nixos-modules";
     flake-utils.url = "github:numtide/flake-utils";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
@@ -62,6 +61,19 @@
       specialArgs = {inherit inputs;};
     };
 
+    nixosConfigurations.nix-samba-fs = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        inputs.disko.nixosModules.default
+        (import ./hosts/it-laptop/disko.nix {device = "/dev/sda";})
+        ./hosts/nix-samba-fs/configuration.nix
+        ./modules/modules.nix
+        ./users/admin-users.nix
+        inputs.home-manager.nixosModules.home-manager
+      ];
+      specialArgs = {inherit inputs;};
+    };
+    
     nixosConfigurations.stick = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs;};
       modules = [
