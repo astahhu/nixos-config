@@ -54,10 +54,10 @@
                   mountpoint = "/";
                 };
 
-                #"/persist" = {
-                #  mountOptions = ["subvol=persist" "noatime"];
-                #  mountpoint = "/persist";
-                #};
+                "/persist" = {
+                  mountOptions = ["subvol=persist" "noatime"];
+                  mountpoint = "/persist";
+                };
 
                 "/nix" = {
                   mountpoint = "/nix";
