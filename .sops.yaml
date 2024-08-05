@@ -1,17 +1,27 @@
 keys:
   ## Users
-  - &other_yubikey 6CC9DAFA22A1DB345F18A7AD5437D56471EC435B
+  - &florian-yubikey CFAA36038DF83F58F38090E2358EE66F828961B3
+  - &florian_other_yubikey 6CC9DAFA22A1DB345F18A7AD5437D56471EC435B
   ## Hosts
   - &nix-nextcloud FE8BEEC49A55525A7ACD7E891A26C149D992F306
   - &nix-wordpress ae6f1f5c96be2434407369059eb3799f71bc7edf
+  - &it-laptop bc4411e216f4f87c945dd8f7c7df1be1dcba335e
 creation_rules:
   - path_regex: secrets/nix-nextcloud.yaml
     key_groups:
       - pgp:
         - *nix-nextcloud
-        - *other_yubikey
+        - *florian_other_yubikey
+        - *florian-yubikey
   - path_regex: secrets/nix-wordpress.yaml
     key_groups:
       - pgp:
         - *nix-wordpress
-        - *other_yubikey
+        - *florian_other_yubikey
+        - *florian-yubikey
+  - path_regex: secrets/it-laptop.yaml
+    key_groups:
+      - pgp:
+        - *it-laptop
+        - *florian_other_yubikey
+        - *florian-yubikey
