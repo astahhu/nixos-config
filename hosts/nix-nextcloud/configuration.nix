@@ -10,6 +10,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../../users/admin-users.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
