@@ -2,8 +2,11 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }: let
+  wp4nix = pkgs.callPackage "${inputs.wp4nix}" {};
+
   instanceSettings = {
     lib,
     name,
@@ -32,7 +35,12 @@ in {
   };
 
   config = {
-    astahhu.impermanence.persistentSubvolumes =
+
+    nixpkgs.overlays = [(self: super: {
+      wordpressPackages = wp4nix;
+    })];
+
+    nix-tun.storage.persist.subvolumes =
       lib.attrsets.mapAttrs' (name: value: {
         name = value.baseDir;
         value = {
@@ -68,17 +76,17 @@ in {
       {
         autoStart = true;
         bindMounts.persistent = {
-          hostPath = "${config.astahhu.impermanence.defaultPath}/${value.baseDir}";
+          hostPath = "${config.nix-tun.storage.persist.path}/${value.baseDir}";
           mountPoint = "/persist";
 	  isReadOnly = false;
         };
         bindMounts.wordpress = {
-          hostPath = "${config.astahhu.impermanence.defaultPath}/${value.baseDir}/wordpress";
+          hostPath = "${config.nix-tun.storage.persist.path}/${value.baseDir}/wordpress";
           mountPoint = "/var/lib/wordpress";
 	  isReadOnly = false;
         };
         bindMounts.mysql = {
-          hostPath = "${config.astahhu.impermanence.defaultPath}/${value.baseDir}/mysql";
+          hostPath = "${config.nix-tun.storage.persist.path}/${value.baseDir}/mysql";
           mountPoint = "/var/lib/mysql";
 	  isReadOnly = false;
         };
@@ -88,13 +96,20 @@ in {
         localAddress = "192.168.100.11";
 
         config = {pkgs, ...}: {
+      
+	  nixpkgs.overlays = [(self: super: {
+	    wordpressPackages = wp4nix;
+	  })];
+
           networking.firewall.allowedTCPPorts = [80];
           services.wordpress.sites."${name}" = {
+	    package = pkgs.wordpress6_4;
             plugins = {
               inherit
                 (pkgs.wordpressPackages.plugins)
                 static-mail-sender-configurator
-                ;
+		authorizer
+		;
             };
 
             languages = [

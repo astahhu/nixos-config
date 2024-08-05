@@ -12,14 +12,28 @@
     ../../users/admin-users.nix
   ];
 
-  #jamesofscout.impermanence = {
-  #  enable = true;
-  #  persistentFullHome = true;
-  #  defaultPath = "/persistent";
-  #};
-
   astahhu.development.vm.enable = true;
-  jamesofscout.yubikey-gpg.enable = true;
+  nix-tun.yubikey-gpg.enable = true;
+  nix-tun.services.matrix.enable = true;
+  nix-tun.services.matrix.servername = "localhost";
+  nix-tun.storage.persist = {
+    enable = true;
+    subvolumes = {
+      "home" = {
+        bindMountDirectories = true;
+        directories = {
+          "/home/florian" = {
+            owner = "florian";
+            group = "florian";
+            mode = "0700";
+          };
+        };
+      };
+    };
+  };
+  
+  sops.defaultSopsFile = ../../secrets/it-laptop.yaml;
+
   myprograms = {
     desktop.gnome.enable = true;
     desktop.programs.enable = true;

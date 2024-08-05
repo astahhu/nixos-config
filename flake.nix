@@ -7,10 +7,13 @@
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     nixvim = {
       url = "github:nix-community/nixvim";
-      #inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix.url = "github:Mic92/sops-nix";
     nix-tun.url = "github:nix-tun/nixos-modules";
+    wp4nix = {
+      url = "github:helsinki-systems/wp4nix";
+      flake = false;
+    };
     flake-utils.url = "github:numtide/flake-utils";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
@@ -28,6 +31,7 @@
       system = "x86_64-linux";
       modules = [
         inputs.disko.nixosModules.default
+        inputs.nix-tun.nixosModules.nix-tun
         (import ./hosts/it-laptop/disko.nix {device = "/dev/nvme0n1";})
         ./hosts/it-laptop/configuration.nix
         ./hosts/it-laptop/hardware-configuration.nix
@@ -43,6 +47,7 @@
         ./hosts/nix-nextcloud/configuration.nix
         ./modules/modules.nix
         ./users/admin-users.nix
+        inputs.nix-tun.nixosModules.nix-tun
         inputs.home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit inputs;};
@@ -56,6 +61,7 @@
         ./hosts/nix-wordpress/configuration.nix
         ./modules/modules.nix
         ./users/admin-users.nix
+        inputs.nix-tun.nixosModules.nix-tun
         inputs.home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit inputs;};
@@ -80,6 +86,7 @@
       modules = [
         inputs.disko.nixosModules.disko
         inputs.home-manager.nixosModules.home-manager
+        inputs.nix-tun.nixosModules.nix-tun
         ./hosts/stick/configuration.nix
         ./modules/modules.nix
       ];

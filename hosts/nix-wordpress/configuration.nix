@@ -16,11 +16,7 @@
   # Enable VMWare Guest
   virtualisation.vmware.guest.enable = true;
 
-  astahhu.impermanence = {
-    enable = true;
-    persistentFullHome = false;
-    defaultPath = "/persist";
-  };
+  nix-tun.storage.persist.enable = true;
 
   astahhu.traefik.enable = true;
   astahhu.traefik.letsencryptMail = "it@asta.hhu.de";

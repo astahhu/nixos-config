@@ -72,7 +72,7 @@
 
   services.nginx.package = pkgs.nginxMainline;
   security.acme.acceptTerms = true;
-  security.acme.email = "astait@hhu.de";
+  security.acme.defaults.email = "astait@hhu.de";
   services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
     forceSSL = true;
     enableACME = true;

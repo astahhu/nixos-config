@@ -13,10 +13,9 @@
     ./services/tailscale.nix
     ./services/wordpress.nix
     ./services/traefik.nix
+    ./services/samba-share.nix
     ./development/vm.nix
     ./stylix.nix
-    ./impermanence.nix
-    ./yubikey-gpg.nix
   ];
 
   myprograms.stylix.enable = lib.mkDefault true;
