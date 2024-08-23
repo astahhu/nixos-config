@@ -30,13 +30,10 @@
     nixosConfigurations.it-laptop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        inputs.disko.nixosModules.default
-        inputs.nix-tun.nixosModules.nix-tun
         (import ./hosts/it-laptop/disko.nix {device = "/dev/nvme0n1";})
         ./hosts/it-laptop/configuration.nix
         ./hosts/it-laptop/hardware-configuration.nix
         ./hosts/it-laptop/boot.nix
-        inputs.home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit inputs;};
     };
@@ -47,8 +44,6 @@
         ./hosts/nix-nextcloud/configuration.nix
         ./modules/modules.nix
         ./users/admin-users.nix
-        inputs.nix-tun.nixosModules.nix-tun
-        inputs.home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit inputs;};
     };
@@ -56,13 +51,10 @@
     nixosConfigurations.nix-wordpress = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        inputs.disko.nixosModules.default
-        (import ./hosts/it-laptop/disko.nix {device = "/dev/sda";})
+        (import ./modules/common/disko.nix {device = "/dev/sda";})
         ./hosts/nix-wordpress/configuration.nix
         ./modules/modules.nix
         ./users/admin-users.nix
-        inputs.nix-tun.nixosModules.nix-tun
-        inputs.home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit inputs;};
     };
@@ -70,13 +62,10 @@
     nixosConfigurations.nix-samba-fs = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        inputs.nix-tun.nixosModules.nix-tun
-        inputs.disko.nixosModules.default
         (import ./modules/common/disko.nix {device = "/dev/sda";})
         ./hosts/nix-samba-fs/configuration.nix
         ./modules/modules.nix
         ./users/admin-users.nix
-        inputs.home-manager.nixosModules.home-manager
       ];
       specialArgs = {inherit inputs;};
     };
@@ -84,9 +73,6 @@
     nixosConfigurations.stick = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs;};
       modules = [
-        inputs.disko.nixosModules.disko
-        inputs.home-manager.nixosModules.home-manager
-        inputs.nix-tun.nixosModules.nix-tun
         ./hosts/stick/configuration.nix
         ./modules/modules.nix
       ];

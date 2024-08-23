@@ -4,6 +4,9 @@
   ...
 }: {
   imports = [
+    inputs.disko.nixosModules.default
+    inputs.nix-tun.nixosModules.nix-tun
+    inputs.home-manager.nixosModules.home-manager
     inputs.sops-nix.nixosModules.sops
     ./cli/better-tools.nix
     ./cli/nixvim.nix
