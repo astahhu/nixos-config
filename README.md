@@ -18,7 +18,8 @@ All System Upgrades should happpen in these two Steps:
 To deploy a new Server, do the following Steps:
 
 1. Copy the contents of hosts/sample-server folder, for a new host
-2. Add the following lines to `flake.nix`, inside the outputs section:
+2. Edit the Hostname in configuration.nix
+3. Add the following lines to `flake.nix`, inside the outputs section:
 ```nix
     nixosConfigurations.nix-sample-server = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -35,8 +36,8 @@ To deploy a new Server, do the following Steps:
       specialArgs = {inherit inputs;};
     };
 ```
-3. Push your Changes to github (Maybe on a new Branch)
-4. Execute the following Commands on the Server:
+4. Push your Changes to github (Maybe on a new Branch)
+5. Execute the following Commands on the Server:
 
 ```bash
 git clone https://github.com/astahhu/nixos-config.git
