@@ -1,4 +1,4 @@
-{ config, ... }: let 
+ { config, lib, ... }: let 
 inherit (config.lib.topology)
   mkInternet
   mkRouter
@@ -42,7 +42,10 @@ inherit (config.lib.topology)
         network = "intern";
 	virtual = true;
       };
-      "eth0".network = "intern";
+      "eth0" = {
+        addresses = [ "134.99.154.250" ];
+        network = "intern";
+      };
     };
   };
 
@@ -53,12 +56,104 @@ inherit (config.lib.topology)
         network = "intern";
 	virtual = true;
       };
-      "eth0".network = "intern";
+      "eth0" = {
+        network = "intern";
+        addresses = [ "134.99.154.251" ];
+      };
     };
   };
 
-  nodes.nix-nextcloud = {
+  nodes."asta-dc-v-01.asta2012" = {
+    deviceType = "cloud-server";
+    deviceIcon = ./icons/server-svgrepo-com.svg;
     parent = "server-01";
+    guestType = "VM";
+  };
+
+  nodes."asta-datev-v-01.asta2012" = {
+    deviceType = "cloud-server";
+    deviceIcon = ./icons/server-svgrepo-com.svg;
+    parent = "server-01";
+    guestType = "VM";
+  };
+
+  nodes."samba-dc" = {
+    deviceType = "cloud-server";
+    deviceIcon = ./icons/server-svgrepo-com.svg;
+    parent = "server-01";
+    guestType = "VM";
+  };
+
+  nodes."samba-fs" = {
+    deviceType = "cloud-server";
+    deviceIcon = ./icons/server-svgrepo-com.svg;
+    parent = "server-01";
+    guestType = "VM";
+  };
+
+  nodes."asta-wgvpn-01.asta2012" = {
+    deviceType = "cloud-server";
+    deviceIcon = ./icons/server-svgrepo-com.svg;
+    parent = "server-01";
+    guestType = "VM";
+    interfaces = {
+      wg0 = {
+       network = "wireguard";
+       type = "wireguard";
+      };
+    };
+  };
+
+  nodes."asta-fs-v-02.asta2012" = {
+    deviceType = "cloud-server";
+    deviceIcon = ./icons/server-svgrepo-com.svg;
+    parent = "server-02";
+    guestType = "VM";
+  };
+
+  nodes."asta-datevbk-v-01.asta2012" = {
+    deviceType = "cloud-server";
+    deviceIcon = ./icons/server-svgrepo-com.svg;
+    parent = "server-02";
+    guestType = "VM";
+  };
+
+  nodes."asta-dc-v-02.asta2012" = {
+    deviceType = "cloud-server";
+    deviceIcon = ./icons/server-svgrepo-com.svg;
+    parent = "server-02";
+    guestType = "VM";
+  };
+
+  nodes."asta-ws03.asta2012" = {
+    deviceType = "cloud-server";
+    deviceIcon = ./icons/server-svgrepo-com.svg;
+    parent = "server-02";
+    guestType = "VM";
+  };
+
+  nodes."asta-ws01.asta2012" = {
+    deviceType = "cloud-server";
+    deviceIcon = ./icons/server-svgrepo-com.svg;
+    parent = "server-02";
+    guestType = "VM";
+  };
+
+  nodes."samba-dc-01" = {
+    deviceType = "cloud-server";
+    deviceIcon = ./icons/server-svgrepo-com.svg;
+    parent = "server-02";
+    guestType = "VM";
+  };
+
+  nodes.nix-samba-fs = {
+    parent = "server-01";
+    guestType = "VM";
+  };
+
+
+  nodes.nix-nextcloud = {
+    parent = "server-02";
     guestType = "VM";
   };
 
@@ -67,17 +162,19 @@ inherit (config.lib.topology)
     guestType = "VM";
   };
   
-  nodes.nix-samba-fs = {
-    parent = "server-02";
-    guestType = "VM";
-  };
 
-  nodes.it-laptop.interfaces.wg0 = {
-    network = "wireguard";
-    type = "wireguard";
+
+  nodes.it-laptop = {
+    deviceType = lib.mkForce "laptop";
+    interfaces.wg0 = {
+      network = "wireguard";
+      type = "wireguard";
+      physicalConnections = [(mkConnection "asta-wgvpn-01.asta2012" "wg0")];
+    };
   };
   
   nodes.internet = mkInternet {
     connections = mkConnection "zim" "eth0";
   };
+
 }
