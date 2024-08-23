@@ -43,7 +43,6 @@ git clone https://github.com/astahhu/nixos-config.git
 # Change /dev/sda to the main boot disk
 sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./nixos-config/modules/common/disko.nix --arg device '"/dev/sda"'
 nixos-install --flake ./nixos-config#HOSTNAME
-
 ```
 
 ## TODOS:
