@@ -14,8 +14,6 @@
 
   astahhu.development.vm.enable = true;
   nix-tun.yubikey-gpg.enable = true;
-  nix-tun.services.matrix.enable = true;
-  nix-tun.services.matrix.servername = "localhost";
   nix-tun.storage.persist = {
     enable = true;
     subvolumes = {

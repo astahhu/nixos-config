@@ -5,6 +5,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
@@ -20,84 +21,36 @@
   # Enable VMWare Guest
   virtualisation.vmware.guest.enable = true;
 
-  # Install Samba to Connect to AD Shares
-  environment.systemPackages = [
-    pkgs.samba
-  ];
-
   networking.hostName = "nix-nextcloud"; # Define your hostname.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   sops.defaultSopsFile = ../../secrets/nix-nextcloud.yaml;
-  sops.secrets.nextcloud-admin-pw = {
-    owner = "nextcloud";
-  };
-  # services.nextcloud.database.createLocally = true;
-  services.nextcloud = {
-    enable = true;
-    package = pkgs.nextcloud29;
-    hostName = "nextcloud.astahhu.de";
-    phpExtraExtensions = all: [all.pdlib all.bz2 all.smbclient];
-
-    settings = {
-      trusted_domains = ["https://nix-nextcloud"];
-      trusted_proxies = ["134.99.154.48"];
-    };
-
-    config = {
-      adminpassFile = config.sops.secrets.nextcloud-admin-pw.path;
-      dbtype = "pgsql";
-      dbhost = "/var/run/postgresql";
-      dbuser = "postgres";
-      dbname = "nextcloud";
-    };
-
-    phpOptions = {
-      "opcache.jit" = "1255";
-      "opcache.revalidate_freq" = "60";
-      "opcache.interned_strings_buffer" = "16";
-      "opcache.jit_buffer_size" = "128M";
-    };
-
-    https = true;
-    configureRedis = true;
-    caching.apcu = true;
-    poolSettings = {
-      pm = "dynamic";
-      "pm.max_children" = "201";
-      "pm.max_requests" = "500";
-      "pm.max_spare_servers" = "150";
-      "pm.min_spare_servers" = "50";
-      "pm.start_servers" = "50";
-    };
-  };
-
-  services.nginx.package = pkgs.nginxMainline;
-  security.acme.acceptTerms = true;
-  security.acme.defaults.email = "astait@hhu.de";
-  services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
-    forceSSL = true;
-    enableACME = true;
-  };
-
-  #services.nginx.virtualHosts.${config.services.nextcloud.hostName}.extraConfig = "http2 on;";
-
-  services.postgresql = {
-    enable = true;
-    ensureDatabases = ["nextcloud"];
-    package = pkgs.postgresql_16_jit;
-    authentication = pkgs.lib.mkOverride 10 ''
-      #type database  DBuser  auth-method
-      local all       all     trust
-    '';
-  };
-
-  networking.firewall.allowedTCPPorts = [80 443];
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
   # List services that you want to enable:
+  nix-tun = {
+    storage.persist.enable = true;
+    services.traefik = {
+      enable = true;
+      letsencryptMail = "it@asta.hhu.de";
+    };
+    services.containers.nextcloud = {
+      enable = true;
+      hostname = "nextcloud.astahhu.de";
+      package = pkgs.nextcloud27;
+    };
+  };
+  containers.nextcloud.config = {
+    imports = [ inputs.nix-topology.nixosModules.default];
+    services.nextcloud.database.createLocally = lib.mkForce false;
+    services.mysql = {
+      enable = true;
+      package = pkgs.mariadb;
+    };
 
+  };
+  
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   security.pam.sshAgentAuth.enable = true;

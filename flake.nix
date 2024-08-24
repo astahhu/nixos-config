@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOs/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOs/nixpkgs/24.05";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
@@ -9,7 +9,7 @@
       url = "github:nix-community/nixvim";
     };
     sops-nix.url = "github:Mic92/sops-nix";
-    nix-tun.url = "github:nix-tun/nixos-modules";
+    nix-tun.url = "github:nix-tun/nixos-modules/nextcloud";
     wp4nix = {
       url = "github:helsinki-systems/wp4nix";
       flake = false;
@@ -44,7 +44,8 @@
     nixosConfigurations.nix-nextcloud = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./hosts/nix-nextcloud/configuration.nix
+        (import ./modules/common/disko.nix {device = "/dev/sda";})
+	./hosts/nix-nextcloud/configuration.nix
         ./modules/modules.nix
         ./users/admin-users.nix
       ];
