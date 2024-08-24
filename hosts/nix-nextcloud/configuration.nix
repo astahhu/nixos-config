@@ -38,16 +38,11 @@
     services.containers.nextcloud = {
       enable = true;
       hostname = "nextcloud.astahhu.de";
-      package = pkgs.nextcloud27;
     };
   };
   containers.nextcloud.config = {
     imports = [ inputs.nix-topology.nixosModules.default];
     services.nextcloud.database.createLocally = lib.mkForce false;
-    services.mysql = {
-      enable = true;
-      package = pkgs.mariadb;
-    };
 
   };
   
