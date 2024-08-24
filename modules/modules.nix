@@ -8,6 +8,7 @@
     inputs.nix-tun.nixosModules.nix-tun
     inputs.home-manager.nixosModules.home-manager
     inputs.sops-nix.nixosModules.sops
+    inputs.nix-topology.nixosModules.default
     ./cli/better-tools.nix
     ./cli/nixvim.nix
     ./desktop/gnome.nix
