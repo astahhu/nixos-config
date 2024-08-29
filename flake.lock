@@ -586,16 +586,15 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1724528018,
-        "narHash": "sha256-K4Jc4FfC+hAET6MJUht4JafC9fHmEJRu/gHIVe2IWmw=",
+        "lastModified": 1724580367,
+        "narHash": "sha256-2jCqb0FwwMJlal3W2SeA3icZR0eG8p0qo/vdwHEFbiU=",
         "owner": "nix-tun",
         "repo": "nixos-modules",
-        "rev": "e5b8eb176f703fc31259badfcf4a9eb64cb9f70c",
+        "rev": "014c57526274eb14cc3f68cecc2cc2e5a8b8521b",
         "type": "github"
       },
       "original": {
         "owner": "nix-tun",
-        "ref": "nextcloud",
         "repo": "nixos-modules",
         "type": "github"
       }

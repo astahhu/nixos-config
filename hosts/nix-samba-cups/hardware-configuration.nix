@@ -11,11 +11,9 @@
   imports = [];
 
   boot.initrd.availableKernelModules = ["ata_piix" "mptspi" "uhci_hcd" "ehci_pci" "sd_mod" "sr_mod"];
-  boot.initrd.kernelModules = [];
+  boot.initrd.kernelModules = ["dm-snapshot"];
   boot.kernelModules = [];
   boot.extraModulePackages = [];
-
-  fileSystems."/persist".neededForBoot = true;
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

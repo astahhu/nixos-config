@@ -3,7 +3,7 @@ keys:
   - &florian-yubikey CFAA36038DF83F58F38090E2358EE66F828961B3
   - &florian_other_yubikey 6CC9DAFA22A1DB345F18A7AD5437D56471EC435B
   ## Hosts
-  - &nix-nextcloud FE8BEEC49A55525A7ACD7E891A26C149D992F306
+  - &nix-nextcloud 6929705d3549cc8d112ad656ec4fabf6aaefe763
   - &nix-wordpress ae6f1f5c96be2434407369059eb3799f71bc7edf
   - &it-laptop bc4411e216f4f87c945dd8f7c7df1be1dcba335e
 creation_rules:

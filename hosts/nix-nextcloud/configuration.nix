@@ -40,10 +40,11 @@
       hostname = "nextcloud.astahhu.de";
     };
   };
+  
+  nix-tun.services.traefik.services.nextcloud.router.tls.enable = false;
   containers.nextcloud.config = {
     imports = [ inputs.nix-topology.nixosModules.default];
-    services.nextcloud.database.createLocally = lib.mkForce false;
-
+    services.nextcloud.database.createLocally = lib.mkForce true;
   };
   
   # Enable the OpenSSH daemon.
