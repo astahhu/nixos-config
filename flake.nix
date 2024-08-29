@@ -9,7 +9,7 @@
       url = "github:nix-community/nixvim";
     };
     sops-nix.url = "github:Mic92/sops-nix";
-    nix-tun.url = "github:nix-tun/nixos-modules";
+    nix-tun.url = "github:nix-tun/nixos-modules/authentik";
     wp4nix = {
       url = "github:helsinki-systems/wp4nix";
       flake = false;
@@ -68,6 +68,18 @@
       modules = [
         (import ./modules/common/disko.nix {device = "/dev/sda";})
         ./hosts/nix-samba-fs/configuration.nix
+        ./modules/modules.nix
+        ./users/admin-users.nix
+      ];
+      specialArgs = {inherit inputs;};
+    };
+
+    
+    nixosConfigurations.nix-webhost = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        (import ./modules/common/disko.nix {device = "/dev/sda";})
+        ./hosts/nix-webhost/configuration.nix
         ./modules/modules.nix
         ./users/admin-users.nix
       ];
