@@ -10,7 +10,7 @@
 
 
   # Change for each System
-  networking.hostName = "nix-webhost";
+  networking.hostName = "nix-authentik";
 
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
   # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
@@ -22,7 +22,7 @@
   nix-tun.services.containers.authentik = {
     enable = true;
     hostname = "authentik.astahhu.de";
-    envFile = ../../secrets/nix-webhost/authentik.yaml;
+    envFile = ../../secrets/nix-authentik/authentik.yaml;
     mail = {
       host = "mail.hhu.de";
       port = 465;

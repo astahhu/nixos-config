@@ -75,7 +75,7 @@
     };
 
     
-    nixosConfigurations.nix-webhost = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.nix-authentik = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         (import ./modules/common/disko.nix {device = "/dev/sda";})
