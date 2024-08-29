@@ -79,7 +79,7 @@
       system = "x86_64-linux";
       modules = [
         (import ./modules/common/disko.nix {device = "/dev/sda";})
-        ./hosts/nix-webhost/configuration.nix
+        ./hosts/nix-authentik/configuration.nix
         ./modules/modules.nix
         ./users/admin-users.nix
       ];
