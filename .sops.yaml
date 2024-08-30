@@ -3,6 +3,7 @@ keys:
   - &florian-yubikey CFAA36038DF83F58F38090E2358EE66F828961B3
   - &florian_other_yubikey 6CC9DAFA22A1DB345F18A7AD5437D56471EC435B
   ## Hosts
+  - &nix-authentik 28528b7b6322273d9c4178da8c125eb8d6231af2
   - &nix-nextcloud 6929705d3549cc8d112ad656ec4fabf6aaefe763
   - &nix-wordpress ae6f1f5c96be2434407369059eb3799f71bc7edf
   - &it-laptop bc4411e216f4f87c945dd8f7c7df1be1dcba335e
@@ -25,3 +26,9 @@ creation_rules:
         - *it-laptop
         - *florian_other_yubikey
         - *florian-yubikey
+  - path_regex: secrets/nix-authentik/*
+    key_groups:
+      - pgp:
+        - *florian-yubikey
+        - *florian_other_yubikey
+        - *nix-authentik

@@ -22,7 +22,7 @@
   nix-tun.services.containers.authentik = {
     enable = true;
     hostname = "authentik.astahhu.de";
-    envFile = ../../secrets/nix-authentik/authentik.yaml;
+    envFile = ../../secrets/nix-authentik/authentik;
     mail = {
       host = "mail.hhu.de";
       port = 465;
