@@ -2,7 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOs/nixpkgs/nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     nixvim = {
@@ -21,7 +20,7 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     nix-topology.url = "github:oddlama/nix-topology";
-    nix-topology.inputs.nixpkgs.follows = "nixpkgs";
+    authentik-nix.url = "github:nix-community/authentik-nix";
   };
 
   outputs = {
