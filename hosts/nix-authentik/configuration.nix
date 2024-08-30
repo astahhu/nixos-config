@@ -16,8 +16,23 @@
   # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
 
   # Networking
+  networking.nat = {
+    enable = true;
+    internalInterfaces = [ "ve-+" ];
+    externalInterface = "ens192";
+    # Lazy IPv6 connectivity for the container
+    enableIPv6 = true;
+  };
+
   networking.firewall.enable = true;
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+
+  containers.authentik.timeoutStartSec = "60min";
+  nix-tun.services.traefik = {
+   enable = true;
+   letsencryptMail = "it@astahhu.de";
+  };
+  nix-tun.services.traefik.services.authentik.router.tls.enable = false;
 
   nix-tun.services.containers.authentik = {
     enable = true;
