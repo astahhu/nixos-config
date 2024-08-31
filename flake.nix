@@ -8,7 +8,7 @@
       url = "github:nix-community/nixvim";
     };
     sops-nix.url = "github:Mic92/sops-nix";
-    nix-tun.url = "github:nix-tun/nixos-modules";
+    nix-tun.url = "github:nix-tun/nixos-modules/backkup";
     wp4nix = {
       url = "github:helsinki-systems/wp4nix";
       flake = false;

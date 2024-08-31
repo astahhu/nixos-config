@@ -3,6 +3,7 @@
 # and in the NixOS manual (accessible by running `nixos-help`).
 {
   pkgs,
+  inputs,
   config,
   ...
 }: {
@@ -29,7 +30,7 @@
       };
     };
   };
- 
+
   sops.defaultSopsFile = ../../secrets/it-laptop.yaml;
 
   myprograms = {
