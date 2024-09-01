@@ -18,6 +18,16 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+     # Networking
+  networking.nat = {
+    enable = true;
+    internalInterfaces = [ "ve-+" ];
+    externalInterface = "ens33";
+    # Lazy IPv6 connectivity for the container
+    enableIPv6 = true;
+  };
+ 
+
   # Enable VMWare Guest
   virtualisation.vmware.guest.enable = true;
 
@@ -37,14 +47,21 @@
     };
     services.containers.nextcloud = {
       enable = true;
-      hostname = "nextcloud.astahhu.de";
+      hostname = "cloud.astahhu.de";
     };
   };
   
   nix-tun.services.traefik.services.nextcloud.router.tls.enable = false;
-  containers.nextcloud.config = {
-    imports = [ inputs.nix-topology.nixosModules.default];
-    services.nextcloud.database.createLocally = lib.mkForce true;
+  containers.nextcloud = {
+    bindMounts.resolv = {
+      hostPath = "/etc/resolv.conf";
+      mountPoint = "/etc/resolv.conf";
+    };
+
+    config = {
+      imports = [ inputs.nix-topology.nixosModules.default];
+      services.nextcloud.database.createLocally = lib.mkForce true;
+    };
   };
   
   # Enable the OpenSSH daemon.
