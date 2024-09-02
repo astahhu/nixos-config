@@ -51,7 +51,6 @@
     };
   };
   
-  nix-tun.services.traefik.services.nextcloud.router.tls.enable = false;
   containers.nextcloud = {
     bindMounts.resolv = {
       hostPath = "/etc/resolv.conf";

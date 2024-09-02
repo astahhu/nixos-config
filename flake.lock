@@ -886,11 +886,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1725216042,
-        "narHash": "sha256-6KBg1MizOF4DyZw0VdOWy9VlRaO9DYYhhCSM0SqfLAg=",
+        "lastModified": 1725224418,
+        "narHash": "sha256-7jor/fij9A+JtFBKMmBr5PQ8iL06C3vBQzaZDBUc2Ts=",
         "owner": "nix-tun",
         "repo": "nixos-modules",
-        "rev": "a601cd0a0ba879f458f9c447e3dddaaf6eba47b6",
+        "rev": "15f9891591ec48189235768f94a21dc3170d8a7a",
         "type": "github"
       },
       "original": {
