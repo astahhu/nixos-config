@@ -40,7 +40,10 @@
 
   # List services that you want to enable:
   nix-tun = {
-    storage.persist.enable = true;
+    storage.persist = {
+      enable = true;
+      is_server = true;
+    };
     services.traefik = {
       enable = true;
       letsencryptMail = "it@asta.hhu.de";

@@ -18,6 +18,7 @@
 
   nix-tun.storage.persist = {
     enable = true;
+    is_server = true;
   };
 
   myprograms = {

@@ -66,7 +66,10 @@
   # Enable VMWare Guest
   virtualisation.vmware.guest.enable = true;
   # Enable the Persist Storage Module
-  nix-tun.storage.persist.enable = true;
+  nix-tun.storage.persist = {
+    enable = true;
+    is_server = true;
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
