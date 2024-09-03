@@ -103,7 +103,7 @@ in {
 
           networking.firewall.allowedTCPPorts = [80];
           services.wordpress.sites."${name}" = {
-	    package = pkgs.wordpress6_4;
+	    package = pkgs.wordpress6_5;
             plugins = {
               inherit
                 (pkgs.wordpressPackages.plugins)
