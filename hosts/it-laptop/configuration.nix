@@ -29,7 +29,7 @@
       };
     };
   };
-  
+ 
   sops.defaultSopsFile = ../../secrets/it-laptop.yaml;
 
   myprograms = {
