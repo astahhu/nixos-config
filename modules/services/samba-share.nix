@@ -19,7 +19,7 @@
   config = lib.mkIf config.astahhu.services.samba-fs.enable {
    nix-tun.storage.persist.subvolumes = lib.attrsets.mapAttrs' (name: value: 
      {
-       name = "/samba-shares/${name}";
+       name = "samba-shares/${name}";
        value.group = "1000512";
    }) config.astahhu.services.samba-fs.shares // {
      samba = {
