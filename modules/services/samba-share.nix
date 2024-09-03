@@ -72,10 +72,11 @@
     }) config.astahhu.services.samba-fs.shares;
 
      extraConfig = ''
+     allow trusted domains = yes
      workgroup = AD.ASTAHHU
      realm = ad.astahhu.de
+     netbios name = NIX-SAMBA-FS
      winbind refresh tickets = true
-     winbind use default domain = true
      template shell = ${pkgs.bash}
      idmap config * : range = 100000 - 199999
      idmap config AD.ASTAHHU : backend = rid
