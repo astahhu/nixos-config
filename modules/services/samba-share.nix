@@ -17,6 +17,16 @@
   };
 
   config = lib.mkIf config.astahhu.services.samba-fs.enable {
+   fileSystems = lib.attrsets.mapAttrs' (name: value: {
+     name = "/persist/samba-shares/${name}";
+     value = {
+       device = "/dev/root_vg/root";
+       options = [ "subvol=/persist/samba-shares/${name}"];
+       depends = [ "/persist" ];
+       fsType = "btrfs";
+     };
+   }) config.astahhu.services.samba-fs.shares;
+
    nix-tun.storage.persist.subvolumes = lib.attrsets.mapAttrs' (name: value: 
      {
        name = "samba-shares/${name}";
