@@ -48,6 +48,7 @@
           ./hosts/nix-nextcloud/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
+	  ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
       };
@@ -59,6 +60,7 @@
           ./hosts/nix-wordpress/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
+	  ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
       };
@@ -70,6 +72,7 @@
           ./hosts/nix-samba-fs/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
+	  ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
       };
@@ -81,6 +84,7 @@
           ./hosts/nix-authentik/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
+	  ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
       };
