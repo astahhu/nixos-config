@@ -64,7 +64,7 @@
        browseable = value.browseable;
        "read only" = "no";
        "administrative share" = "yes";
-       "vfs objects" = "shadow_copy2";
+       "vfs objects" = "btrfs shadow_copy2";
        "shadow:snapdir" = "${config.nix-tun.storage.persist.path}/samba-shares/${name}/.snapshots";
        "shadow:basedir" = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
        "shadow:sort" = "desc";
