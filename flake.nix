@@ -85,6 +85,17 @@
         specialArgs = {inherit inputs;};
       };
 
+      nixosConfigurations.nix-wireguard = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          (import ./modules/common/disko.nix {device = "/dev/sda";})
+          ./hosts/nix-wireguard/configuration.nix
+          ./modules/modules.nix
+          ./users/admin-users.nix
+        ];
+        specialArgs = {inherit inputs;};
+      };
+
       nixosConfigurations.nix-backup = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
