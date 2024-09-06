@@ -21,7 +21,7 @@
      name = "/persist/samba-shares/${name}";
      value = {
        device = "/dev/root_vg/root";
-       options = [ "subvol=/persist/samba-shares/${name}"];
+       options = [ "x-systemd.automount" "noauto" "subvol=/persist/samba-shares/${name}"];
        depends = [ "/persist" ];
        fsType = "btrfs";
      };

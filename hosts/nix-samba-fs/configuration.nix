@@ -13,8 +13,6 @@
 
   #sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
 
-  # Enable VMWare Guest
-  virtualisation.vmware.guest.enable = true;
 
   nix-tun.storage.persist = {
     enable = true;
@@ -27,7 +25,68 @@
 
   astahhu.services.samba-fs = {
     enable = true;
-    shares.scans.browseable = "yes";
+    shares = { 
+      scans.browseable = "yes";
+      home.browseable = "yes";
+      profile.browseable = "yes";
+      # Intern (Nur die jeweiligen Personen können schreiben)
+      "Intern AntiFaRaDis".browseable = "yes";
+      "Intern Autonom".browseable = "yes";
+      "Intern AWO".browseable = "yes";
+      "Intern Barriereref".browseable = "yes";
+      "Intern BiSchwu".browseable = "yes";
+      "Intern Buchhaltung".browseable = "yes";
+      "Intern Deutschkurse".browseable = "yes";
+      "Intern Fachschaftsref".browseable = "yes";
+      "Intern Finanzref".browseable = "yes";
+      "Intern Flüchtlingsarbeit".browseable = "yes";
+      "Intern Frauenref".browseable = "yes";
+      "Intern HoPoref".browseable = "yes";
+      "Intern Internationalesref".browseable = "yes";
+      "Intern IT Ref".browseable = "yes";
+      "Intern Kommref".browseable = "yes";
+      "Intern Kulturref".browseable = "yes";
+      "Intern LesBiref".browseable = "yes";
+      "Intern Material".browseable = "yes";
+      "Intern Materialbeauftragter".browseable = "yes";
+      "Intern Mieterverein".browseable = "yes";
+      "Intern Oekoref".browseable = "yes";
+      "Intern Presseref".browseable = "yes";
+      "Intern Rechtsberatung".browseable = "yes";
+      "Intern Sekreteriat Finanz Buchhaltung".browseable = "yes";
+      "Intern Sozialref".browseable = "yes";
+      "Intern SP".browseable = "yes";
+      "Intern Steuern".browseable = "yes";
+      "Intern Teamassistenz".browseable = "yes";
+      "Intern Vorstand".browseable = "yes";
+      # Public (Nur die jeweiligen Personen können schreiben, alle können lesen.)
+      "Public AntiFaRaDis".browseable = "yes";
+      "Public Autonom".browseable = "yes";
+      "Public Barriereref".browseable = "yes";
+      "Public BiSchwu".browseable = "yes";
+      "Public Buchhaltung".browseable = "yes";
+      "Public Deutscchkurse".browseable = "yes";
+      "Public Fachschaftsref".browseable = "yes";
+      "Public Finanzref".browseable = "yes";
+      "Public Flüchtlingsarbeit".browseable = "yes";
+      "Public Frauenref".browseable = "yes";
+      "Public HoPoref".browseable = "yes";
+      "Public Internationalesref".browseable = "yes";
+      "Public ITref".browseable = "yes";
+      "Public Kommref".browseable = "yes";
+      "Public Kulturref".browseable = "yes";
+      "Public LesBiref".browseable = "yes";
+      "Public Materialbeauftragter".browseable = "yes";
+      "Public Mieterverein".browseable = "yes";
+      "Public Oekoref".browseable = "yes";
+      "Public Praesidium".browseable = "yes";
+      "Public Presseref".browseable = "yes";
+      "Public Rechtsberatung".browseable = "yes";
+      "Public Sekreteriat Finanz Buchhaltung".browseable = "yes";
+      "Public Sozialref".browseable = "yes";
+      "Public Teamassistenz".browseable = "yes";
+      "Public Vorstand".browseable = "yes";
+    };
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -38,8 +97,8 @@
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   networking.hostName = "nix-samba-fs";
   environment.etc = {
-    "resolv.conf".text = ''
-    nameserver 134.99.154.200
+    "resolv.conf".text = lib.mkForce ''
+    nameserver 134.99.154.228
     nameserver 134.99.154.201
     search ad.astahhu.de
     '';
