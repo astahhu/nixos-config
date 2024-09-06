@@ -6,7 +6,7 @@ keys:
   - &nix-authentik 28528b7b6322273d9c4178da8c125eb8d6231af2
   - &nix-nextcloud 6929705d3549cc8d112ad656ec4fabf6aaefe763
   - &nix-wordpress ae6f1f5c96be2434407369059eb3799f71bc7edf
-  - &nix-wireguard 2ce4de641fffb8fc128ccc9ba4cbc81750ed7e44
+  - &nix-wireguard 3eb256e34ecdccf45aa7b4982bb217347ac00885
   - &it-laptop bc4411e216f4f87c945dd8f7c7df1be1dcba335e
 creation_rules:
   - path_regex: secrets/nix-nextcloud.yaml
