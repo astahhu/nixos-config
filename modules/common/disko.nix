@@ -1,4 +1,6 @@
-{device ? throw "Set this to your disk device, e.g. /dev/sda", ...}: {
+{device ? throw "Set this to your disk device, e.g. /dev/sda",
+ swap ? "8G",
+...}: {
   disko.devices = {
     disk.main = {
       inherit device;
@@ -55,7 +57,7 @@
                 };
 
                 "/persist" = {
-                  mountOptions = ["subvol=persist" "noatime"];
+                  mountOptions = ["noatime"];
                   mountpoint = "/persist";
                 };
 

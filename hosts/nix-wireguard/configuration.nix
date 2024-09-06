@@ -1,10 +1,11 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{pkgs, config, ...}: {
+{pkgs, config, modulesPath, ...}: {
   imports = [
+    (modulesPath + "/virtualisation/proxmox-lxc.nix")
     ../../modules/modules.nix
-    ./hardware-configuration.nix
+    ../../users/admin-users.nix
   ];
 
 
@@ -16,8 +17,10 @@
   sops.defaultSopsFile = ../../secrets/nix-wireguard.yaml;
   sops.secrets.wireguard_private = {};
 
+
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   networking.nat.enable = true;
-  networking.nat.externalInterface = "ens192";
+  networking.nat.externalInterface = "eth0";
   networking.nat.internalInterfaces = [ "wg0" ];
   networking.firewall = {
     allowedUDPPorts = [ 51820 ];
@@ -176,7 +179,6 @@
 
   # Networking
   networking.firewall.enable = true;
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -196,23 +198,7 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.10"; # Did you read the comment?
 
-  # Enable VMWare Guest
-  virtualisation.vmware.guest.enable = true;
-  # Enable the Persist Storage Module
-  nix-tun.storage.persist = {
-    enable = true;
-    is_server = true;
-  };
-
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   security.pam.sshAgentAuth.enable = true;
-
-  myprograms.cli.better-tools.enable = true;
-
-  nixpkgs.config.allowUnfree = true;
 }

@@ -8,10 +8,14 @@
       url = "github:nix-community/nixvim";
     };
     sops-nix.url = "github:Mic92/sops-nix";
-    nix-tun.url = "github:nix-tun/nixos-modules/backkup";
+    nix-tun.url = "github:nix-tun/nixos-modules";
     wp4nix = {
       url = "github:helsinki-systems/wp4nix";
       flake = false;
+    };
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
     nix-index-database.url = "github:nix-community/nix-index-database";
@@ -92,8 +96,8 @@
       nixosConfigurations.nix-wireguard = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          (import ./modules/common/disko.nix {device = "/dev/sda";})
           ./hosts/nix-wireguard/configuration.nix
+	  inputs.nixos-generators.nixosModules.all-formats
           ./modules/modules.nix
           ./users/admin-users.nix
         ];
