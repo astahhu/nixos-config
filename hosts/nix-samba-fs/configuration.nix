@@ -23,6 +23,31 @@
     cli.better-tools.enable = true;
   };
 
+  systemd.timers = lib.attrsets.mapAttrs' (name: value: {
+    name = "rclone-${name}";
+    value = {
+      wantedBy = [ "timers.target" ];
+	timerConfig = {
+	  OnBootSec = "5m";
+	  OnUnitActiveSec = "1m";
+	  Unit = "rclone-${name}.service";
+      };
+    };
+  })(lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
+
+  systemd.services = lib.attrsets.mapAttrs' (name: value: {
+    name = "rclone-${name}";
+    value = {
+      script = ''
+	${pkgs.rclone} sync -M 'asta2012:Intern/${name}' '/persist/samba-shares/${name}
+      '';
+      serviceConfig = {
+	Type = "oneshot";
+	User = "root";
+      };
+    };
+  })(lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
+
   astahhu.services.samba-fs = {
     enable = true;
     shares = { 

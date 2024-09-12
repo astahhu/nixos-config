@@ -9,7 +9,7 @@ keys:
   - &nix-wireguard 3eb256e34ecdccf45aa7b4982bb217347ac00885
   - &it-laptop bc4411e216f4f87c945dd8f7c7df1be1dcba335e
 creation_rules:
-  - path_regex: secrets/nix-nextcloud.yaml
+  - path_regex: secrets/nix-nextcloud*
     key_groups:
       - pgp:
         - *nix-nextcloud

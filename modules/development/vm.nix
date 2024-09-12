@@ -15,6 +15,7 @@
       virt-manager
       virt-viewer
       spice
+      nmap
       spice-gtk
       spice-protocol
       win-virtio
