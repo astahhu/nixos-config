@@ -53,7 +53,7 @@
           ./hosts/nix-nextcloud/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
-	  ./modules/common/backup.nix
+          ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
       };
@@ -65,7 +65,7 @@
           ./hosts/nix-wordpress/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
-	  ./modules/common/backup.nix
+          ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
       };
@@ -77,7 +77,7 @@
           ./hosts/nix-samba-fs/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
-	  ./modules/common/backup.nix
+          ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
       };
@@ -89,7 +89,7 @@
           ./hosts/nix-authentik/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
-	  ./modules/common/backup.nix
+          ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
       };
@@ -98,7 +98,7 @@
         system = "x86_64-linux";
         modules = [
           ./hosts/nix-wireguard/configuration.nix
-	  inputs.nixos-generators.nixosModules.all-formats
+          inputs.nixos-generators.nixosModules.all-formats
           ./modules/modules.nix
           ./users/admin-users.nix
         ];

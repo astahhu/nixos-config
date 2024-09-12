@@ -35,28 +35,29 @@ in {
   };
 
   config = {
-
-    nixpkgs.overlays = [(self: super: {
-      wordpressPackages = wp4nix;
-    })];
+    nixpkgs.overlays = [
+      (self: super: {
+        wordpressPackages = wp4nix;
+      })
+    ];
 
     nix-tun.storage.persist.subvolumes =
       lib.attrsets.mapAttrs' (name: value: {
         name = value.baseDir;
         value = {
           mode = "0755";
-	  directories = {
-	    wordpress = {
-	      mode = "0755";
-	      group = "root";
-	      owner = "root";
-	    };
-	    mysql = {
-	      mode = "0700";
-	      owner = builtins.toString config.containers."${builtins.replaceStrings ["."] ["-"] ("wp-" + name)}".config.users.users.mysql.uid;
-	      group = builtins.toString config.containers."${builtins.replaceStrings ["."] ["-"] ("wp-" + name)}".config.users.groups.mysql.gid;
-	    };
-	  };
+          directories = {
+            wordpress = {
+              mode = "0755";
+              group = "root";
+              owner = "root";
+            };
+            mysql = {
+              mode = "0700";
+              owner = builtins.toString config.containers."${builtins.replaceStrings ["."] ["-"] ("wp-" + name)}".config.users.users.mysql.uid;
+              group = builtins.toString config.containers."${builtins.replaceStrings ["."] ["-"] ("wp-" + name)}".config.users.groups.mysql.gid;
+            };
+          };
         };
       })
       config.astahhu.wordpress.sites;
@@ -78,17 +79,17 @@ in {
         bindMounts.persistent = {
           hostPath = "${config.nix-tun.storage.persist.path}/${value.baseDir}";
           mountPoint = "/persist";
-	  isReadOnly = false;
+          isReadOnly = false;
         };
         bindMounts.wordpress = {
           hostPath = "${config.nix-tun.storage.persist.path}/${value.baseDir}/wordpress";
           mountPoint = "/var/lib/wordpress";
-	  isReadOnly = false;
+          isReadOnly = false;
         };
         bindMounts.mysql = {
           hostPath = "${config.nix-tun.storage.persist.path}/${value.baseDir}/mysql";
           mountPoint = "/var/lib/mysql";
-	  isReadOnly = false;
+          isReadOnly = false;
         };
         privateNetwork = true;
         ephemeral = true;
@@ -96,20 +97,21 @@ in {
         localAddress = "192.168.100.11";
 
         config = {pkgs, ...}: {
-      
-	  nixpkgs.overlays = [(self: super: {
-	    wordpressPackages = wp4nix;
-	  })];
+          nixpkgs.overlays = [
+            (self: super: {
+              wordpressPackages = wp4nix;
+            })
+          ];
 
           networking.firewall.allowedTCPPorts = [80];
           services.wordpress.sites."${name}" = {
-	    package = pkgs.wordpress6_5;
+            package = pkgs.wordpress6_5;
             plugins = {
               inherit
                 (pkgs.wordpressPackages.plugins)
                 static-mail-sender-configurator
-		authorizer
-		;
+                authorizer
+                ;
             };
 
             languages = [
@@ -129,6 +131,7 @@ in {
             '';
           };
         };
-      }) config.astahhu.wordpress.sites;
+      })
+    config.astahhu.wordpress.sites;
   };
 }

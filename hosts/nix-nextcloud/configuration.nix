@@ -18,15 +18,14 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-     # Networking
+  # Networking
   networking.nat = {
     enable = true;
-    internalInterfaces = [ "ve-+" ];
+    internalInterfaces = ["ve-+"];
     externalInterface = "ens33";
     # Lazy IPv6 connectivity for the container
     enableIPv6 = true;
   };
- 
 
   # Enable VMWare Guest
   virtualisation.vmware.guest.enable = true;
@@ -53,7 +52,7 @@
       hostname = "cloud.astahhu.de";
     };
   };
-  
+
   containers.nextcloud = {
     bindMounts.resolv = {
       hostPath = "/etc/resolv.conf";
@@ -61,11 +60,11 @@
     };
 
     config = {
-      imports = [ inputs.nix-topology.nixosModules.default];
+      imports = [inputs.nix-topology.nixosModules.default];
       services.nextcloud.database.createLocally = lib.mkForce true;
     };
   };
-  
+
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   security.pam.sshAgentAuth.enable = true;

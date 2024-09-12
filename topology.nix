@@ -1,10 +1,16 @@
- { config, lib, ... }: let 
-inherit (config.lib.topology)
-  mkInternet
-  mkRouter
-  mkSwitch
-  mkConnection; in
 {
+  config,
+  lib,
+  ...
+}: let
+  inherit
+    (config.lib.topology)
+    mkInternet
+    mkRouter
+    mkSwitch
+    mkConnection
+    ;
+in {
   networks.internet = {
     name = "Internet";
   };
@@ -27,10 +33,10 @@ inherit (config.lib.topology)
       "eth0".network = "internet";
       "eth1" = {
         network = "intern";
-	physicalConnections = [
-	  (mkConnection "server-01" "eth0")
-	  (mkConnection "server-02" "eth0")
-	];
+        physicalConnections = [
+          (mkConnection "server-01" "eth0")
+          (mkConnection "server-02" "eth0")
+        ];
       };
     };
   };
@@ -40,10 +46,10 @@ inherit (config.lib.topology)
     interfaces = {
       "veth0" = {
         network = "intern";
-	virtual = true;
+        virtual = true;
       };
       "eth0" = {
-        addresses = [ "134.99.154.250" ];
+        addresses = ["134.99.154.250"];
         network = "intern";
       };
     };
@@ -54,11 +60,11 @@ inherit (config.lib.topology)
     interfaces = {
       "veth0" = {
         network = "intern";
-	virtual = true;
+        virtual = true;
       };
       "eth0" = {
         network = "intern";
-        addresses = [ "134.99.154.251" ];
+        addresses = ["134.99.154.251"];
       };
     };
   };
@@ -98,8 +104,8 @@ inherit (config.lib.topology)
     guestType = "VM";
     interfaces = {
       wg0 = {
-       network = "wireguard";
-       type = "wireguard";
+        network = "wireguard";
+        type = "wireguard";
       };
     };
   };
@@ -151,7 +157,6 @@ inherit (config.lib.topology)
     guestType = "VM";
   };
 
-
   nodes.nix-nextcloud = {
     parent = "server-02";
     guestType = "VM";
@@ -161,8 +166,6 @@ inherit (config.lib.topology)
     parent = "server-02";
     guestType = "VM";
   };
-  
-
 
   nodes.it-laptop = {
     deviceType = lib.mkForce "laptop";
@@ -172,9 +175,8 @@ inherit (config.lib.topology)
       physicalConnections = [(mkConnection "asta-wgvpn-01.asta2012" "wg0")];
     };
   };
-  
+
   nodes.internet = mkInternet {
     connections = mkConnection "zim" "eth0";
   };
-
 }

@@ -1,6 +1,8 @@
-{device ? throw "Set this to your disk device, e.g. /dev/sda",
- swap ? "8G",
-...}: {
+{
+  device ? throw "Set this to your disk device, e.g. /dev/sda",
+  swap ? "8G",
+  ...
+}: {
   disko.devices = {
     disk.main = {
       inherit device;

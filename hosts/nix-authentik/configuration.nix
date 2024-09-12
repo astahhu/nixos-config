@@ -7,18 +7,16 @@
     ./hardware-configuration.nix
   ];
 
-
-
   # Change for each System
   networking.hostName = "nix-authentik";
 
-  # Uncomment if you need Secrets for this Hosts, AFTER the first install  
+  # Uncomment if you need Secrets for this Hosts, AFTER the first install
   # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
 
   # Networking
   networking.nat = {
     enable = true;
-    internalInterfaces = [ "ve-+" ];
+    internalInterfaces = ["ve-+"];
     externalInterface = "ens192";
     # Lazy IPv6 connectivity for the container
     enableIPv6 = true;
@@ -29,8 +27,8 @@
 
   containers.authentik.timeoutStartSec = "60min";
   nix-tun.services.traefik = {
-   enable = true;
-   letsencryptMail = "it@astahhu.de";
+    enable = true;
+    letsencryptMail = "it@astahhu.de";
   };
   nix-tun.services.traefik.services.authentik.router.tls.enable = false;
 
@@ -53,7 +51,6 @@
   console = {
     keyMap = "us";
   };
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
