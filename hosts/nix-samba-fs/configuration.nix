@@ -1,18 +1,22 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{pkgs, config, lib, ...}: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}: {
   imports = [
     ../../modules/modules.nix
     ./hardware-configuration.nix
   ];
-  
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   #sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
-
 
   nix-tun.storage.persist = {
     enable = true;
@@ -24,33 +28,33 @@
   };
 
   systemd.timers = lib.attrsets.mapAttrs' (name: value: {
-    name = "rclone-${name}";
+    name = "'rclone-${name}'";
     value = {
-      wantedBy = [ "timers.target" ];
-	timerConfig = {
-	  OnBootSec = "5m";
-	  OnUnitActiveSec = "1m";
-	  Unit = "rclone-${name}.service";
+      wantedBy = ["timers.target"];
+      timerConfig = {
+        OnBootSec = "5m";
+        OnUnitActiveSec = "1m";
+        Unit = "'rclone-${name}.service'";
       };
     };
-  })(lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
+  }) (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
 
   systemd.services = lib.attrsets.mapAttrs' (name: value: {
-    name = "rclone-${name}";
+    name = "'rclone-${name}'";
     value = {
       script = ''
-	${pkgs.rclone} sync -M 'asta2012:Intern/${name}' '/persist/samba-shares/${name}
+        ${pkgs.rclone} sync -M 'asta2012:Intern/${name}' '/persist/samba-shares/${name}'
       '';
       serviceConfig = {
-	Type = "oneshot";
-	User = "root";
+        Type = "oneshot";
+        User = "root";
       };
     };
-  })(lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
+  }) (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
 
   astahhu.services.samba-fs = {
     enable = true;
-    shares = { 
+    shares = {
       scans.browseable = "yes";
       home.browseable = "yes";
       profile.browseable = "yes";
@@ -118,22 +122,22 @@
 
   # Networking
   networking.firewall.enable = true;
-  
+
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   networking.hostName = "nix-samba-fs";
   environment.etc = {
     "resolv.conf".text = lib.mkForce ''
-    nameserver 134.99.154.228
-    nameserver 134.99.154.201
-    search ad.astahhu.de
+      nameserver 134.99.154.228
+      nameserver 134.99.154.201
+      search ad.astahhu.de
     '';
     hosts.text = lib.mkForce ''
-    127.0.0.1 localhost
-    134.99.154.59 nix-samba-fs.ad.astahhu.de nix-samba-fs
+      127.0.0.1 localhost
+      134.99.154.59 nix-samba-fs.ad.astahhu.de nix-samba-fs
     '';
     "nsswitch.conf".text = lib.mkForce ''
-    passwd: files winbind
-    group: files winbind
+      passwd: files winbind
+      group: files winbind
     '';
   };
 
@@ -147,7 +151,7 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   security.pam.sshAgentAuth.enable = true;
-  
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It's perfectly fine and recommended to leave
