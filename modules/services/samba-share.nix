@@ -27,7 +27,7 @@
         name = "/persist/samba-shares/${name}";
         value = {
           device = "/dev/root_vg/root";
-          options = ["x-systemd.automount" "noauto" "subvol=/persist/samba-shares/${name}"];
+          options = ["noauto" "subvol=/persist/samba-shares/${name}"];
           depends = ["/persist"];
           fsType = "btrfs";
         };
@@ -38,7 +38,8 @@
       lib.attrsets.mapAttrs' (name: value: {
         name = "samba-shares/${name}";
         value.group = "1000512";
-      }) config.astahhu.services.samba-fs.shares
+      })
+      config.astahhu.services.samba-fs.shares
       // {
         samba = {
           bindMountDirectories = true;
@@ -77,37 +78,37 @@
       openFirewall = true;
       securityType = "ads";
       nsswins = true;
-      shares =
-        lib.attrsets.mapAttrs (name: value: {
-          path = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
-          browseable = value.browseable;
-          "read only" = "no";
-          "administrative share" = "yes";
-          "vfs objects" = "btrfs shadow_copy2";
-          "shadow:snapdir" = "${config.nix-tun.storage.persist.path}/samba-shares/${name}/.snapshots";
-          "shadow:basedir" = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
-          "shadow:sort" = "desc";
-          "shadow:format" = "${name}.%Y%m%dT%H%M%S%z";
-        })
-        config.astahhu.services.samba-fs.shares;
 
-      settings = {
-        global = {
-          "allow trusted domains" = "yes";
-          "workgroup" = "AD.ASTAHHU";
-          "realm" = "ad.astahhu.de";
-          "netbios name" = "NIX-SAMBA-FS";
-          "winbind refresh tickets" = true;
-          "template shell" = "${pkgs.bash}";
-          "idmap config * : range" = "100000 - 199999";
-          "idmap config AD.ASTAHHU : backend" = "rid";
-          "idmap config AD.ASTAHHU : range" = "1000000 - 1999999";
-          "idmap config ASTA2012 : backend" = "rid";
-          "idmap config ASTA2012 : range" = "2000000 - 2999999";
-          "inherit acls" = "yes";
-          "vfs objects" = "acl_xattr";
-        };
-      };
+      settings = 
+        lib.mkMerge [{global =
+          {
+            "allow trusted domains" = "yes";
+            "workgroup" = "AD.ASTAHHU";
+            "realm" = "ad.astahhu.de";
+            "netbios name" = "NIX-SAMBA-FS";
+            "winbind refresh tickets" = true;
+            "template shell" = "${pkgs.bash}";
+            "idmap config * : range" = "100000 - 199999";
+            "idmap config AD.ASTAHHU : backend" = "rid";
+            "idmap config AD.ASTAHHU : range" = "1000000 - 1999999";
+            "idmap config ASTA2012 : backend" = "rid";
+            "idmap config ASTA2012 : range" = "2000000 - 2999999";
+            "inherit acls" = "yes";
+            "vfs objects" = "acl_xattr";
+	  };
+	}
+          (lib.attrsets.mapAttrs' (name: value: {
+	    name = "${name}";
+	    value = {
+	      path = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
+	      browseable = value.browseable;
+	      "read only" = "no";
+	      "administrative share" = "yes";
+	      "vfs objects" = "btrfs shadow_copy2";
+	    };
+          })
+          config.astahhu.services.samba-fs.shares)
+	];
     };
   };
 }

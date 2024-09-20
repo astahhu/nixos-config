@@ -176,6 +176,11 @@
           publicKey = "ri3E91KHp15VrgdVSdHBQimb97DEQuDu8SiQ3SODB1I=";
           allowedIPs = ["10.105.42.24/32"];
         }
+	{
+	  name = "25";
+	  publicKey = "PQ2jfDsONvfe8LcgOm//LjcVK0BC4bpCJGaq7tLvFkM=";
+	  allowedIPs = ["10.105.42.25/32"];
+	}
       ];
     };
   };

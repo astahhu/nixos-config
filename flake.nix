@@ -8,7 +8,7 @@
       url = "github:nix-community/nixvim";
     };
     sops-nix.url = "github:Mic92/sops-nix";
-    nix-tun.url = "github:nix-tun/nixos-modules";
+    nix-tun.url = "/home/florian/Documents/nixos-modules"; #"github:nix-tun/nixos-modules";
     nix-tun.inputs.nixpkgs.follows = "nixpkgs";
     wp4nix = {
       url = "github:helsinki-systems/wp4nix";

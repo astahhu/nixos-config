@@ -16,6 +16,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  services.qemuGuest.enable = true;
+
   #sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
 
   nix-tun.storage.persist = {
@@ -28,19 +30,19 @@
   };
 
   systemd.timers = lib.attrsets.mapAttrs' (name: value: {
-    name = "'rclone-${name}'";
+    name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
     value = {
       wantedBy = ["timers.target"];
       timerConfig = {
         OnBootSec = "5m";
         OnUnitActiveSec = "1m";
-        Unit = "'rclone-${name}.service'";
+        Unit = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}.service'";
       };
     };
   }) (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
 
   systemd.services = lib.attrsets.mapAttrs' (name: value: {
-    name = "'rclone-${name}'";
+    name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
     value = {
       script = ''
         ${pkgs.rclone} sync -M 'asta2012:Intern/${name}' '/persist/samba-shares/${name}'
@@ -133,7 +135,7 @@
     '';
     hosts.text = lib.mkForce ''
       127.0.0.1 localhost
-      134.99.154.59 nix-samba-fs.ad.astahhu.de nix-samba-fs
+      134.99.154.205 nix-samba-fs.ad.astahhu.de nix-samba-fs
     '';
     "nsswitch.conf".text = lib.mkForce ''
       passwd: files winbind

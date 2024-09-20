@@ -22,7 +22,7 @@
   networking.nat = {
     enable = true;
     internalInterfaces = ["ve-+"];
-    externalInterface = "ens33";
+    externalInterface = "ens18";
     # Lazy IPv6 connectivity for the container
     enableIPv6 = true;
   };
@@ -50,8 +50,12 @@
     services.containers.nextcloud = {
       enable = true;
       hostname = "cloud.astahhu.de";
+      extraTrustedProxies = ["134.99.154.48" "134.99.154.202"];
     };
   };
+
+  services.traefik.staticConfigOptions.entryPoints.websecure.forwardedHeaders.insecure = true;
+  services.traefik.staticConfigOptions.entryPoints.web.forwardedHeaders.insecure = true;
 
   containers.nextcloud = {
     bindMounts.resolv = {
@@ -61,7 +65,6 @@
 
     config = {
       imports = [inputs.nix-topology.nixosModules.default];
-      services.nextcloud.database.createLocally = lib.mkForce true;
     };
   };
 

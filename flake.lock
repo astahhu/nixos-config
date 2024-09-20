@@ -888,17 +888,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1726051697,
-        "narHash": "sha256-v5zktpArwoZzcbYkmvGrQsnHrhpCUrqUCax4nDWCMaM=",
-        "owner": "nix-tun",
-        "repo": "nixos-modules",
-        "rev": "f38b9741626e84d5464751c661298fbde25c741d",
-        "type": "github"
+        "dirtyRev": "76cfb6ecafee4df22e5767b3ec5d24425bb2c018-dirty",
+        "dirtyShortRev": "76cfb6e-dirty",
+        "lastModified": 1726216740,
+        "narHash": "sha256-eO7+raTpNE4EGYjRySOS/oBBKEzKHhWkk/ZioNj3NzE=",
+        "type": "git",
+        "url": "file:///home/florian/Documents/nixos-modules"
       },
       "original": {
-        "owner": "nix-tun",
-        "repo": "nixos-modules",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/florian/Documents/nixos-modules"
       }
     },
     "nixlib": {
@@ -1059,11 +1058,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1725910328,
-        "narHash": "sha256-n9pCtzGZ0httmTwMuEbi5E78UQ4ZbQMr1pzi5N0LAG8=",
+        "lastModified": 1726142289,
+        "narHash": "sha256-Jks8O42La+nm5AMTSq/PvM5O+fUAhIy0Ce1QYqLkyZ4=",
         "owner": "NixOs",
         "repo": "nixpkgs",
-        "rev": "5775c2583f1801df7b790bf7f7d710a19bac66f4",
+        "rev": "280db3decab4cbeb22a4599bd472229ab74d25e1",
         "type": "github"
       },
       "original": {
