@@ -178,7 +178,7 @@
         }
 	{
 	  name = "25";
-	  publicKey = "PQ2jfDsONvfe8LcgOm//LjcVK0BC4bpCJGaq7tLvFkM=";
+	  publicKey = "UPVDVIBvxODZLA/RTHt5sWRXBW9vdP8aXoHHR4LH6w4=";
 	  allowedIPs = ["10.105.42.25/32"];
 	}
       ];

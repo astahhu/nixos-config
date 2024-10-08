@@ -45,7 +45,7 @@
     name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
     value = {
       script = ''
-        ${pkgs.rclone} sync -M 'asta2012:Intern/${name}' '/persist/samba-shares/${name}'
+        ${pkgs.rclone}/bin/rclone sync -M 'asta2012:Intern/${name}' '/persist/samba-shares/${name}'
       '';
       serviceConfig = {
         Type = "oneshot";
@@ -60,36 +60,37 @@
       scans.browseable = "yes";
       home.browseable = "yes";
       profile.browseable = "yes";
+      software.browseable = "yes";
       # Intern (Nur die jeweiligen Personen können schreiben)
-      "Intern AntiFaRaDis".browseable = "yes";
-      "Intern Autonom".browseable = "yes";
-      "Intern AWO".browseable = "yes";
-      "Intern Barriereref".browseable = "yes";
-      "Intern BiSchwu".browseable = "yes";
-      "Intern Buchhaltung".browseable = "yes";
-      "Intern Deutschkurse".browseable = "yes";
-      "Intern Fachschaftsref".browseable = "yes";
-      "Intern Finanzref".browseable = "yes";
-      "Intern Flüchtlingsarbeit".browseable = "yes";
-      "Intern Frauenref".browseable = "yes";
-      "Intern HoPoref".browseable = "yes";
-      "Intern Internationalesref".browseable = "yes";
-      "Intern IT Ref".browseable = "yes";
-      "Intern Kommref".browseable = "yes";
-      "Intern Kulturref".browseable = "yes";
-      "Intern LesBiref".browseable = "yes";
-      "Intern Material".browseable = "yes";
-      "Intern Materialbeauftragter".browseable = "yes";
-      "Intern Mieterverein".browseable = "yes";
-      "Intern Oekoref".browseable = "yes";
-      "Intern Presseref".browseable = "yes";
-      "Intern Rechtsberatung".browseable = "yes";
-      "Intern Sekreteriat Finanz Buchhaltung".browseable = "yes";
-      "Intern Sozialref".browseable = "yes";
-      "Intern SP".browseable = "yes";
-      "Intern Steuern".browseable = "yes";
-      "Intern Teamassistenz".browseable = "yes";
-      "Intern Vorstand".browseable = "yes";
+      "Intern AntiFaRaDis".browseable = "no";
+      "Intern Autonom".browseable = "no";
+      "Intern AWO".browseable = "no";
+      "Intern Barriereref".browseable = "no";
+      "Intern BiSchwu".browseable = "no";
+      "Intern Buchhaltung".browseable = "no";
+      "Intern Deutschkurse".browseable = "no";
+      "Intern Fachschaftsref".browseable = "no";
+      "Intern Finanzref".browseable = "no";
+      "Intern Flüchtlingsarbeit".browseable = "no";
+      "Intern Frauenref".browseable = "no";
+      "Intern HoPoref".browseable = "no";
+      "Intern Internationalesref".browseable = "no";
+      "Intern IT Ref".browseable = "no";
+      "Intern Kommref".browseable = "no";
+      "Intern Kulturref".browseable = "no";
+      "Intern LesBiref".browseable = "no";
+      "Intern Material".browseable = "no";
+      "Intern Materialbeauftragter".browseable = "no";
+      "Intern Mieterverein".browseable = "no";
+      "Intern Oekoref".browseable = "no";
+      "Intern Presseref".browseable = "no";
+      "Intern Rechtsberatung".browseable = "no";
+      "Intern Sekreteriat Finanz Buchhaltung".browseable = "no";
+      "Intern Sozialref".browseable = "no";
+      "Intern SP".browseable = "no";
+      "Intern Steuern".browseable = "no";
+      "Intern Teamassistenz".browseable = "no";
+      "Intern Vorstand".browseable = "no";
       # Public (Nur die jeweiligen Personen können schreiben, alle können lesen.)
       "Public AntiFaRaDis".browseable = "yes";
       "Public Autonom".browseable = "yes";
