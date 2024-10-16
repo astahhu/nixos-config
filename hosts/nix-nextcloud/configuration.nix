@@ -34,6 +34,8 @@
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   sops.defaultSopsFile = ../../secrets/nix-nextcloud.yaml;
 
+  sops.secrets.dockerproxy_env = {};
+
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
@@ -65,6 +67,21 @@
 
     config = {
       imports = [inputs.nix-topology.nixosModules.default];
+    };
+  };
+
+  virtualisation.oci-containers = {
+    backend = "docker";
+    containers = {
+      appapi-docker-proxy = {
+        image = "ghcr.io/nextcloud/nextcloud-appapi-dsp:release";
+        volumes = [
+	  "/var/lib/docker.sock:/var/lib/docker.sock"
+	];
+	environmentFiles = [
+	  config.sops.secrets.dockerproxy-env
+	];
+      };
     };
   };
 
