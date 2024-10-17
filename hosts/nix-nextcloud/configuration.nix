@@ -36,6 +36,7 @@
 
   sops.secrets.dockerproxy_env = {};
 
+
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
@@ -52,7 +53,7 @@
     services.containers.nextcloud = {
       enable = true;
       hostname = "cloud.astahhu.de";
-      extraTrustedProxies = ["134.99.154.48" "134.99.154.202"];
+      extraTrustedProxies = ["134.99.154.48" "134.99.154.202" "192.168.100.11"];
     };
   };
 
@@ -65,10 +66,20 @@
       mountPoint = "/etc/resolv.conf";
     };
 
-    config = {
-      imports = [inputs.nix-topology.nixosModules.default];
+    config = { ... } : {
+      environment.systemPackages = [
+        pkgs.docker
+      ];
+
+      services.nextcloud.settings.loglevel = 0;
     };
   };
+
+  virtualisation.docker = {
+    enable = true;
+    autoPrune.enable = true;
+  };
+
 
   virtualisation.oci-containers = {
     backend = "docker";
@@ -76,14 +87,30 @@
       appapi-docker-proxy = {
         image = "ghcr.io/nextcloud/nextcloud-appapi-dsp:release";
         volumes = [
-	  "/var/lib/docker.sock:/var/lib/docker.sock"
+	  "/run/docker.sock:/var/run/docker.sock"
 	];
+	log-driver = "journald";
 	environmentFiles = [
-	  config.sops.secrets.dockerproxy-env
+	  config.sops.secrets.dockerproxy_env.path
 	];
+	environment = {
+	  "BIND_ADDRESS" = "192.168.100.10";
+	};
+	extraOptions = ["--privileged" "--net" "host"];
       };
     };
   };
+
+  systemd.services."docker-appapi-docker-proxy" = {
+    serviceConfig = {
+      Restart = lib.mkOverride 500 "always";
+      RestartMaxDelaySec = lib.mkOverride 500 "1m";
+      RestartSec = lib.mkOverride 500 "100ms";
+    };
+  };
+
+  networking.firewall.trustedInterfaces = [ "ve-nextcloud" ];
+
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

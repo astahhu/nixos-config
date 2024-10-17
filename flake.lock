@@ -845,11 +845,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1728414099,
-        "narHash": "sha256-nSWCqvkMcoBDIMyaKf3f1BsljrFNvmElLdYT6xnvxrQ=",
+        "lastModified": 1729092539,
+        "narHash": "sha256-uYV4UB9T5K5oP/s5t74T9YFQaow081tpmi0yH2ycxgA=",
         "ref": "refs/heads/main",
-        "rev": "0cbb7a80f4105252ae70bc1b146abb888ec426fa",
-        "revCount": 84,
+        "rev": "aedbe928ad1d938c1b6b6068e219b5d237d0db00",
+        "revCount": 85,
         "type": "git",
         "url": "file:///home/florian/Documents/nixos-modules"
       },
