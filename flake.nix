@@ -50,7 +50,7 @@
         system = "x86_64-linux";
         modules = [
           ./hosts/nix-nextcloud/configuration.nix
-          ./modules/modules.nix
+          ./modules
           ./users/admin-users.nix
         ];
         specialArgs = {inherit inputs;};
@@ -60,7 +60,7 @@
         system = "x86_64-linux";
         modules = [
           ./hosts/nix-wordpress/configuration.nix
-          ./modules/modules.nix
+          ./modules
           ./users/admin-users.nix
         ];
         specialArgs = {inherit inputs;};
@@ -70,7 +70,7 @@
         system = "x86_64-linux";
         modules = [
           ./hosts/nix-samba-fs/configuration.nix
-          ./modules/modules.nix
+          ./modules
           ./users/admin-users.nix
         ];
         specialArgs = {inherit inputs;};
@@ -80,7 +80,7 @@
         system = "x86_64-linux";
 	modules = [
 	  ./hosts/nix-samba-dc/configuration.nix 
-	  ./modules/modules.nix 
+	  ./modules 
 	  ./users/admin-users.nix
 	];
       };
@@ -89,7 +89,7 @@
         system = "x86_64-linux";
         modules = [
           ./hosts/nix-authentik/configuration.nix
-          ./modules/modules.nix
+          ./modules
           ./users/admin-users.nix
         ];
         specialArgs = {inherit inputs;};
@@ -100,7 +100,7 @@
         modules = [
           ./hosts/nix-wireguard/configuration.nix
           inputs.nixos-generators.nixosModules.all-formats
-          ./modules/modules.nix
+          ./modules
           ./users/admin-users.nix
         ];
         specialArgs = {inherit inputs;};
@@ -110,7 +110,7 @@
         system = "x86_64-linux";
         modules = [
           ./hosts/nix-backup/configuration.nix
-          ./modules/modules.nix
+          ./modules
         ];
         specialArgs = {inherit inputs;};
       };
@@ -119,7 +119,7 @@
         specialArgs = {inherit inputs;};
         modules = [
           ./hosts/stick/configuration.nix
-          ./modules/modules.nix
+          ./modules
         ];
       };
 
