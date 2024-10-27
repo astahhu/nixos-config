@@ -26,7 +26,7 @@
             };
           };
           swap = {
-            size = "8G";
+            size = swap;
             content = {
               type = "swap";
               resumeDevice = true;

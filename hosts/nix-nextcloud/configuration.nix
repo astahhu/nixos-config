@@ -7,17 +7,17 @@
   pkgs,
   inputs,
   ...
-}: {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    ../../users/admin-users.nix
-  ];
+} : {
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
+  astahhu.common = {
+    is_server = true;
+    is_qemuvm = true;
+    disko = {
+      enable = true;
+      device = "/dev/sda";
+    };
+  };
+ 
   # Networking
   networking.nat = {
     enable = true;
@@ -26,13 +26,14 @@
     # Lazy IPv6 connectivity for the container
     enableIPv6 = true;
   };
-
-  # Enable VMWare Guest
-  virtualisation.vmware.guest.enable = true;
-
+  
   networking.hostName = "nix-nextcloud"; # Define your hostname.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   sops.defaultSopsFile = ../../secrets/nix-nextcloud.yaml;
+  sops.secrets.proxyCert = {
+    sopsFile = ../../secrets/nix-nextcloud_cert.pem;
+    format = "binary";
+  };
 
   sops.secrets.dockerproxy_env = {};
 
@@ -42,10 +43,6 @@
 
   # List services that you want to enable:
   nix-tun = {
-    storage.persist = {
-      enable = true;
-      is_server = true;
-    };
     services.traefik = {
       enable = true;
       letsencryptMail = "it@asta.hhu.de";
@@ -53,15 +50,17 @@
     services.containers.nextcloud = {
       enable = true;
       hostname = "cloud.astahhu.de";
-      extraTrustedProxies = ["134.99.154.48" "134.99.154.202" "192.168.100.11"];
+      extraTrustedProxies = ["134.99.154.202" "192.168.100.10" "192.168.100.11"];
     };
   };
 
-  services.traefik.staticConfigOptions.entryPoints.websecure.forwardedHeaders.insecure = true;
-  services.traefik.staticConfigOptions.entryPoints.web.forwardedHeaders.insecure = true;
-
   containers.nextcloud = {
-    bindMounts.resolv = {
+    bindMounts.docker = {
+      hostPath = "/run/docker.sock";
+      mountPoint = "/run/docker.sock";
+    };
+
+    bindMounts.resolvconf = {
       hostPath = "/etc/resolv.conf";
       mountPoint = "/etc/resolv.conf";
     };
@@ -71,42 +70,17 @@
         pkgs.docker
       ];
 
-      services.nextcloud.settings.loglevel = 0;
+      services.nextcloud.settings.default_phone_region = "DE";
+      services.nextcloud.notify_push = {
+        dbuser = lib.mkForce "nextcloud";
+	dbhost = lib.mkForce "localhost:/run/mysqld/mysqld.sock";
+      };
     };
   };
 
   virtualisation.docker = {
     enable = true;
     autoPrune.enable = true;
-  };
-
-
-  virtualisation.oci-containers = {
-    backend = "docker";
-    containers = {
-      appapi-docker-proxy = {
-        image = "ghcr.io/nextcloud/nextcloud-appapi-dsp:release";
-        volumes = [
-	  "/run/docker.sock:/var/run/docker.sock"
-	];
-	log-driver = "journald";
-	environmentFiles = [
-	  config.sops.secrets.dockerproxy_env.path
-	];
-	environment = {
-	  "BIND_ADDRESS" = "192.168.100.10";
-	};
-	extraOptions = ["--privileged" "--net" "host"];
-      };
-    };
-  };
-
-  systemd.services."docker-appapi-docker-proxy" = {
-    serviceConfig = {
-      Restart = lib.mkOverride 500 "always";
-      RestartMaxDelaySec = lib.mkOverride 500 "1m";
-      RestartSec = lib.mkOverride 500 "100ms";
-    };
   };
 
   networking.firewall.trustedInterfaces = [ "ve-nextcloud" ];
@@ -116,7 +90,7 @@
   services.openssh.enable = true;
   security.pam.sshAgentAuth.enable = true;
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
@@ -140,6 +114,27 @@
   system.stateVersion = "23.11"; # Did you read the comment?
 
   security.pki.certificates = [
+    ''
+    -----BEGIN CERTIFICATE-----
+    MIIDFTCCAf2gAwIBAgIUOHwthMO3Dw04xRtE3/P9tzcGAc4wDQYJKoZIhvcNAQEL
+    BQAwGTEXMBUGA1UEAwwOMTkyLjE2OC4xMDAuMTAwIBcNMjQxMDE3MTM1NTU3WhgP
+    MzAyNDAyMTgxMzU1NTdaMBkxFzAVBgNVBAMMDjE5Mi4xNjguMTAwLjEwMIIBIjAN
+    BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAobtxgNLyzT1KjhVNmAJil0b4AxhV
+    xfRO5/QvF+ehykVKdB4C8yNv2PSjYA6JDflmYq0if0DoA0fW4znGem4/2wbRL+B/
+    dGiGUTvWnVv6sdPy7kArS8Q+z6b4R56VnDYvqN6N6ADLnCChur0rYu3F0H+vezZx
+    JRRg44Lzpw6KesyrE2YSd8vsdNjMJgu+35RZm91pZxrVzeQyHongTdQRtuabUq55
+    FyXvflbeAwpRTKAXGMxBXsZ7NgsCVm5EX9O0M0tw2Vy3TVAvh4rFAN89t7kIbsOx
+    EAMcMlmTqPr8rvoshh4w0mTP45ON489799/o5vLCLLYHoNkiwZDNbx48twIDAQAB
+    o1MwUTAdBgNVHQ4EFgQU4tteG/vGAU1gbQ6s5O31sRKyQzkwHwYDVR0jBBgwFoAU
+    4tteG/vGAU1gbQ6s5O31sRKyQzkwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0B
+    AQsFAAOCAQEADz1sh6ipSNfbd3rE7hPRG1TN03Atmlq8yJ3uTsAGB7BDmPlad4fq
+    Ak+MrHuqDu0+iYEaOk/qcr0kP6ozBoorahA5GXO+qV1I9YlZH5dccC9RnffyksKT
+    T2epsJL91b9rh5bhUh4pBnQsRdpX8A7479DHNUP0SNYtrCW/vaeJuVbh9zU/VrLQ
+    vZ6Nk04h4X00M10C1v0hCFRJqKPXpUW96SJAmrM7F5TAiMFeO6zeGCoXWpaq7M5X
+    HwORa5h8YfdSozsB2XCDVd/0euDa5BOCBM5O431PhwL3peAwEeaGlXEk1XXnLDQ5
+    ylufmUaJuk6YltROWkNq/821NljZR5j4Nw==
+    -----END CERTIFICATE-----
+    ''
     ''
             -----BEGIN CERTIFICATE-----
       MIIEOTCCAyGgAwIBAgIUOHFmcxpzp3l8pf+DtUFNALkgzEcwDQYJKoZIhvcNAQEL
@@ -166,6 +161,27 @@
       vlfyEtlpOpUU60aOnxUwT4yqchhe6cg53JFPLRAxjDUW7yYJR1WXP+SPB1+wnFg2
       LiJjkm+8DliLET2JyhFqWV0n4ljhkwUNBeCvTGA=
       -----END CERTIFICATE-----
+    ''
+    ''
+    -----BEGIN CERTIFICATE-----
+    MIIDFTCCAf2gAwIBAgIUOHwthMO3Dw04xRtE3/P9tzcGAc4wDQYJKoZIhvcNAQEL
+    BQAwGTEXMBUGA1UEAwwOMTkyLjE2OC4xMDAuMTAwIBcNMjQxMDE3MTM1NTU3WhgP
+    MzAyNDAyMTgxMzU1NTdaMBkxFzAVBgNVBAMMDjE5Mi4xNjguMTAwLjEwMIIBIjAN
+    BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAobtxgNLyzT1KjhVNmAJil0b4AxhV
+    xfRO5/QvF+ehykVKdB4C8yNv2PSjYA6JDflmYq0if0DoA0fW4znGem4/2wbRL+B/
+    dGiGUTvWnVv6sdPy7kArS8Q+z6b4R56VnDYvqN6N6ADLnCChur0rYu3F0H+vezZx
+    JRRg44Lzpw6KesyrE2YSd8vsdNjMJgu+35RZm91pZxrVzeQyHongTdQRtuabUq55
+    FyXvflbeAwpRTKAXGMxBXsZ7NgsCVm5EX9O0M0tw2Vy3TVAvh4rFAN89t7kIbsOx
+    EAMcMlmTqPr8rvoshh4w0mTP45ON489799/o5vLCLLYHoNkiwZDNbx48twIDAQAB
+    o1MwUTAdBgNVHQ4EFgQU4tteG/vGAU1gbQ6s5O31sRKyQzkwHwYDVR0jBBgwFoAU
+    4tteG/vGAU1gbQ6s5O31sRKyQzkwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0B
+    AQsFAAOCAQEADz1sh6ipSNfbd3rE7hPRG1TN03Atmlq8yJ3uTsAGB7BDmPlad4fq
+    Ak+MrHuqDu0+iYEaOk/qcr0kP6ozBoorahA5GXO+qV1I9YlZH5dccC9RnffyksKT
+    T2epsJL91b9rh5bhUh4pBnQsRdpX8A7479DHNUP0SNYtrCW/vaeJuVbh9zU/VrLQ
+    vZ6Nk04h4X00M10C1v0hCFRJqKPXpUW96SJAmrM7F5TAiMFeO6zeGCoXWpaq7M5X
+    HwORa5h8YfdSozsB2XCDVd/0euDa5BOCBM5O431PhwL3peAwEeaGlXEk1XXnLDQ5
+    ylufmUaJuk6YltROWkNq/821NljZR5j4Nw==
+    -----END CERTIFICATE-----
     ''
   ];
 }

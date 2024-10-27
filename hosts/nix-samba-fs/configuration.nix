@@ -7,27 +7,17 @@
   lib,
   ...
 }: {
-  imports = [
-    ../../modules/modules.nix
-    ./hardware-configuration.nix
-  ];
-
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  services.qemuGuest.enable = true;
+ 
+  astahhu.common = {
+    is_server = true;
+    is_qemuvm = true;
+    disko = {
+      enable = true;
+      device = "/dev/sda";
+    };
+  };
 
   #sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
-
-  nix-tun.storage.persist = {
-    enable = true;
-    is_server = true;
-  };
-
-  myprograms = {
-    cli.better-tools.enable = true;
-  };
 
   systemd.timers = lib.attrsets.mapAttrs' (name: value: {
     name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
@@ -59,7 +49,12 @@
     shares = {
       scans.browseable = "yes";
       home.browseable = "yes";
-      profile.browseable = "yes";
+      profile = {
+        comment = "Users profiles";
+	"read only" = "no";
+        browseable = "no";
+	"csc policy" = "disable";
+      };
       software.browseable = "yes";
       # Intern (Nur die jeweiligen Personen können schreiben)
       "Intern AntiFaRaDis".browseable = "no";
@@ -121,7 +116,6 @@
     };
   };
 
-  nixpkgs.config.allowUnfree = true;
 
   # Networking
   networking.firewall.enable = true;
@@ -130,7 +124,7 @@
   networking.hostName = "nix-samba-fs";
   environment.etc = {
     "resolv.conf".text = lib.mkForce ''
-      nameserver 134.99.154.228
+      nameserver 134.99.154.200
       nameserver 134.99.154.201
       search ad.astahhu.de
     '';

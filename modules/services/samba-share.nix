@@ -8,13 +8,7 @@
     astahhu.services.samba-fs = {
       enable = lib.mkEnableOption "Enable Samba Fileserver";
       shares = lib.mkOption {
-        type = lib.types.attrsOf (lib.types.submodule ({...}: {
-          options = {
-            browseable = lib.mkOption {
-              type = lib.types.str;
-            };
-          };
-        }));
+        type = lib.types.attrs;
         description = "Samba Shares";
         default = {};
       };
@@ -99,9 +93,8 @@
 	}
           (lib.attrsets.mapAttrs' (name: value: {
 	    name = "${name}";
-	    value = {
+	    value = value // {
 	      path = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
-	      browseable = value.browseable;
 	      "read only" = "no";
 	      "administrative share" = "yes";
 	      "vfs objects" = "btrfs shadow_copy2";

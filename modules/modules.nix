@@ -9,6 +9,7 @@
     inputs.home-manager.nixosModules.home-manager
     inputs.sops-nix.nixosModules.sops
     inputs.nix-topology.nixosModules.default
+    ./common
     ./cli/better-tools.nix
     ./cli/nixvim.nix
     ./desktop/gnome.nix

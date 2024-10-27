@@ -49,11 +49,9 @@
       nixosConfigurations.nix-nextcloud = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          (import ./modules/common/disko.nix {device = "/dev/sda";})
           ./hosts/nix-nextcloud/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
-          ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
       };
@@ -61,11 +59,9 @@
       nixosConfigurations.nix-wordpress = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          (import ./modules/common/disko.nix {device = "/dev/sda";})
           ./hosts/nix-wordpress/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
-          ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
       };
@@ -73,23 +69,28 @@
       nixosConfigurations.nix-samba-fs = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          (import ./modules/common/disko.nix {device = "/dev/sda";})
           ./hosts/nix-samba-fs/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
-          ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
+      };
+
+      nixosConfigurations.nix-samba-dc = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+	modules = [
+	  ./hosts/nix-samba-dc/configuration.nix 
+	  ./modules/modules.nix 
+	  ./users/admin-users.nix
+	];
       };
 
       nixosConfigurations.nix-authentik = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          (import ./modules/common/disko.nix {device = "/dev/sda";})
           ./hosts/nix-authentik/configuration.nix
           ./modules/modules.nix
           ./users/admin-users.nix
-          ./modules/common/backup.nix
         ];
         specialArgs = {inherit inputs;};
       };

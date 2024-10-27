@@ -1,13 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}: {
-
+{pkgs, ...}: {
   astahhu.common = {
     is_server = true;
     is_qemuvm = true;
@@ -17,46 +11,25 @@
     };
   };
 
-  
-  #sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
+  # Change for each System
+  networking.hostName = "nix-samba-dc";
 
-  astahhu.services.samba-fs = {
-    enable = true;
-    shares.scans.browseable = "yes";
-  };
-
+  # Uncomment if you need Secrets for this Hosts, AFTER the first install  
+  # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
 
   # Networking
   networking.firewall.enable = true;
-
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  networking.hostName = "nix-samba-fs";
-  environment.etc = {
-    "resolv.conf".text = ''
-      nameserver 134.99.154.200
-      nameserver 134.99.154.201
-      search ad.astahhu.de
-    '';
-    hosts.text = lib.mkForce ''
-      127.0.0.1 localhost
-      134.99.154.59 nix-samba-fs.ad.astahhu.de nix-samba-fs
-    '';
-    "nsswitch.conf".text = lib.mkForce ''
-      passwd: files winbind
-      group: files winbind
-    '';
-  };
 
+  # Set your time zone.
   time.timeZone = "Europe/Berlin";
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     keyMap = "us";
   };
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  security.pam.sshAgentAuth.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -65,7 +38,8 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.10"; # Did you read the comment?
+  
+  myprograms.cli.better-tools.enable = true;
 
-  system.autoUpgrade.enable = true;
-  system.autoUpgrade.allowReboot = false;
+  nixpkgs.config.allowUnfree = true;
 }
