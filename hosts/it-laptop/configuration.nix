@@ -1,15 +1,14 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{
-  pkgs,
-  inputs,
-  config,
-  ...
+{ pkgs
+, inputs
+, config
+, ...
 }: {
   imports = [
     ../../fonts.nix
-    ../../modules/modules.nix
+    ../../modules
     ../../users/admin-users.nix
   ];
 
@@ -86,10 +85,11 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.florian = import ../../home/florian.nix;
-  astahhu.admin-users.florian.setPassword = false;
+  astahhu.common.admin-users.florian.setPassword = false;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    deploy-rs
     samba
     pinta
     apache-directory-studio

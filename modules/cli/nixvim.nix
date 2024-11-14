@@ -1,9 +1,8 @@
-{
-  pkgs,
-  config,
-  inputs,
-  lib,
-  ...
+{ pkgs
+, config
+, inputs
+, lib
+, ...
 }: {
   options = {
     myprograms.cli.nixvim.enable = lib.mkEnableOption "Enable nixvim";
@@ -36,26 +35,22 @@
       enable = true;
       plugins = {
         lualine.enable = true;
+        fidget.enable = true;
         lsp = {
           enable = true;
           servers = {
-            lua-ls.enable = true;
+            lua_ls.enable = true;
 
-            rust-analyzer = {
-              enable = true;
-              installRustc = true;
-              installCargo = true;
-            };
 
             nixd = {
               enable = true;
               settings = {
                 #nixpkgs = "${inputs.nixpkgs}";
-                formatting.command = ["nixpkgs-fmt"];
+                formatting.command = [ "nixpkgs-fmt" ];
               };
             };
 
-            java-language-server.enable = true;
+            java_language_server.enable = true;
 
             texlab.enable = true;
 
@@ -68,11 +63,18 @@
             marksman.enable = true;
           };
         };
+        rustaceanvim.enable = true;
 
-        dap.enable = true;
+        web-devicons.enable = true;
+
+        lsp-format.enable = true;
+        lspsaga.enable = true;
+
+        dap = {
+          enable = true;
+        };
         neotest = {
           enable = true;
-          adapters.rust.enable = true;
         };
 
         telescope.enable = true;
@@ -100,17 +102,17 @@
             };
 
             snippet.expand = ''
-                   function(args)
-              require('luasnip').lsp_expand(args.body)
-                   end
+              function(args)
+                require('luasnip').lsp_expand(args.body)
+              end
             '';
 
             sources = [
-              {name = "nvim_lsp";}
-              {name = "clippy";}
-              {name = "path";}
-              {name = "buffer";}
-              {name = "luasnip";}
+              { name = "nvim_lsp"; }
+              { name = "clippy"; }
+              { name = "path"; }
+              { name = "buffer"; }
+              { name = "luasnip"; }
             ];
           };
         };
@@ -123,20 +125,46 @@
           key = "<leader>g";
         }
         {
+          action = "<cmd>Lspsaga code_action<CR>";
+          key = "<leader>a";
+        }
+        {
+          action = "<cmd>Lspsaga rename<CR>";
+          key = "<leader>r";
+        }
+        {
           action = "<cmd>edit .<CR>";
           key = "<leader>o";
         }
         {
           action = "<cmd>Neotest run<CR>";
-          key = "<leader>t";
+          key = "<leader>tf";
+        }
+        {
+          action = "<cmd>lua require('neotest').run.run(vim.fn.getcwd())<CR>";
+          key = "<leader>tp";
+        }
+        {
+          action = "<cmd>lua require('neotest').watch.watch()<CR>";
+          key = "<leader>twf";
+        }
+        {
+          action = "<cmd>lua require('neotest').watch.toggle(vim.fn.getcwd())<CR>";
+          key = "<leader>twp";
+        }
+        {
+          action = "<cmd>lua require('neotest').summary.toggle()<CR>";
+          key = "<leader>ts";
         }
       ];
 
       globals.mapleader = " ";
       opts = {
+        signcolumn = "yes";
         number = true;
         shiftwidth = 2;
       };
     };
   };
 }
+
