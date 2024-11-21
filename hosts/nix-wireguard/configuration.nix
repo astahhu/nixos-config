@@ -181,6 +181,11 @@
 	  publicKey = "UPVDVIBvxODZLA/RTHt5sWRXBW9vdP8aXoHHR4LH6w4=";
 	  allowedIPs = ["10.105.42.25/32"];
 	}
+        {
+          name = "sotirislaptop";
+	  publicKey = "5ldnjq7yLo82hLO2FJlKOIs+6IT32tbdNj9zepExZ3E=";
+	  allowedIPs = ["10.105.42.26/32"];
+        }
       ];
     };
   };
