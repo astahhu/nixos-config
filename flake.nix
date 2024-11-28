@@ -7,8 +7,11 @@
     nixvim = {
       url = "github:nix-community/nixvim";
     };
+    deploy-rs.url = "github:serokell/deploy-rs";
+    devshell.url = "github:numtide/devshell";
     sops-nix.url = "github:Mic92/sops-nix";
     nix-tun.url = "/home/florian/Documents/nixos-modules"; #"github:nix-tun/nixos-modules";
+    flake-parts.url = "github:hercules-ci/flake-parts";
     nix-tun.inputs.nixpkgs.follows = "nixpkgs";
     wp4nix = {
       url = "github:helsinki-systems/wp4nix";
@@ -18,7 +21,6 @@
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-utils.url = "github:numtide/flake-utils";
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
@@ -28,129 +30,150 @@
     authentik-nix.url = "github:nix-community/authentik-nix";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    sops-nix,
-    ...
-  } @ inputs:
-    {
-      nixosConfigurations.it-laptop = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          (import ./hosts/it-laptop/disko.nix {device = "/dev/nvme0n1";})
-          ./hosts/it-laptop/configuration.nix
-          ./hosts/it-laptop/hardware-configuration.nix
-          ./hosts/it-laptop/boot.nix
+  outputs =
+    inputs @ { ... }: inputs.flake-parts.lib.mkFlake
+      {
+        inherit inputs;
+      }
+      {
+        imports = [
+          inputs.nix-topology.flakeModule
         ];
-        specialArgs = {inherit inputs;};
-      };
+        flake =
+          {
 
-      nixosConfigurations.nix-nextcloud = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/nix-nextcloud/configuration.nix
-          ./modules
-          ./users/admin-users.nix
+            nixosConfigurations.it-laptop = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [
+                (import ./hosts/it-laptop/disko.nix { device = "/dev/nvme0n1"; })
+                ./hosts/it-laptop/configuration.nix
+                ./hosts/it-laptop/hardware-configuration.nix
+                ./hosts/it-laptop/boot.nix
+              ];
+              specialArgs = { inherit inputs; };
+            };
+
+            nixosConfigurations.nix-nextcloud = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [
+                ./hosts/nix-nextcloud/configuration.nix
+                ./modules
+                ./users/admin-users.nix
+              ];
+              specialArgs = { inherit inputs; };
+            };
+
+            nixosConfigurations.nix-wordpress = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [
+                ./hosts/nix-wordpress/configuration.nix
+                ./modules
+                ./users/admin-users.nix
+              ];
+              specialArgs = { inherit inputs; };
+            };
+
+            nixosConfigurations.nix-samba-fs = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [
+                ./hosts/nix-samba-fs/configuration.nix
+                ./modules
+                ./users/admin-users.nix
+              ];
+              specialArgs = { inherit inputs; };
+            };
+
+            nixosConfigurations.nix-samba-dc = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [
+                ./hosts/nix-samba-dc/configuration.nix
+                ./modules
+                ./users/admin-users.nix
+              ];
+              specialArgs = { inherit inputs; };
+            };
+
+            nixosConfigurations.nix-wireguard = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [
+                ./hosts/nix-wireguard/configuration.nix
+                inputs.nixos-generators.nixosModules.all-formats
+                ./modules
+                ./users/admin-users.nix
+              ];
+              specialArgs = { inherit inputs; };
+            };
+
+            nixosConfigurations.nix-backup = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [
+                ./hosts/nix-backup/configuration.nix
+                ./modules
+              ];
+              specialArgs = { inherit inputs; };
+            };
+
+            nixosConfigurations.stick = inputs.nixpkgs.lib.nixosSystem {
+              specialArgs = { inherit inputs; };
+              modules = [
+                ./hosts/stick/configuration.nix
+                ./modules
+              ];
+            };
+
+            deploy.nodes = {
+              nix-nextcloud = {
+                hostname = "nix-nextcloud.ad.astahhu.de";
+                profiles.system = {
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-nextcloud;
+                  remoteBuild = true;
+                  user = "root";
+                };
+              };
+              nix-wireguard = {
+                hostname = "134.99.154.242";
+                profiles.system = {
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-wireguard;
+                  remoteBuild = true;
+                  user = "root";
+                };
+              };
+            };
+
+
+            checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks inputs.self.deploy) inputs.deploy-rs.lib;
+
+          };
+        systems = [
+          "x86_64-linux"
         ];
-        specialArgs = {inherit inputs;};
+        perSystem = { system, ... }:
+          let
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              overlays = [ inputs.nix-topology.overlays.default ];
+            };
+
+          in
+          {
+            devshells.default = with import inputs.nixpkgs { inherit system; };
+              mkShell {
+                sopsPGPKeyDirs = [
+                  "${toString ./.}/keys/hosts"
+                  "${toString ./.}/keys/users"
+                ];
+
+                nativeBuildInputs = [
+                  (pkgs.callPackage inputs.sops-nix { }).sops-import-keys-hook
+                  pkgs.deploy-rs
+                ];
+              };
+
+            formatter = pkgs.alejandra;
+
+            topology.modules = [
+              ./topology.nix
+            ];
+          };
       };
-
-      nixosConfigurations.nix-wordpress = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/nix-wordpress/configuration.nix
-          ./modules
-          ./users/admin-users.nix
-        ];
-        specialArgs = {inherit inputs;};
-      };
-
-      nixosConfigurations.nix-samba-fs = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/nix-samba-fs/configuration.nix
-          ./modules
-          ./users/admin-users.nix
-        ];
-        specialArgs = {inherit inputs;};
-      };
-
-      nixosConfigurations.nix-samba-dc = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-	modules = [
-	  ./hosts/nix-samba-dc/configuration.nix 
-	  ./modules 
-	  ./users/admin-users.nix
-	];
-      };
-
-      nixosConfigurations.nix-authentik = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/nix-authentik/configuration.nix
-          ./modules
-          ./users/admin-users.nix
-        ];
-        specialArgs = {inherit inputs;};
-      };
-
-      nixosConfigurations.nix-wireguard = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/nix-wireguard/configuration.nix
-          inputs.nixos-generators.nixosModules.all-formats
-          ./modules
-          ./users/admin-users.nix
-        ];
-        specialArgs = {inherit inputs;};
-      };
-
-      nixosConfigurations.nix-backup = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/nix-backup/configuration.nix
-          ./modules
-        ];
-        specialArgs = {inherit inputs;};
-      };
-
-      nixosConfigurations.stick = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
-        modules = [
-          ./hosts/stick/configuration.nix
-          ./modules
-        ];
-      };
-
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
-
-      devShells."x86_64-linux".default = with import nixpkgs {system = "x86_64-linux";};
-        mkShell {
-          sopsPGPKeyDirs = [
-            "${toString ./.}/keys/hosts"
-            "${toString ./.}/keys/users"
-          ];
-
-          nativeBuildInputs = [
-            (pkgs.callPackage sops-nix {}).sops-import-keys-hook
-          ];
-        };
-    }
-    // inputs.flake-utils.lib.eachDefaultSystem (system: rec {
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [inputs.nix-topology.overlays.default];
-      };
-
-      topology = import inputs.nix-topology {
-        inherit pkgs;
-        modules = [
-          # Your own file to define global topology. Works in principle like a nixos module but uses different options.
-          ./topology.nix
-          # Inline module to inform topology of your existing NixOS hosts.
-          {nixosConfigurations = self.nixosConfigurations;}
-        ];
-      };
-    });
 }
