@@ -1,21 +1,20 @@
-{
-  config,
-  pkgs,
-  lib,
-  inputs,
-  ...
+{ config
+, pkgs
+, lib
+, inputs
+, ...
 }: {
   imports = [
     inputs.nix-index-database.nixosModules.nix-index
   ];
 
   options = {
-    myprograms.cli.better-tools.enable = lib.mkEnableOption "Enable my default CLI Setup which should exist on any Machine";
+    astahhu.cli.better-tools.enable = lib.mkEnableOption "Enable my default CLI Setup which should exist on any Machine";
   };
 
   config = lib.mkMerge [
-    (lib.mkIf config.myprograms.cli.better-tools.enable {
-      nix.settings.experimental-features = ["nix-command" "flakes"];
+    (lib.mkIf config.astahhu.cli.better-tools.enable {
+      nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
       environment.systemPackages = with pkgs; [
         curl
@@ -29,6 +28,8 @@
         tmux
         duf
       ];
+
+      astahhu.cli.nixvim.enable = true;
 
       programs.git.enable = true;
 
@@ -78,7 +79,7 @@
         };
       };
     })
-    (lib.mkIf (!config.myprograms.cli.better-tools.enable) {
+    (lib.mkIf (!config.astahhu.cli.better-tools.enable) {
       programs.nix-index.enable = false;
       programs.nix-index.package = null;
     })

@@ -33,7 +33,7 @@
           neededForUsers = true;
         };
       })
-      (lib.attrsets.filterAttrs (name: value: value.setPassword) config.astahhu.admin-users);
+      (lib.attrsets.filterAttrs (name: value: value.setPassword) config.astahhu.common.admin-users);
 
     users.users =
       lib.attrsets.mapAttrs (name: value: {

@@ -5,7 +5,7 @@
 , ...
 }: {
   options = {
-    myprograms.cli.nixvim.enable = lib.mkEnableOption "Enable nixvim";
+    astahhu.cli.nixvim.enable = lib.mkEnableOption "Enable nixvim";
   };
 
   imports = [
@@ -13,7 +13,7 @@
     inputs.nixvim.nixosModules.nixvim
   ];
 
-  config = lib.mkIf config.myprograms.cli.nixvim.enable {
+  config = lib.mkIf config.astahhu.cli.nixvim.enable {
     environment.systemPackages = with pkgs; [
       cargo-nextest
       ripgrep

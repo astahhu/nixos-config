@@ -1,7 +1,6 @@
-{
-  lib,
-  inputs,
-  ...
+{ lib
+, inputs
+, ...
 }: {
   imports = [
     inputs.disko.nixosModules.default
@@ -24,5 +23,5 @@
   ];
 
   myprograms.stylix.enable = lib.mkDefault true;
-  myprograms.cli.better-tools.enable = lib.mkDefault true;
+  astahhu.cli.better-tools.enable = lib.mkDefault true;
 }
