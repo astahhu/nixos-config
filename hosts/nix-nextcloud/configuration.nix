@@ -8,6 +8,9 @@
 , ...
 }: {
 
+  imports = [
+    ./windmill.nix
+  ];
   astahhu.common = {
     is_server = true;
     is_qemuvm = true;
@@ -16,6 +19,12 @@
       device = "/dev/sda";
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    bun
+    rustc
+    cargo
+  ];
 
   # Networking
   networking.nat = {
@@ -42,22 +51,24 @@
 
   virtualisation.oci-containers.backend = "docker";
 
-  virtualisation.oci-containers.containers."collabora" = {
-    image = "collabora/code:latest";
-    environment = {
-      aliasgroup1 = "https://cloud.astahhu.de:443";
-      server_name = "collabora.astahhu.de";
-      extra_params = "--o:ssl.enable=true --o:remote_font_config.url=https://cloud.astahhu.de/apps/richdocuments/settings/fonts.json";
-    };
-    labels = {
-      "traefik.enable" = "true";
-      "traefik.http.routers.collabora.entrypoints" = "websecure";
-      "traefik.http.routers.collabora.rule" = "Host(`collabora.astahhu.de`)";
-      "traefik.http.routers.collabora.tls" = "true";
-      "traefik.http.routers.collabora.tls.certresolver" = "letsencrypt";
-      "traefik.http.services.collabora.loadbalancer.server.port" = "9980";
-      "traefik.http.services.collabora.loadbalancer.server.scheme" = "https";
-      "traefik.http.services.collabora.loadbalancer.serversTransport" = "collabora@file";
+  virtualisation.oci-containers.containers = {
+    "collabora" = {
+      image = "collabora/code:latest";
+      environment = {
+        aliasgroup1 = "https://cloud.astahhu.de:443";
+        server_name = "collabora.astahhu.de";
+        extra_params = "--o:ssl.enable=true --o:remote_font_config.url=https://cloud.astahhu.de/apps/richdocuments/settings/fonts.json";
+      };
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.collabora.entrypoints" = "websecure";
+        "traefik.http.routers.collabora.rule" = "Host(`collabora.astahhu.de`)";
+        "traefik.http.routers.collabora.tls" = "true";
+        "traefik.http.routers.collabora.tls.certresolver" = "letsencrypt";
+        "traefik.http.services.collabora.loadbalancer.server.port" = "9980";
+        "traefik.http.services.collabora.loadbalancer.server.scheme" = "https";
+        "traefik.http.services.collabora.loadbalancer.serversTransport" = "collabora@file";
+      };
     };
   };
 
@@ -75,6 +86,11 @@
       hostname = "cloud.astahhu.de";
       extraTrustedProxies = [ "134.99.154.202" "192.168.100.10" "192.168.100.11" "127.0.0.1" ];
     };
+  };
+
+  nix-tun.services.traefik.services.windmill = {
+    router.rule = "Host(`windmill.astahhu.de`)";
+    servers = [ "http://localhost:8001" ];
   };
 
   services.traefik.staticConfigOptions.entryPoints.web.proxyProtocol.insecure = true;
