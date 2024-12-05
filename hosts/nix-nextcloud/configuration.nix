@@ -88,11 +88,6 @@
     };
   };
 
-  nix-tun.services.traefik.services.windmill = {
-    router.rule = "Host(`windmill.astahhu.de`)";
-    servers = [ "http://localhost:8001" ];
-  };
-
   services.traefik.staticConfigOptions.entryPoints.web.proxyProtocol.insecure = true;
 
   services.traefik.staticConfigOptions.entryPoints.websecure.proxyProtocol.insecure = true; #.trustedIPs = [ "192.168.0.0/16" "127.0.0.1" ];

@@ -4,7 +4,7 @@
 {
 
   # volumes
-  nix-tun.sotrage.persist.subvolumes.windmill = {
+  nix-tun.storage.persist.subvolumes.windmill = {
     directories = {
       db_data = { };
       lsp_cache = { };
@@ -15,7 +15,7 @@
   };
 
   sops.secrets.windmill_env = {
-    sopsFile = "../../secrets/nix-nextcloud_windmill_pg_env";
+    sopsFile = ../../secrets/nix-nextcloud_windmill_pg_env;
     format = "binary";
   };
 
@@ -102,11 +102,20 @@
     dependsOn = [
       "windmill-db"
     ];
+    labels = {
+      "traefik.enable" = "true";
+      "traefik.http.routers.windmill.entrypoints" = "websecure";
+      "traefik.http.routers.windmill.rule" = "Host(`windmill.astahhu.de`)";
+      "traefik.http.routers.windmill.tls" = "true";
+      "traefik.http.services.windmill.loadbalancer.server.port" = "8000";
+      "traefik.http.routers.windmill.tls.certresolver" = "letsencrypt";
+    };
     log-driver = "journald";
     extraOptions = [
       "--network-alias=windmill_server"
       "--network=windmill_default"
     ];
+
   };
   systemd.services."docker-windmill-windmill_server" = {
     serviceConfig = {
