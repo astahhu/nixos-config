@@ -1,14 +1,13 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }: {
   options = {
-    myprograms.desktop.firefox.enable = lib.mkEnableOption "Enable Firefox";
+    astahhu.desktop.firefox.enable = lib.mkEnableOption "Enable Firefox";
   };
 
-  config = lib.mkIf config.myprograms.desktop.firefox.enable {
+  config = lib.mkIf config.astahhu.desktop.firefox.enable {
     programs.firefox = {
       enable = true;
       package = pkgs.firefox-esr;

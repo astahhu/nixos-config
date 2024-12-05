@@ -16,6 +16,7 @@
   config = lib.mkIf config.astahhu.cli.nixvim.enable {
     environment.systemPackages = with pkgs; [
       cargo-nextest
+      rust-analyzer
       ripgrep
     ];
 

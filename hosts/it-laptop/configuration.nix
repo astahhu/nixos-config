@@ -13,6 +13,10 @@
   ];
 
   astahhu.development.vm.enable = true;
+  astahhu.desktop = {
+    gnome.enable = true;
+    programs.enable = true;
+  };
   nix-tun.yubikey-gpg.enable = true;
   nix-tun.storage.persist = {
     enable = true;
@@ -31,13 +35,6 @@
   };
 
   sops.defaultSopsFile = ../../secrets/it-laptop.yaml;
-
-  myprograms = {
-    desktop.gnome.enable = true;
-    desktop.programs.enable = true;
-    cli.better-tools.enable = true;
-    cli.nixvim.enable = true;
-  };
 
   services = {
     fprintd.enable = false;
@@ -89,6 +86,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    rustc
+    cargo
     deploy-rs
     samba
     pinta
