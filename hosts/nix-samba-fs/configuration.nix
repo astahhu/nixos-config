@@ -1,13 +1,12 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{
-  pkgs,
-  config,
-  lib,
-  ...
+{ pkgs
+, config
+, lib
+, ...
 }: {
- 
+
   astahhu.common = {
     is_server = true;
     is_qemuvm = true;
@@ -19,30 +18,34 @@
 
   #sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
 
-  systemd.timers = lib.attrsets.mapAttrs' (name: value: {
-    name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
-    value = {
-      wantedBy = ["timers.target"];
-      timerConfig = {
-        OnBootSec = "5m";
-        OnUnitActiveSec = "1m";
-        Unit = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}.service'";
+  systemd.timers = lib.attrsets.mapAttrs'
+    (name: value: {
+      name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
+      value = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnBootSec = "5m";
+          OnUnitActiveSec = "1m";
+          Unit = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}.service'";
+        };
       };
-    };
-  }) (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
+    })
+    (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
 
-  systemd.services = lib.attrsets.mapAttrs' (name: value: {
-    name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
-    value = {
-      script = ''
-        ${pkgs.rclone}/bin/rclone sync -M 'asta2012:Intern/${name}' '/persist/samba-shares/${name}'
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        User = "root";
+  systemd.services = lib.attrsets.mapAttrs'
+    (name: value: {
+      name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
+      value = {
+        script = ''
+          ${pkgs.rclone}/bin/rclone copy -M 'asta2012:Intern/${name}' '/persist/samba-shares/${name}'
+        '';
+        serviceConfig = {
+          Type = "oneshot";
+          User = "root";
+        };
       };
-    };
-  }) (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
+    })
+    (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
 
   astahhu.services.samba-fs = {
     enable = true;
@@ -51,9 +54,9 @@
       home.browseable = "yes";
       profile = {
         comment = "Users profiles";
-	"read only" = "no";
+        "read only" = "no";
         browseable = "no";
-	"csc policy" = "disable";
+        "csc policy" = "disable";
       };
       software.browseable = "yes";
       # Intern (Nur die jeweiligen Personen können schreiben)
