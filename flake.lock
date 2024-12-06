@@ -910,15 +910,15 @@
       "locked": {
         "lastModified": 1731001513,
         "narHash": "sha256-laLqGi9fyTovxJCFT+HRlbQS2n8243NtqAPEBl393TA=",
-        "ref": "refs/heads/main",
+        "owner": "nix-tun",
+        "repo": "nixos-modules",
         "rev": "3da42c4199dc6be449b9200a4b05961a41af77fc",
-        "revCount": 87,
-        "type": "git",
-        "url": "file:///home/florian/Documents/nixos-modules"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/florian/Documents/nixos-modules"
+        "owner": "nix-tun",
+        "repo": "nixos-modules",
+        "type": "github"
       }
     },
     "nixlib": {

@@ -1,6 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running `nixos-help`).
 { pkgs, ... }: {
   astahhu.common = {
     is_server = true;
@@ -15,7 +12,7 @@
   networking.hostName = "nix-webserver";
 
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
-  # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
+  sops.defaultSopsFile = ../../secrets/nix-webserver.yaml;
 
   # Networking
   networking.firewall.enable = true;
@@ -30,6 +27,18 @@
     keyMap = "us";
   };
 
+
+  nix-tun.services.traefik = {
+    enable = true;
+    letsencryptMail = "it@asta.hhu.de";
+    enable_docker = true;
+  };
+
+  services.traefik.staticConfigOptions.entryPoints.websecure.proxyProtocol.trustedIPs = [ "134.99.154.48" ];
+
+  astahhu.wordpress.sites.astahhu = {
+    hostname = "astahhu.de";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

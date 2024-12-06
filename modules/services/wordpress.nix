@@ -1,33 +1,31 @@
-{
-  config,
-  pkgs,
-  lib,
-  inputs,
-  ...
-}: let
-  wp4nix = pkgs.callPackage "${inputs.wp4nix}" {};
+{ config
+, pkgs
+, lib
+, ...
+}:
+let
 
-  instanceSettings = {
-    lib,
-    name,
-    config,
-    ...
-  }: {
-    options = {
-      baseDir = lib.mkOption {
-        type = lib.types.str;
-        default = "wordpress/${builtins.replaceStrings ["."] ["-"] name}";
-        description = ''
-          The Directory where any Persistent Data for the Wordpress Container is Stored
-        '';
+  instanceSettings =
+    { lib
+    , name
+    , config
+    , ...
+    }: {
+      options = {
+        hostname = lib.mkOption {
+          type = lib.types.str;
+          description = ''
+            The hostname of the Wordpress Site.
+          '';
+        };
       };
     };
-  };
-in {
+in
+{
   options.astahhu.wordpress = {
     sites = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule instanceSettings);
-      default = {};
+      default = { };
       description = ''
         Specification of one more Wordpress Containers to Serve
       '';
@@ -35,103 +33,209 @@ in {
   };
 
   config = {
-    nixpkgs.overlays = [
-      (self: super: {
-        wordpressPackages = wp4nix;
-      })
-    ];
 
-    nix-tun.storage.persist.subvolumes =
-      lib.attrsets.mapAttrs' (name: value: {
-        name = value.baseDir;
-        value = {
-          mode = "0755";
-          directories = {
-            wordpress = {
-              mode = "0755";
-              group = "root";
-              owner = "root";
-            };
-            mysql = {
-              mode = "0700";
-              owner = builtins.toString config.containers."${builtins.replaceStrings ["."] ["-"] ("wp-" + name)}".config.users.users.mysql.uid;
-              group = builtins.toString config.containers."${builtins.replaceStrings ["."] ["-"] ("wp-" + name)}".config.users.groups.mysql.gid;
-            };
-          };
-        };
+    sops.secrets = lib.attrsets.mapAttrs'
+      (name: value: {
+        name = "wp-${name}-db-password";
+        value = { };
       })
       config.astahhu.wordpress.sites;
-    astahhu.traefik.services = lib.attrsets.mapAttrs' (name: value:
-      lib.attrsets.nameValuePair (builtins.replaceStrings ["."] ["-"] ("wp-" + name))
-      {
-        router.rule = "Host(`${name}`) || Host(`www.${name}`)";
-        router.tls.enable = false;
-        servers = [
-          "http://${builtins.replaceStrings ["."] ["-"] ("wp-" + name)}"
-        ];
-      })
-    config.astahhu.wordpress.sites;
 
-    containers = lib.attrsets.mapAttrs' (name: value:
-      lib.attrsets.nameValuePair (builtins.replaceStrings ["."] ["-"] ("wp-" + name))
-      {
-        autoStart = true;
-        bindMounts.persistent = {
-          hostPath = "${config.nix-tun.storage.persist.path}/${value.baseDir}";
-          mountPoint = "/persist";
-          isReadOnly = false;
-        };
-        bindMounts.wordpress = {
-          hostPath = "${config.nix-tun.storage.persist.path}/${value.baseDir}/wordpress";
-          mountPoint = "/var/lib/wordpress";
-          isReadOnly = false;
-        };
-        bindMounts.mysql = {
-          hostPath = "${config.nix-tun.storage.persist.path}/${value.baseDir}/mysql";
-          mountPoint = "/var/lib/mysql";
-          isReadOnly = false;
-        };
-        privateNetwork = true;
-        ephemeral = true;
-        hostAddress = "192.168.100.10";
-        localAddress = "192.168.100.11";
-
-        config = {pkgs, ...}: {
-          nixpkgs.overlays = [
-            (self: super: {
-              wordpressPackages = wp4nix;
-            })
-          ];
-
-          networking.firewall.allowedTCPPorts = [80];
-          services.wordpress.sites."${name}" = {
-            package = pkgs.wordpress6_5;
-            plugins = {
-              inherit
-                (pkgs.wordpressPackages.plugins)
-                static-mail-sender-configurator
-                authorizer
-                ;
-            };
-
-            languages = [
-              pkgs.wordpressPackages.languages.de_DE
-            ];
-
-            settings = {
-              WP_DEBUG = true;
-              WPLANG = "de_DE";
-              ## Mail settings
-              WP_MAIL_FROM = "noreply@asta.hhu.de";
-              FORCE_SSL_ADMIN = true;
-            };
-
-            extraConfig = ''
-              $_SERVER['HTTPS']='on';
-            '';
+    sops.templates =
+      (lib.attrsets.mapAttrs'
+        (name: value: {
+          name = "wp-${name}.env";
+          value = {
+            content =
+              let
+                secret = config.sops.placeholder."wp-${name}-db-password";
+              in
+              ''
+                WORDPRESS_DB_PASSWORD=${secret}
+              '';
           };
-        };
-      })
-    config.astahhu.wordpress.sites;
+        }
+        )
+        config.astahhu.wordpress.sites) //
+      (lib.attrsets.mapAttrs'
+        (name: value: {
+          name = "wp-${name}-db.env";
+          value = {
+            content =
+              let
+                secret = config.sops.placeholder."wp-${name}-db-password";
+              in
+              ''
+                MARIADB_PASSWORD=${secret}
+              '';
+          };
+        }
+        )
+        config.astahhu.wordpress.sites);
+
+    nix-tun.storage.persist.subvolumes =
+      lib.attrsets.mapAttrs'
+        (name: value: {
+          name = "wp-${name}";
+          value = {
+            mode = "0755";
+            directories = {
+              wordpress = {
+                mode = "0755";
+              };
+              mysql = {
+                mode = "0700";
+              };
+            };
+          };
+        })
+        config.astahhu.wordpress.sites;
+
+    # Runtime
+    virtualisation.docker = {
+      enable = true;
+      autoPrune.enable = true;
+    };
+    virtualisation.oci-containers.backend = "docker";
+
+    # Containers
+    virtualisation.oci-containers.containers =
+      (lib.attrsets.mapAttrs'
+        (name: value: {
+          name = "wp-${name}-db";
+          value = {
+            image = "mariadb";
+            environment = {
+              "MYSQL_DATABASE" = "wp-${name}-db";
+              "MYSQL_RANDOM_ROOT_PASSWORD" = "1";
+              "MYSQL_USER" = "wp-${name}";
+            };
+            environmentFiles = [
+              config.sops.templates."wp-${name}-db.env".path
+            ];
+            volumes = [
+              "${config.nix-tun.storage.persist.path}/wp-${name}/mysql:/var/lib/mysql"
+            ];
+            log-driver = "journald";
+            extraOptions = [
+              "--network-alias=wp-${name}-db"
+              "--network=wp_${name}_default"
+            ];
+          };
+        })
+        config.astahhu.wordpress.sites) //
+      (lib.attrsets.mapAttrs'
+        (name: value: {
+          name = "wp-${name}";
+          value = {
+            image = "wordpress";
+            environment = {
+              "WORDPRESS_DB_HOST" = "wp-${name}-db";
+              "WORDPRESS_DB_NAME" = "wp-${name}-db";
+              "WORDPRESS_DB_USER" = "wp-${name}";
+            };
+            labels = {
+              "traefik.enable" = "true";
+              "traefik.http.routers.wp-${name}.entrypoints" = "websecure";
+              "traefik.http.routers.wp-${name}.rule" = "Host(`${value.hostname}`) || Host(`www.${value.hostname}`)";
+              #"traefik.http.routers.wp-${name}.tls" = "false";
+              "traefik.http.routers.wp-${name}.priority" = "1";
+              #"traefik.http.routers.wp-${name}.tls.certresolver" = "letsencrypt";
+              "traefik.http.services.wp-${name}.loadbalancer.server.port" = "80";
+            };
+            environmentFiles = [
+              config.sops.templates."wp-${name}.env".path
+            ];
+            volumes = [
+              "${config.nix-tun.storage.persist.path}/wp-${name}/wordpress:/var/www/html"
+            ];
+            log-driver = "journald";
+            extraOptions = [
+              "--network-alias=wp-${name}"
+              "--network=wp_${name}_default"
+            ];
+          };
+        })
+        config.astahhu.wordpress.sites);
+
+    systemd.services =
+      (lib.attrsets.mapAttrs'
+        (name: value: {
+          name = "docker-wp-${name}-db";
+          value = {
+            serviceConfig = {
+              Restart = lib.mkOverride 500 "always";
+              RestartMaxDelaySec = lib.mkOverride 500 "1m";
+              RestartSec = lib.mkOverride 500 "100ms";
+              RestartSteps = lib.mkOverride 500 9;
+            };
+            after = [
+              "docker-network-wp_${name}_default.service"
+            ];
+            requires = [
+              "docker-network-wp_${name}_default.service"
+            ];
+            partOf = [
+              "docker-compose-wp-${name}-root.target"
+            ];
+            wantedBy = [
+              "docker-compose-wp-${name}-root.target"
+            ];
+          };
+        })
+        config.astahhu.wordpress.sites) // (lib.attrsets.mapAttrs'
+        (name: value: {
+          name = "docker-wp-${name}";
+          value = {
+            serviceConfig = {
+              Restart = lib.mkOverride 500 "always";
+              RestartMaxDelaySec = lib.mkOverride 500 "1m";
+              RestartSec = lib.mkOverride 500 "100ms";
+              RestartSteps = lib.mkOverride 500 9;
+            };
+            after = [
+              "docker-network-wp_${name}_default.service"
+            ];
+            requires = [
+              "docker-network-wp_${name}_default.service"
+            ];
+            partOf = [
+              "docker-compose-wp-${name}-root.target"
+            ];
+            wantedBy = [
+              "docker-compose-wp-${name}-root.target"
+            ];
+          };
+        })
+        config.astahhu.wordpress.sites) // (lib.attrsets.mapAttrs'
+        (name: value: {
+          name = "docker-network-wp_${name}_default";
+          value = {
+            path = [ pkgs.docker ];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+              ExecStop = "docker network rm -f wp_${name}_default";
+            };
+            script = ''
+              docker network inspect wp_${name}_default || docker network create wp_${name}_default
+            '';
+            partOf = [ "docker-compose-wp-${name}-root.target" ];
+            wantedBy = [ "docker-compose-wp-${name}-root.target" ];
+          };
+        })
+        config.astahhu.wordpress.sites) // (lib.attrsets.mapAttrs'
+        (name: value:
+          {
+            name = "docker-compose-wp-${name}-root";
+            value = {
+              unitConfig = {
+                Description = "Root for ${name} Wordpress Docker containers";
+              };
+              wantedBy = [ "multi-user.target" ];
+            };
+          })
+        config.astahhu.wordpress.sites);
+
   };
 }

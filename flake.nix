@@ -10,7 +10,7 @@
     deploy-rs.url = "github:serokell/deploy-rs";
     devshell.url = "github:numtide/devshell";
     sops-nix.url = "github:Mic92/sops-nix";
-    nix-tun.url = "/home/florian/Documents/nixos-modules"; #"github:nix-tun/nixos-modules";
+    nix-tun.url = "github:nix-tun/nixos-modules";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-tun.inputs.nixpkgs.follows = "nixpkgs";
     wp4nix = {
