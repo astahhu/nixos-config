@@ -186,7 +186,7 @@
         {
           name = "sotirislaptop";
           publicKey = "5ldnjq7yLo82hLO2FJlKOIs+6IT32tbdNj9zepExZ3E=";
-          allowedIPs = [ "10.105.42.26/32" ];
+          allowedIPs = [ "10.105.42.27/32" ];
         }
       ];
     };
