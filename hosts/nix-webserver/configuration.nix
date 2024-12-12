@@ -34,7 +34,20 @@
     enable_docker = true;
   };
 
-  services.traefik.staticConfigOptions.entryPoints.websecure.proxyProtocol.trustedIPs = [ "134.99.154.48" ];
+  services.traefik.staticConfigOptions.entryPoints.websecure = {
+    forwardedHeaders.insecure = true; #trustedIPs = [ "134.99.154.48" ];
+    proxyProtocol.insecure = true; #trustedIPs = [ "134.99.154.48" ];
+  };
+
+  astahhu.services.calendar-join = {
+    enable = true;
+    calendars = {
+      fachschaften = {
+        fsphysik = "https://calendar.google.com/calendar/ical/fsphysik%40uni-duesseldorf.de/public/basic.ics";
+        fsinfo = "https://nextcloud.inphima.de/remote.php/dav/public-calendars/CAx5MEp7cGrQ6cEe?export";
+      };
+    };
+  };
 
   astahhu.wordpress.sites.astahhu = {
     hostname = "astahhu.de";

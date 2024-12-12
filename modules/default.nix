@@ -8,6 +8,7 @@
     inputs.home-manager.nixosModules.home-manager
     inputs.sops-nix.nixosModules.sops
     inputs.nix-topology.nixosModules.default
+    ./services/calendar-join.nix
     ./common
     ./cli/better-tools.nix
     ./cli/nixvim.nix

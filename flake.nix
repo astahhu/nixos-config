@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOs/nixpkgs/nixpkgs-unstable";
+    calendar-join.url = "github:astahhu/calendar-join";
     home-manager.url = "github:nix-community/home-manager";
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
