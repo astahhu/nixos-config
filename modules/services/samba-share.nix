@@ -93,12 +93,12 @@
 	}
           (lib.attrsets.mapAttrs' (name: value: {
 	    name = "${name}";
-	    value = value // {
+	    value = {
 	      path = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
 	      "read only" = "no";
 	      "administrative share" = "yes";
 	      "vfs objects" = "btrfs shadow_copy2";
-	    };
+	    } // value;
           })
           config.astahhu.services.samba-fs.shares)
 	];
