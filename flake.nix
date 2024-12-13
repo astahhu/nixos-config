@@ -64,16 +64,6 @@
               specialArgs = { inherit inputs; };
             };
 
-            nixosConfigurations.nix-wordpress = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-wordpress/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
-
             nixosConfigurations.nix-samba-fs = inputs.nixpkgs.lib.nixosSystem {
               system = "x86_64-linux";
               modules = [
@@ -133,6 +123,14 @@
             };
 
             deploy.nodes = {
+              nix-samba-fs = {
+                hostname = "nix-samba-fs.ad.astahhu.de";
+                profiles.system = {
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-fs;
+                  remoteBuild = true;
+                  user = "root";
+                };
+              };
               nix-nextcloud = {
                 hostname = "nix-nextcloud.ad.astahhu.de";
                 profiles.system = {
