@@ -23,6 +23,7 @@ let
 in
 {
   options.astahhu.wordpress = {
+    enable = lib.mkEnableOption "Enable the wordpress Module";
     sites = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule instanceSettings);
       default = { };

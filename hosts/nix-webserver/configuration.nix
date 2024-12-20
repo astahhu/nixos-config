@@ -43,14 +43,34 @@
     enable = true;
     calendars = {
       fachschaften = {
-        fsphysik = "https://calendar.google.com/calendar/ical/fsphysik%40uni-duesseldorf.de/public/basic.ics";
-        fsinfo = "https://nextcloud.inphima.de/remote.php/dav/public-calendars/CAx5MEp7cGrQ6cEe?export";
+        "FS Physik" = "https://calendar.google.com/calendar/ical/fsphysik%40uni-duesseldorf.de/public/basic.ics";
+        "FS Info" = "https://nextcloud.inphima.de/remote.php/dav/public-calendars/CAx5MEp7cGrQ6cEe?export";
       };
     };
   };
 
-  astahhu.wordpress.sites.astahhu = {
-    hostname = "astahhu.de";
+  astahhu.wordpress = {
+    enable = true;
+    sites = {
+      astahhu = {
+        hostname = "astahhu.de";
+      };
+      fsref = {
+        hostname = "fsref.astahhu.de";
+      };
+      sp = {
+        hostname = "sphhu.de";
+      };
+      finanznen = {
+        hostname = "finanzen.astahhu.de";
+      };
+      verleih = {
+        hostname = "verleih.astahhu.de";
+      };
+      esaghhu = {
+        hostname = "esaghhu.de";
+      };
+    };
   };
 
   # This value determines the NixOS release from which the default

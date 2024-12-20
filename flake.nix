@@ -131,6 +131,15 @@
                   user = "root";
                 };
               };
+              nix-webserver = {
+	        hostname = "134.99.154.51";
+                profiles.system = {
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-webserver;
+                  remoteBuild = true;
+                  user = "root";
+                };
+
+              };
               nix-nextcloud = {
                 hostname = "nix-nextcloud.ad.astahhu.de";
                 profiles.system = {

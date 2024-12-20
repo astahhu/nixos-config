@@ -16,7 +16,7 @@
     };
 
   };
-  config = {
+  config = lib.mkIf config.astahhu.services.calendar-join.enable {
     nix-tun.services.traefik.services.calendar-join = {
       router.rule = "Host(`calendar.astahhu.de`)";
       router.tls.enable = false;
