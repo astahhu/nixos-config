@@ -61,7 +61,7 @@
       sp = {
         hostname = "sphhu.de";
       };
-      finanznen = {
+      finanzen = {
         hostname = "finanzen.astahhu.de";
       };
       verleih = {
@@ -69,6 +69,9 @@
       };
       esaghhu = {
         hostname = "esaghhu.de";
+      };
+      fsbio = {
+        hostname = "fsbio.atahhu.de";
       };
     };
   };

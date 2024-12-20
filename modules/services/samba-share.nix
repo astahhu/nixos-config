@@ -71,7 +71,6 @@
       enable = true;
       package = pkgs.samba4Full;
       openFirewall = true;
-      securityType = "ads";
       nsswins = true;
 
 
@@ -80,6 +79,7 @@
           global =
             {
               "allow trusted domains" = "yes";
+              "security" = "ads";
               "workgroup" = "AD.ASTAHHU";
               "realm" = "ad.astahhu.de";
               "log level" = " 0 shadow_copy:4";

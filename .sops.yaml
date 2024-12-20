@@ -8,6 +8,7 @@ keys:
   - &nix-wordpress ae6f1f5c96be2434407369059eb3799f71bc7edf
   - &nix-wireguard 3eb256e34ecdccf45aa7b4982bb217347ac00885
   - &it-laptop bc4411e216f4f87c945dd8f7c7df1be1dcba335e
+  - &nix-webserver e488a8340ef5a7b34ad32aa120c51cdbd64d4ac0
 creation_rules:
   - path_regex: secrets/nix-nextcloud*
     key_groups:
@@ -39,3 +40,9 @@ creation_rules:
         - *florian-yubikey
         - *florian_other_yubikey
         - *nix-authentik
+  - path_regex: secrets/nix-webserver*
+    key_groups:
+      - pgp:
+        - *florian_other_yubikey
+        - *florian-yubikey
+        - *nix-webserver

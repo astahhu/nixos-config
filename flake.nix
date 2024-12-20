@@ -132,7 +132,7 @@
                 };
               };
               nix-webserver = {
-	        hostname = "134.99.154.51";
+                hostname = "134.99.154.51";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-webserver;
                   remoteBuild = true;
@@ -174,6 +174,9 @@
 
           in
           {
+
+            packages.default = { };
+
             devShells.default = with import inputs.nixpkgs { inherit system; };
               mkShell {
                 sopsPGPKeyDirs = [
