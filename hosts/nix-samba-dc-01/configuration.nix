@@ -22,14 +22,14 @@
       networkmanager.enable = true; # Easiest to use and most distros use this by default.
       defaultGateway = { address = "134.99.154.1"; interface = "eth0"; };
       useDHCP = false;
-      hostName = "nix-samba-dc";
+      hostName = "nix-samba-dc-01";
       domain = "ad.astahhu.de";
       interfaces = {
         eth0 = {
           ipv4 = {
             "addresses" = [
               {
-                address = "134.99.154.201";
+                address = "134.99.154.200";
                 prefixLength = 24;
               }
             ];
@@ -42,7 +42,7 @@
 
   astahhu.services.samba-dc = {
     enable = true;
-    name = "NIX-SAMBA-DC";
+    name = "NIX-SAMBA-DC-01";
   };
 
   services.bind = {

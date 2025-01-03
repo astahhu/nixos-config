@@ -71,7 +71,7 @@
         hostname = "esaghhu.de";
       };
       fsbio = {
-        hostname = "fsbio.atahhu.de";
+        hostname = "fsbio.astahhu.de";
       };
     };
   };

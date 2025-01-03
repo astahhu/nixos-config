@@ -19,6 +19,7 @@
     ./services/wordpress.nix
     ./services/traefik.nix
     ./services/samba-share.nix
+    ./services/samba-dc.nix
     ./development/vm.nix
     ./stylix.nix
   ];
