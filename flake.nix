@@ -84,6 +84,16 @@
               specialArgs = { inherit inputs; };
             };
 
+            nixosConfigurations.nix-samba-dc-01 = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [
+                ./hosts/nix-samba-dc-01/configuration.nix
+                ./modules
+                ./users/admin-users.nix
+              ];
+              specialArgs = { inherit inputs; };
+            };
+
             nixosConfigurations.nix-webserver = inputs.nixpkgs.lib.nixosSystem {
               system = "x86_64-linux";
               modules = [
@@ -112,14 +122,6 @@
                 ./modules
               ];
               specialArgs = { inherit inputs; };
-            };
-
-            nixosConfigurations.stick = inputs.nixpkgs.lib.nixosSystem {
-              specialArgs = { inherit inputs; };
-              modules = [
-                ./hosts/stick/configuration.nix
-                ./modules
-              ];
             };
 
             deploy.nodes = {
