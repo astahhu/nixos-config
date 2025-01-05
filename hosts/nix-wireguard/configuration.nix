@@ -188,6 +188,11 @@
           publicKey = "epOFx7BPGQ1ZbN2aX90ARKp8+qi4Z4JhXy+fOqClo34=";
           allowedIPs = [ "10.105.42.27/32" ];
         }
+        {
+          name = "sotirisdesktop";
+          publicKey = "HHlyGpKT07fHtBv3ggVhYzkcHfoA18Kty99GdddgX1Y=";
+          allowedIPs = [ "10.105.42.28/32" ];
+        }
       ];
     };
   };
