@@ -1,8 +1,8 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config
+, lib
+, ...
+}:
+let
   inherit
     (config.lib.topology)
     mkInternet
@@ -10,7 +10,8 @@
     mkSwitch
     mkConnection
     ;
-in {
+in
+{
   networks.internet = {
     name = "Internet";
   };
@@ -49,7 +50,7 @@ in {
         virtual = true;
       };
       "eth0" = {
-        addresses = ["134.99.154.250"];
+        addresses = [ "134.99.154.250" ];
         network = "intern";
       };
     };
@@ -64,7 +65,7 @@ in {
       };
       "eth0" = {
         network = "intern";
-        addresses = ["134.99.154.251"];
+        addresses = [ "134.99.154.251" ];
       };
     };
   };
@@ -83,9 +84,7 @@ in {
     guestType = "VM";
   };
 
-  nodes."samba-dc" = {
-    deviceType = "cloud-server";
-    deviceIcon = ./icons/server-svgrepo-com.svg;
+  nodes."nix-samba-dc-01" = {
     parent = "server-01";
     guestType = "VM";
   };
@@ -117,13 +116,6 @@ in {
     guestType = "VM";
   };
 
-  nodes."asta-datevbk-v-01.asta2012" = {
-    deviceType = "cloud-server";
-    deviceIcon = ./icons/server-svgrepo-com.svg;
-    parent = "server-02";
-    guestType = "VM";
-  };
-
   nodes."asta-dc-v-02.asta2012" = {
     deviceType = "cloud-server";
     deviceIcon = ./icons/server-svgrepo-com.svg;
@@ -145,9 +137,7 @@ in {
     guestType = "VM";
   };
 
-  nodes."samba-dc-01" = {
-    deviceType = "cloud-server";
-    deviceIcon = ./icons/server-svgrepo-com.svg;
+  nodes."nix-samba-dc" = {
     parent = "server-02";
     guestType = "VM";
   };
@@ -162,17 +152,12 @@ in {
     guestType = "VM";
   };
 
-  nodes.nix-wordpress = {
-    parent = "server-02";
-    guestType = "VM";
-  };
-
   nodes.it-laptop = {
     deviceType = lib.mkForce "laptop";
     interfaces.wg0 = {
       network = "wireguard";
       type = "wireguard";
-      physicalConnections = [(mkConnection "asta-wgvpn-01.asta2012" "wg0")];
+      physicalConnections = [ (mkConnection "asta-wgvpn-01.asta2012" "wg0") ];
     };
   };
 

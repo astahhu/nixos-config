@@ -1,7 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{ pkgs, config, ... }: {
+{ pkgs, config, lib, ... }: {
   astahhu.common = {
     is_server = true;
     is_qemuvm = true;
@@ -10,6 +10,18 @@
       device = "/dev/sda";
     };
   };
+
+  environment.etc."resolv.conf".text = ''
+    search ad.astahhu.de 
+    nameserver 127.0.0.1
+  '';
+
+  environment.etc."hosts".text = lib.mkForce ''
+    127.0.0.1 localhost
+    134.99.154.200 nix-samba-dc-01.ad.astahhu.de nix-samba-dc-01
+  '';
+
+
 
   # Change for each System
   networking =
@@ -21,6 +33,7 @@
       };
       networkmanager.enable = true; # Easiest to use and most distros use this by default.
       defaultGateway = { address = "134.99.154.1"; interface = "eth0"; };
+
       useDHCP = false;
       hostName = "nix-samba-dc-01";
       domain = "ad.astahhu.de";
@@ -43,6 +56,12 @@
   astahhu.services.samba-dc = {
     enable = true;
     name = "NIX-SAMBA-DC-01";
+  };
+
+
+  ## Fixes a Segfault in bind + samba see: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1074378
+  systemd.services.bind.environment = {
+    LDB_MODULES_DISABLE_DEEPBIND = "true";
   };
 
   services.bind = {

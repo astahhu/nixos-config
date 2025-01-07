@@ -125,6 +125,22 @@
             };
 
             deploy.nodes = {
+              nix-samba-dc-01 = {
+                hostname = "nix-samba-dc-01.ad.astahhu.de";
+                profiles.system = {
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc-01;
+                  remoteBuild = true;
+                  user = "root";
+                };
+              };
+              nix-samba-dc = {
+                hostname = "nix-samba-dc.ad.astahhu.de";
+                profiles.system = {
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc;
+                  remoteBuild = true;
+                  user = "root";
+                };
+              };
               nix-samba-fs = {
                 hostname = "nix-samba-fs.ad.astahhu.de";
                 profiles.system = {

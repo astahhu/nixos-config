@@ -33,6 +33,7 @@
         (name: value: {
           name = "samba-shares/${name}";
           value.group = "1000512";
+          value.mode = "0770";
         })
         config.astahhu.services.samba-fs.shares
       // {
@@ -55,6 +56,12 @@
           dns_lookup_realm = false;
           dns_lookup_kdc = true;
         };
+        realms = {
+          "AD.ASTAHHU.DE" = {
+            "default_domain" = "ad.astahhu.de";
+          };
+        };
+
         localauth = {
           module = "winbind:${config.services.samba.package}/lib/samba/krb5/winbind_krb5_localauth.so";
           enable_only = "winbind";
@@ -104,13 +111,15 @@
                 "veto files" = "/.snapshots/";
                 "veto oplock files" = "/.snapshots/";
                 "administrative share" = "yes";
-                "vfs objects" = "btrfs shadow_copy2";
+                "vfs objects" = "btrfs shadow_copy2 acl_xattr";
                 "shadow:fixinodes" = "yes";
                 "shadow:localtime" = "yes";
                 "shadow:format" = "${name}.%Y%m%dT%H%M%S%z";
                 "shadow:snapdir" = ".snapshots";
                 "shadow:crossmountpoints" = "yes";
                 "shadow:mountpoint" = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
+                "inherit permissions" = "yes";
+                "inherit owner" = "yes";
               } // value;
             })
             config.astahhu.services.samba-fs.shares)];

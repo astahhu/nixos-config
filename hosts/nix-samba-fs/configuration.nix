@@ -18,34 +18,34 @@
 
   #sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
 
-  systemd.timers = lib.attrsets.mapAttrs'
-    (name: value: {
-      name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
-      value = {
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnBootSec = "5m";
-          OnUnitActiveSec = "1m";
-          Unit = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}.service'";
-        };
-      };
-    })
-    (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
+  #systemd.timers = lib.attrsets.mapAttrs'
+  #  (name: value: {
+  #    name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
+  #    value = {
+  #      wantedBy = [ "timers.target" ];
+  #      timerConfig = {
+  #        OnBootSec = "5m";
+  #        OnUnitActiveSec = "1m";
+  #        Unit = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}.service'";
+  #      };
+  #    };
+  #  })
+  #  (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
 
-  systemd.services = lib.attrsets.mapAttrs'
-    (name: value: {
-      name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
-      value = {
-        script = ''
-          ${pkgs.rclone}/bin/rclone copy -M 'asta2012:Intern/${name}' '/persist/samba-shares/${name}'
-        '';
-        serviceConfig = {
-          Type = "oneshot";
-          User = "root";
-        };
-      };
-    })
-    (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
+  #systemd.services = lib.attrsets.mapAttrs'
+  #  (name: value: {
+  #    name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
+  #    value = {
+  #      script = ''
+  #        ${pkgs.rclone}/bin/rclone copy -M 'asta2012:Intern/${name}' '/persist/samba-shares/${name}'
+  #      '';
+  #      serviceConfig = {
+  #        Type = "oneshot";
+  #        User = "root";
+  #      };
+  #    };
+  #  })
+  #  (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
 
   astahhu.services.samba-fs = {
     enable = true;
