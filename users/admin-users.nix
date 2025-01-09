@@ -12,7 +12,7 @@
     astahhu.common.admin-users.sotiris = {
       setPassword = false;
       sshKeys = [
-        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIC4vCeJwUHJMs271hph19o61HclszDCTmAIxWAFI8dyYAAAABHNzaDo= Yubikey Primary"
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCukhcaJKi02N+/F8cbX+4qK/X2zUa3a337tMSPo0QBA7OpvlipGN6gTl4Ky90OURsX3XiKXb2pXzIeFNfNZcgNDKbfoZ60xKDGuOPSRriUtvPuMjKmZRXn09onjCl5zm95viSE2jZWZ+HC/N8CeRHJV8Ccfxg8v8i8Jbk5TFkRbaQfH4B1n6hQmp/gX2r3/8V9DjhJ4lG+HnzjT1nuoAmti/Lb/ikvvjwXyspuUFlqT/kbaBERn4PYF1HL6js3waUVVqWSumoJyciZqb5Hd+CFhgSj+FesV1PaOLIfTZNB7NaR25Ti4Y//kGHQUvreWWb9DKzsKw3GFCm4Wo+4xj0e9Ha9um1iaw/17PTbdVWbis+6MAOX96lA2xJMLKC6MTPXiTXsK24JCYEUt2/Wppma8vJ1KhApqkEmFpqlqvDrArlLwKPwrj4/sg0hPRst8uSsRxTSuNoPxH1K4Jfdfqzw/LCHqLkAAaM4mnppmqmrdAjYiHokYrLvLw4UGlRngCSUyBIVedtjlB85QP/q8RQWy5s8Q9MVXoAz7o5+uszBGlbxBo1MLdM2XzzyhQExMnwBSl2jvQUxp7jf62WEeEbhCo76+v4L07Qct+IIbV306WTCwVksMfdAdoYQ5Qq1rZGZ32P62eGtZVcl/aDCiyWo02igkMeznjq0IBjcac8Waw== Yubikey Primary"
       ];
     };
   };
