@@ -52,7 +52,7 @@
       enable = true;
       settings = {
         libdefaults = {
-          default_realm = "ad.astahhu.de";
+          default_realm = "AD.ASTAHHU.DE";
           dns_lookup_realm = false;
           dns_lookup_kdc = true;
         };
@@ -88,7 +88,7 @@
               "allow trusted domains" = "yes";
               "security" = "ads";
               "workgroup" = "AD.ASTAHHU";
-              "realm" = "ad.astahhu.de";
+              "realm" = "AD.ASTAHHU.DE";
               "log level" = " 0 shadow_copy:4";
               "netbios name" = "NIX-SAMBA-FS";
               "winbind refresh tickets" = true;
