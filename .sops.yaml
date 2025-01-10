@@ -18,13 +18,6 @@ creation_rules:
         - *florian_other_yubikey
         - *florian-yubikey
         - *sotiris-primary-yubikey
-  - path_regex: secrets/nix-wordpress.yaml
-    key_groups:
-      - pgp:
-        - *nix-wordpress
-        - *florian_other_yubikey
-        - *florian-yubikey
-        - *sotiris-primary-yubikey
   - path_regex: secrets/it-laptop.yaml
     key_groups:
       - pgp:
@@ -38,13 +31,6 @@ creation_rules:
         - *nix-wireguard
         - *florian-yubikey
         - *florian_other_yubikey
-        - *sotiris-primary-yubikey
-  - path_regex: secrets/nix-authentik/*
-    key_groups:
-      - pgp:
-        - *florian-yubikey
-        - *florian_other_yubikey
-        - *nix-authentik
         - *sotiris-primary-yubikey
   - path_regex: secrets/nix-webserver*
     key_groups:
