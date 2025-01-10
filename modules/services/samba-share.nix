@@ -79,6 +79,7 @@
       package = pkgs.samba4Full;
       openFirewall = true;
       nsswins = true;
+      nmbd.enable = true;
 
 
       settings =
