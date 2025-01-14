@@ -18,8 +18,7 @@
     ./services/tailscale.nix
     ./services/wordpress.nix
     ./services/traefik.nix
-    ./services/samba-share.nix
-    ./services/samba-dc.nix
+    ./services/samba
     ./development/vm.nix
     ./stylix.nix
   ];

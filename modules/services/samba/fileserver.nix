@@ -4,7 +4,7 @@
 , ...
 }: {
   options = {
-    astahhu.services.samba-fs = {
+    astahhu.services.samba.fs = {
       enable = lib.mkEnableOption "Enable Samba Fileserver";
       shares = lib.mkOption {
         type = lib.types.attrs;
@@ -14,7 +14,11 @@
     };
   };
 
-  config = lib.mkIf config.astahhu.services.samba-fs.enable {
+  config = lib.mkIf config.astahhu.services.samba.fs.enable {
+    system.nssDatabases.passwd = [ "winbind" ];
+    system.nssDatabases.group = [ "winbind" ];
+    security.pam.krb5.enable = false;
+    astahhu.services.samba.enable = true;
     fileSystems =
       lib.attrsets.mapAttrs'
         (name: value: {
@@ -26,7 +30,7 @@
             fsType = "btrfs";
           };
         })
-        config.astahhu.services.samba-fs.shares;
+        config.astahhu.services.samba.fs.shares;
 
     nix-tun.storage.persist.subvolumes =
       lib.attrsets.mapAttrs'
@@ -35,7 +39,7 @@
           value.group = "1000512";
           value.mode = "0770";
         })
-        config.astahhu.services.samba-fs.shares
+        config.astahhu.services.samba.fs.shares
       // {
         samba = {
           bindMountDirectories = true;
@@ -47,7 +51,6 @@
         };
       };
 
-    security.pam.krb5.enable = false;
     security.krb5 = {
       enable = true;
       settings = {
@@ -61,17 +64,7 @@
             "default_domain" = "ad.astahhu.de";
           };
         };
-
-        localauth = {
-          module = "winbind:${config.services.samba.package}/lib/samba/krb5/winbind_krb5_localauth.so";
-          enable_only = "winbind";
-        };
       };
-    };
-
-    services.samba-wsdd = {
-      enable = true;
-      openFirewall = true;
     };
 
     services.samba = {
@@ -83,15 +76,12 @@
 
 
       settings =
-        lib.mkMerge [{
+        {
           global =
             {
               "allow trusted domains" = "yes";
               "security" = "ads";
-              "workgroup" = "AD.ASTAHHU";
-              "realm" = "AD.ASTAHHU.DE";
-              "log level" = " 0 shadow_copy:4";
-              "netbios name" = "NIX-SAMBA-FS";
+              "log level" = "0 auth:10 winbind:4";
               "winbind refresh tickets" = true;
               "template shell" = "${pkgs.bash}";
               "idmap config * : range" = "100000 - 199999";
@@ -102,28 +92,28 @@
               "inherit acls" = "yes";
               "vfs objects" = "acl_xattr";
             };
-        }
-          (lib.attrsets.mapAttrs'
-            (name: value: {
-              name = "${name}";
-              value = {
-                path = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
-                "read only" = "no";
-                "veto files" = "/.snapshots/";
-                "veto oplock files" = "/.snapshots/";
-                "administrative share" = "yes";
-                "vfs objects" = "btrfs shadow_copy2 acl_xattr";
-                "shadow:fixinodes" = "yes";
-                "shadow:localtime" = "yes";
-                "shadow:format" = "${name}.%Y%m%dT%H%M%S%z";
-                "shadow:snapdir" = ".snapshots";
-                "shadow:crossmountpoints" = "yes";
-                "shadow:mountpoint" = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
-                "inherit permissions" = "yes";
-                "inherit owner" = "yes";
-              } // value;
-            })
-            config.astahhu.services.samba-fs.shares)];
+        } //
+        (lib.attrsets.mapAttrs'
+          (name: value: {
+            name = "${name}";
+            value = {
+              path = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
+              "read only" = "no";
+              "veto files" = "/.snapshots/";
+              "veto oplock files" = "/.snapshots/";
+              "administrative share" = "yes";
+              "vfs objects" = "btrfs shadow_copy2 acl_xattr";
+              "shadow:fixinodes" = "yes";
+              "shadow:localtime" = "yes";
+              "shadow:format" = "${name}.%Y%m%dT%H%M%S%z";
+              "shadow:snapdir" = ".snapshots";
+              "shadow:crossmountpoints" = "yes";
+              "shadow:mountpoint" = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
+              "inherit permissions" = "yes";
+              "inherit owner" = "yes";
+            } // value;
+          })
+          config.astahhu.services.samba.fs.shares);
     };
   };
 }

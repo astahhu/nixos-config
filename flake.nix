@@ -195,8 +195,8 @@
 
             packages.default = { };
 
-            devShells.default = with import inputs.nixpkgs { inherit system; };
-              mkShell {
+            devShells.default =
+              pkgs.mkShell {
                 sopsPGPKeyDirs = [
                   "${toString ./.}/keys/hosts"
                   "${toString ./.}/keys/users"

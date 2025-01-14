@@ -16,106 +16,92 @@
     };
   };
 
+  sops.secrets.cloudflare-dns = {
+    sopsFile = ../../secrets/nix-samba-fs/cloudflare-dns;
+    format = "binary";
+  };
+
   #sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
 
-  #systemd.timers = lib.attrsets.mapAttrs'
-  #  (name: value: {
-  #    name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
-  #    value = {
-  #      wantedBy = [ "timers.target" ];
-  #      timerConfig = {
-  #        OnBootSec = "5m";
-  #        OnUnitActiveSec = "1m";
-  #        Unit = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}.service'";
-  #      };
-  #    };
-  #  })
-  #  (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
-
-  #systemd.services = lib.attrsets.mapAttrs'
-  #  (name: value: {
-  #    name = "'rclone-${builtins.replaceStrings [" " "/" "ä" "Ä" "ö" "Ö" "ü" "Ü"] ["-" "-" "-" "-" "-" "-" "-" "-"] name}'";
-  #    value = {
-  #      script = ''
-  #        ${pkgs.rclone}/bin/rclone copy -M 'asta2012:Intern/${name}' '/persist/samba-shares/${name}'
-  #      '';
-  #      serviceConfig = {
-  #        Type = "oneshot";
-  #        User = "root";
-  #      };
-  #    };
-  #  })
-  #  (lib.attrsets.filterAttrs (name: value: lib.strings.hasPrefix "Intern" name) config.astahhu.services.samba-fs.shares);
-
-  astahhu.services.samba-fs = {
-    enable = true;
-    shares = {
-      scans.browseable = "yes";
-      home.browseable = "yes";
-      profile = {
-        comment = "Users profiles";
-        "read only" = "no";
-        browseable = "no";
-        "csc policy" = "disable";
+  astahhu.services.samba = {
+    workgroup = "AD.ASTAHHU";
+    domain = "ad.astahhu.de";
+    acme = {
+      enable = true;
+      email = "it@asta.hhu.de";
+    };
+    fs = {
+      enable = true;
+      shares = {
+        scans.browseable = "yes";
+        home.browseable = "yes";
+        profile = {
+          comment = "Users profiles";
+          "read only" = "no";
+          browseable = "no";
+          "csc policy" = "disable";
+          "inherit owner" = "no";
+          "inherit permissions" = "no";
+        };
+        software.browseable = "yes";
+        # Intern (Nur die jeweiligen Personen können schreiben)
+        "Intern AntiFaRaDis".browseable = "no";
+        "Intern Autonom".browseable = "no";
+        "Intern AWO".browseable = "no";
+        "Intern Barriereref".browseable = "no";
+        "Intern BiSchwu".browseable = "no";
+        "Intern Buchhaltung".browseable = "no";
+        "Intern Deutschkurse".browseable = "no";
+        "Intern Fachschaftsref".browseable = "no";
+        "Intern Finanzref".browseable = "no";
+        "Intern Flüchtlingsarbeit".browseable = "no";
+        "Intern Frauenref".browseable = "no";
+        "Intern HoPoref".browseable = "no";
+        "Intern Internationalesref".browseable = "no";
+        "Intern IT Ref".browseable = "no";
+        "Intern Kommref".browseable = "no";
+        "Intern Kulturref".browseable = "no";
+        "Intern LesBiref".browseable = "no";
+        "Intern Material".browseable = "no";
+        "Intern Materialbeauftragter".browseable = "no";
+        "Intern Mieterverein".browseable = "no";
+        "Intern Oekoref".browseable = "no";
+        "Intern Presseref".browseable = "no";
+        "Intern Rechtsberatung".browseable = "no";
+        "Intern Sekreteriat Finanz Buchhaltung".browseable = "no";
+        "Intern Sozialref".browseable = "no";
+        "Intern SP".browseable = "no";
+        "Intern Steuern".browseable = "no";
+        "Intern Teamassistenz".browseable = "no";
+        "Intern Vorstand".browseable = "no";
+        # Public (Nur die jeweiligen Personen können schreiben, alle können lesen.)
+        "Public AntiFaRaDis".browseable = "yes";
+        "Public Autonom".browseable = "yes";
+        "Public Barriereref".browseable = "yes";
+        "Public BiSchwu".browseable = "yes";
+        "Public Buchhaltung".browseable = "yes";
+        "Public Deutscchkurse".browseable = "yes";
+        "Public Fachschaftsref".browseable = "yes";
+        "Public Finanzref".browseable = "yes";
+        "Public Flüchtlingsarbeit".browseable = "yes";
+        "Public Frauenref".browseable = "yes";
+        "Public HoPoref".browseable = "yes";
+        "Public Internationalesref".browseable = "yes";
+        "Public ITref".browseable = "yes";
+        "Public Kommref".browseable = "yes";
+        "Public Kulturref".browseable = "yes";
+        "Public LesBiref".browseable = "yes";
+        "Public Materialbeauftragter".browseable = "yes";
+        "Public Mieterverein".browseable = "yes";
+        "Public Oekoref".browseable = "yes";
+        "Public Praesidium".browseable = "yes";
+        "Public Presseref".browseable = "yes";
+        "Public Rechtsberatung".browseable = "yes";
+        "Public Sekreteriat Finanz Buchhaltung".browseable = "yes";
+        "Public Sozialref".browseable = "yes";
+        "Public Teamassistenz".browseable = "yes";
+        "Public Vorstand".browseable = "yes";
       };
-      software.browseable = "yes";
-      # Intern (Nur die jeweiligen Personen können schreiben)
-      "Intern AntiFaRaDis".browseable = "no";
-      "Intern Autonom".browseable = "no";
-      "Intern AWO".browseable = "no";
-      "Intern Barriereref".browseable = "no";
-      "Intern BiSchwu".browseable = "no";
-      "Intern Buchhaltung".browseable = "no";
-      "Intern Deutschkurse".browseable = "no";
-      "Intern Fachschaftsref".browseable = "no";
-      "Intern Finanzref".browseable = "no";
-      "Intern Flüchtlingsarbeit".browseable = "no";
-      "Intern Frauenref".browseable = "no";
-      "Intern HoPoref".browseable = "no";
-      "Intern Internationalesref".browseable = "no";
-      "Intern IT Ref".browseable = "no";
-      "Intern Kommref".browseable = "no";
-      "Intern Kulturref".browseable = "no";
-      "Intern LesBiref".browseable = "no";
-      "Intern Material".browseable = "no";
-      "Intern Materialbeauftragter".browseable = "no";
-      "Intern Mieterverein".browseable = "no";
-      "Intern Oekoref".browseable = "no";
-      "Intern Presseref".browseable = "no";
-      "Intern Rechtsberatung".browseable = "no";
-      "Intern Sekreteriat Finanz Buchhaltung".browseable = "no";
-      "Intern Sozialref".browseable = "no";
-      "Intern SP".browseable = "no";
-      "Intern Steuern".browseable = "no";
-      "Intern Teamassistenz".browseable = "no";
-      "Intern Vorstand".browseable = "no";
-      # Public (Nur die jeweiligen Personen können schreiben, alle können lesen.)
-      "Public AntiFaRaDis".browseable = "yes";
-      "Public Autonom".browseable = "yes";
-      "Public Barriereref".browseable = "yes";
-      "Public BiSchwu".browseable = "yes";
-      "Public Buchhaltung".browseable = "yes";
-      "Public Deutscchkurse".browseable = "yes";
-      "Public Fachschaftsref".browseable = "yes";
-      "Public Finanzref".browseable = "yes";
-      "Public Flüchtlingsarbeit".browseable = "yes";
-      "Public Frauenref".browseable = "yes";
-      "Public HoPoref".browseable = "yes";
-      "Public Internationalesref".browseable = "yes";
-      "Public ITref".browseable = "yes";
-      "Public Kommref".browseable = "yes";
-      "Public Kulturref".browseable = "yes";
-      "Public LesBiref".browseable = "yes";
-      "Public Materialbeauftragter".browseable = "yes";
-      "Public Mieterverein".browseable = "yes";
-      "Public Oekoref".browseable = "yes";
-      "Public Praesidium".browseable = "yes";
-      "Public Presseref".browseable = "yes";
-      "Public Rechtsberatung".browseable = "yes";
-      "Public Sekreteriat Finanz Buchhaltung".browseable = "yes";
-      "Public Sozialref".browseable = "yes";
-      "Public Teamassistenz".browseable = "yes";
-      "Public Vorstand".browseable = "yes";
     };
   };
 
@@ -125,6 +111,8 @@
 
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   networking.hostName = "nix-samba-fs";
+  networking.domain = "ad.astahhu.de";
+
   environment.etc = {
     "resolv.conf".text = lib.mkForce ''
       nameserver 134.99.154.200
@@ -134,10 +122,6 @@
     hosts.text = lib.mkForce ''
       127.0.0.1 localhost
       134.99.154.205 nix-samba-fs.ad.astahhu.de nix-samba-fs
-    '';
-    "nsswitch.conf".text = lib.mkForce ''
-      passwd: files winbind
-      group: files winbind
     '';
   };
 

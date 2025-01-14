@@ -10,6 +10,9 @@ keys:
   - &nix-wireguard 3eb256e34ecdccf45aa7b4982bb217347ac00885
   - &it-laptop bc4411e216f4f87c945dd8f7c7df1be1dcba335e
   - &nix-webserver e488a8340ef5a7b34ad32aa120c51cdbd64d4ac0
+  - &nix-samba-dc 2867d27b003006b1f3aaae218a41fb0bf5033e81
+  - &nix-samba-dc-01 df414f5dc0babbe639ab91b3bbfa14b808b56972
+  - &nix-samba-fs b6e78f63523f66cd29a3f9e4ec7f479f02e439e4
 creation_rules:
   - path_regex: secrets/nix-nextcloud*
     key_groups:
@@ -24,7 +27,21 @@ creation_rules:
         - *it-laptop
         - *florian_other_yubikey
         - *florian-yubikey
+  - path_regex: secrets/nix-samba-fs*
+    key_groups:
+      - pgp:
+        - *florian-yubikey
+        - *florian_other_yubikey
         - *sotiris-primary-yubikey
+        - *nix-samba-fs
+  - path_regex: secrets/nix-samba-dc*
+    key_groups:
+      - pgp:
+        - *florian-yubikey
+        - *florian_other_yubikey
+        - *sotiris-primary-yubikey
+        - *nix-samba-dc
+        - *nix-samba-dc-01
   - path_regex: secrets/nix-wireguard.yaml
     key_groups:
       - pgp:

@@ -11,17 +11,34 @@
     };
   };
 
-  environment.etc."resolv.conf".text = ''
-    search ad.astahhu.de 
-    nameserver 127.0.0.1
-  '';
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBKrYvYAQb5/k7q2WV67O1rdPYgwCbPIkI3mvAYsV7NE root@nix-samba-dc"
+  ];
 
-  environment.etc."hosts".text = lib.mkForce ''
-    127.0.0.1 localhost
-    134.99.154.200 nix-samba-dc-01.ad.astahhu.de nix-samba-dc-01
-  '';
+  astahhu.services.samba = {
+    workgroup = "AD.ASTAHHU";
+    acme = {
+      enable = true;
+      email = "it@asta.hhu.de";
+    };
+    dc = {
+      enable = true;
+      primary = false;
+      dns = {
+        dnssec-validation = "no";
+        forwarders = [
+          "134.99.154.226"
+          "134.99.154.228"
+        ];
+      };
+    };
+  };
 
 
+  sops.secrets.cloudflare-dns = {
+    sopsFile = ../../secrets/nix-samba-dc/cloudflare-dns;
+    format = "binary";
+  };
 
   # Change for each System
   networking =
@@ -52,108 +69,6 @@
     };
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
   # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
-
-  astahhu.services.samba-dc = {
-    enable = true;
-    name = "NIX-SAMBA-DC-01";
-  };
-
-
-  ## Fixes a Segfault in bind + samba see: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1074378
-  systemd.services.bind.environment = {
-    LDB_MODULES_DISABLE_DEEPBIND = "true";
-  };
-
-  services.bind = {
-    enable = true;
-
-    cacheNetworks = [
-      "134.99.154.0/24"
-      "127.0.0.0/8"
-    ];
-
-    ipv4Only = true;
-
-    forwarders = [
-      "134.99.154.226"
-      "134.99.154.228"
-    ];
-
-    extraOptions = ''
-      dnssec-validation no;
-      tkey-gssapi-keytab "/var/lib/samba/bind-dns/dns.keytab";
-      minimal-responses yes;
-    '';
-
-    extraConfig = ''
-      include "/var/lib/samba/bind-dns/named.conf";
-    '';
-
-    #zones."ad.astahhu.de" = {
-    #  master = true;
-    #};
-
-    #zones."154.99.134.in-addr.arpa" = {
-    #  master = true;
-    #};
-
-    #extraConfig = ''
-    #  include "${config.sops.secrets.bind-key.path}"
-    #'';
-  };
-
-  #sops.secrets.bind-key = {
-  #  sopsFile = ../../secrets/nix-samba-dc/bind_yaml;
-  #  format = "binary";
-  #};
-
-  #sops.secrets.dhcp-ddns = {
-  #  sopsFile = ../../secrets/nix-samba-dc/dhcp_ddcns_yaml;
-  #  format = "binary";
-  #};
-
-  nix-tun.storage.persist.subvolumes.kea = {
-    owner = "kea";
-  };
-
-  services.kea = {
-    #dhcp-ddns.configFile = config.sops.secrets.dhcp-ddns.path;
-
-    dhcp4 = {
-      enable = false;
-      settings = {
-        valid-lifetime = 4000;
-        renew-timer = 1000;
-        rebind-timer = 2000;
-
-        interfaces-config = {
-          interfaces = [
-            "eth0"
-          ];
-        };
-
-        lease-database = {
-          name = "/persist/kea/dhcp4.leases";
-          persist = true;
-          type = "memfile";
-        };
-
-        subnet4 = [
-          {
-            pools = [
-              {
-                pool = "134.99.154.10 - 134.99.154.80";
-              }
-            ];
-            subnet = "134.99.154.0/24";
-            reservations = import ./dhcp.nix;
-          }
-        ];
-      };
-    };
-  };
-
-  # Networking
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
