@@ -1,4 +1,4 @@
-{ config, lib, ... }: {
+{ config, lib, pkgs, ... }: {
 
   imports = [
     ./dc.nix
@@ -12,6 +12,7 @@
       description = "The netbios name of the host, defaults to hostname, can not be longer than 15 characters";
       defaultText = "lib.strings.toUpper config.networking.hostName";
     };
+    package = lib.mkPackageOption pkgs "samba4Full" { };
     domain = lib.mkOption {
       type = lib.types.str;
       description = "The Kerberos/AD Domain";

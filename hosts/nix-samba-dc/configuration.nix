@@ -23,8 +23,11 @@
 
 
   systemd.services.sync-sysvol = {
+    path = [
+      pkgs.openssh
+    ];
     script = ''
-      ${pkgs.rclone}/bin/rclone sync -M  '/var/lib/sysvol' 'nix-samba-dc-01.ad.astahhu.de:/var/lib/samba/sysvol/'
+      ${pkgs.rsync}/bin/rsync -XAavz --delete-after /var/lib/samba/sysvol/ nix-samba-dc-01.ad.astahhu.de:/var/lib/samba/sysvol/
     '';
     serviceConfig = {
       Type = "oneshot";
@@ -60,6 +63,7 @@
   # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
 
   astahhu.services.samba = {
+    enable = true;
     workgroup = "AD.ASTAHHU";
     acme = {
       enable = true;
