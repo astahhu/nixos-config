@@ -33,7 +33,7 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf config.astahhu.wordpress.enable {
 
     sops.secrets = lib.attrsets.mapAttrs'
       (name: value: {
