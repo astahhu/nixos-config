@@ -193,7 +193,7 @@
           in
           {
 
-            packages.default = { };
+            packages.default = inputs.self.topology.${system}.config.output;
 
             devShells.default =
               pkgs.mkShell {

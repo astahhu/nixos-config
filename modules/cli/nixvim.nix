@@ -84,7 +84,7 @@
 
         luasnip.enable = true;
         treesitter.enable = true;
-        crates-nvim.enable = true;
+        crates.enable = true;
 
         rainbow-delimiters.enable = true;
         cmp = {

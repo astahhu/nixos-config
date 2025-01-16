@@ -16,6 +16,7 @@
   ];
 
   astahhu.services.samba = {
+    enable = true;
     workgroup = "AD.ASTAHHU";
     acme = {
       enable = true;

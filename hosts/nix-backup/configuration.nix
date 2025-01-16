@@ -1,12 +1,11 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  ...
+{ config
+, lib
+, pkgs
+, inputs
+, ...
 }: {
   imports = [
     # Include the results of the hardware scan.
@@ -27,38 +26,13 @@
   nix-tun.storage.backup = {
     enable = true;
     nixosConfigs = inputs.self.nixosConfigurations;
-    server = {
-      samba-fs = {
-        host = "samba-fs.ad.astahhu.de";
-        btrfs_base = "/share";
-        subvolumes = [
-          "."
-          "home"
-          "intern/IT-Referat"
-          "intern/Vorstand"
-          "intern/Kulturreferat"
-          "intern/NaMo"
-          "intern/Politische Bildung"
-          "intern/AntiFaRaDis"
-          "intern/Finanzreferat"
-          "intern/Sozialreferat"
-          "intern/Presse Oeffentlichkeitsarbeit"
-          "intern/autonom/Fachschaftenreferat"
-          "intern/autonom/LesBi"
-          "intern/autonom/BiSchwu"
-          "intern/autonom/Internationales"
-          "intern/autonom/Barrierefreiheit"
-          "intern/autonom/Tinby"
-          "public"
-          "profile"
-        ];
-      };
-    };
   };
 
   environment.systemPackages = with pkgs; [
     git
   ];
+
+  astahhu.common.disko.enable = lib.mkForce false;
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";

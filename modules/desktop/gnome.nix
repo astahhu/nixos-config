@@ -15,7 +15,7 @@
         displayManager.gdm.enable = true;
       };
     };
-    hardware.pulseaudio.enable = false;
+    services.pulseaudio.enable = false;
 
     environment.gnome.excludePackages = lib.mkIf (!config.astahhu.desktop.firefox.enable) (with pkgs; [
       epiphany
