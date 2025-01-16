@@ -108,7 +108,6 @@
               system = "x86_64-linux";
               modules = [
                 ./hosts/nix-wireguard/configuration.nix
-                inputs.nixos-generators.nixosModules.all-formats
                 ./modules
                 ./users/admin-users.nix
               ];
