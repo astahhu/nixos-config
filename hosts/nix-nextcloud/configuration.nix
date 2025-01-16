@@ -35,7 +35,23 @@
     enableIPv6 = true;
   };
 
-  networking.hostName = "nix-nextcloud"; # Define your hostname.
+  networking = {
+    hostName = "nix-nextcloud"; # Define your hostname.
+    domain = "ad.astahhu.de";
+    defaultGateway = { address = "134.99.154.1"; interface = "ens18"; };
+    nameservers = [ "134.99.154.200" "134.99.154.201" ];
+    useDHCP = false;
+    interfaces.ens18 = {
+      ipv4 = {
+        "addresses" = [
+          {
+            address = "134.99.154.202";
+            prefixLength = 24;
+          }
+        ];
+      };
+    };
+  };
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   sops.defaultSopsFile = ../../secrets/nix-nextcloud.yaml;
   sops.secrets.proxyCert = {
