@@ -11,187 +11,216 @@
   ];
 
   # Change for each System
-  networking.hostName = "nix-wireguard";
+  astahhu.common.disko.enable = false;
 
   # Uncomment if you need Secrets for this Hosts, AFTER the first install
   sops.defaultSopsFile = ../../secrets/nix-wireguard.yaml;
-  sops.secrets.wireguard_private = { };
-
-  networking.nat = {
-    enable = true;
-    externalInterface = "eth0";
-    internalInterfaces = [ "wg0" ];
-    internalIPs = [
-      "10.105.42.1/42"
-    ];
-  };
-  networking.firewall = {
-    allowedUDPPorts = [ 51820 ];
+  sops.secrets.wireguard_private = {
+    owner = "systemd-network";
   };
 
-  networking.wireguard.interfaces = {
-    # "wg0" is the network interface name. You can name the interface arbitrarily.
-    wg0 = {
-      # Determines the IP address and subnet of the server's end of the tunnel interface.
-      ips = [ "10.105.42.1/24" ];
+  virtualisation.docker.enable = false;
+  virtualisation.containerd.enable = false;
 
-      # The port that WireGuard listens to. Must be accessible by the client.
-      listenPort = 51820;
+  virtualisation.oci-containers.containers = { };
 
-      # Path to the private key file.
-      #
-      # Note: The private key can also be included inline via the privateKey option,
-      # but this makes the private key world-readable; thus, using privateKeyFile is
-      # recommended.
-      privateKeyFile = "${config.sops.secrets.wireguard_private.path}";
-
-      peers = [
-        # List of allowed peers.
+  networking = {
+    firewall.enable = true;
+    hostName = "nix-wireguard";
+    domain = "ad.astahhu.de";
+    nameservers = [ "134.99.154.200" "134.99.154.201" ];
+    defaultGateway = { address = "134.99.154.1"; interface = "eth0"; };
+    interfaces.eth0.ipv4 = {
+      addresses = [
         {
-          # Feel free to give a meaning full name
-          # Public key of the peer (not a file path).
-          name = "2";
-          publicKey = "qAzWfOAMP3w4vusIyjyHFl7aTLG7eZrCz20bE6PkVik=";
-          # List of IPs assigned to this peer within the tunnel subnet. Used to configure routing.
-          allowedIPs = [ "10.105.42.2/32" ];
-        }
-        {
-          name = "3";
-          publicKey = "X7SwpnOfNBFyXo5ELD7Jfd4psSu/WiF6ucyNP+zvrww=";
-          allowedIPs = [ "10.105.42.3/32" ];
-        }
-        {
-          name = "4";
-          publicKey = "/+DAqTxrCYqicFmJ3hGPc4++BwBbkni7MH5BNOKuinc=";
-          allowedIPs = [ "10.105.42.4/32" ];
-        }
-        {
-          name = "5";
-          publicKey = "Xt92xMbkfhiB63Yig3caZuPs7geA53LdCwFwCZjR/y0=";
-          allowedIPs = [ "10.105.42.5/32" ];
-          endpoint = "134.99.39.12:60538";
-        }
-        {
-          name = "6";
-          publicKey = "Cxjqdj+sbnz1reh0INfylzyhkm18zjWgg3P6BOC+DW0=";
-          allowedIPs = [ "10.105.42.6/32" ];
-        }
-        {
-          name = "7";
-          publicKey = "uOKm/Gdqn7dGMYlzYuVB9LP2U2peLP6qqHP8neUNwEU=";
-          allowedIPs = [ "10.105.42.7/32" ];
-        }
-        {
-          name = "8";
-          publicKey = "zsqHwvlfiPVuPMVKoIeN1h0CE5ts9H/numnOIrNJZlk=";
-          allowedIPs = [ "10.105.42.8/32" ];
-        }
-        {
-          name = "9";
-          publicKey = "1FmBk72xRgoFxSBaeaxeHWBzlk+mKFAUzDnUUiGpKUo=";
-          allowedIPs = [ "10.105.42.9/32" ];
-        }
-        {
-          name = "10";
-          publicKey = "KdimHNVz4OmMlc+ZUz06ntBLdB6fw+lC4RmdWXDt00U=";
-          allowedIPs = [ "10.105.42.10/32" ];
-        }
-        {
-          name = "11";
-          publicKey = "t0hmDrrymNCcmkcaBpfEUWUBdJ2sOdexHFjwbJzIMHo=";
-          allowedIPs = [ "10.105.42.11/32" ];
-        }
-        {
-          name = "12";
-          publicKey = "mLZAKxex044RCUbIAiOC8LdlHyYvp+CVeciHRLZLDgE=";
-          allowedIPs = [ "10.105.42.12/32" ];
-        }
-        {
-          name = "13";
-          publicKey = "hC4d0h2ewwWFdHeKBRGJupR1Qm1pSv832rkv8K4xpgA=";
-          allowedIPs = [ "10.105.42.13/32" ];
-        }
-        {
-          name = "14";
-          publicKey = "4OV6hnXsTDdmF0hj0IyAyPg9fwJAOhqHEv04A9ZiFlQ=";
-          allowedIPs = [ "10.105.42.14/32" ];
-        }
-        {
-          name = "15";
-          publicKey = "LOJoxvbNiRZ3/EAd10kPolzcGb2VeMf1lAVTeiMriyU=";
-          allowedIPs = [ "10.105.42.15/32" ];
-        }
-        {
-          name = "16";
-          publicKey = "TTWhoxuCOJryuTfMcQ+7mWxpbYtOngfyqbK0LCF+qE0=";
-          allowedIPs = [ "10.105.42.16/32" ];
-        }
-        {
-          name = "17";
-          publicKey = "GMzQnVABjufZQ6Czm6D+X85C5qr9Y2FYF3fWMg313QM=";
-          allowedIPs = [ "10.105.42.17/32" ];
-        }
-        {
-          name = "18";
-          publicKey = "zZIOUcr6TTISKLSe0RzFpWyghKGD0PTsr5WlcRBl3xQ=";
-          allowedIPs = [ "10.105.42.18/32" ];
-        }
-        {
-          name = "19";
-          publicKey = "mNeA/lJCOVO78BxPiXhwbBjLAZwQ90NNMPDdf1Z3v24=";
-          allowedIPs = [ "10.105.42.19/32" ];
-        }
-        {
-          name = "20";
-          publicKey = "nJBfaylAfoTZjYco5ZgJusm60XOBCKzFeK30yY3e41k=";
-          allowedIPs = [ "10.105.42.20/32" ];
-        }
-        {
-          name = "21";
-          publicKey = "/hTh57oidbhGEWViahL4dxhCLxXQ/q0I8MIlZ7go/1E=";
-          allowedIPs = [ "10.105.42.21/32" ];
-        }
-        {
-          name = "22";
-          publicKey = "2ytpT/rSMOv0xpukKm5BL1ipDyv9MG8wqwxLG0790yE=";
-          allowedIPs = [ "10.105.42.22/32" ];
-        }
-        {
-          name = "23";
-          publicKey = "L235h97SbeoYKE25VzkJp7uilmQ3VJzGLZrr3SKbIHg=";
-          allowedIPs = [ "10.105.42.23/32" ];
-        }
-        {
-          name = "24";
-          publicKey = "ri3E91KHp15VrgdVSdHBQimb97DEQuDu8SiQ3SODB1I=";
-          allowedIPs = [ "10.105.42.24/32" ];
-        }
-        {
-          name = "25";
-          publicKey = "UPVDVIBvxODZLA/RTHt5sWRXBW9vdP8aXoHHR4LH6w4=";
-          allowedIPs = [ "10.105.42.25/32" ];
-        }
-        {
-          name = "vorstand-05";
-          publicKey = "LMtCs1tQDvYGTA/juT+6vPjaYJ7a+SXx+gQ2OFxYIW4=";
-          allowedIPs = [ "10.105.42.26/32" ];
-        }
-        {
-          name = "sotirislaptop";
-          publicKey = "epOFx7BPGQ1ZbN2aX90ARKp8+qi4Z4JhXy+fOqClo34=";
-          allowedIPs = [ "10.105.42.27/32" ];
-        }
-        {
-          name = "sotirisdesktop";
-          publicKey = "HHlyGpKT07fHtBv3ggVhYzkcHfoA18Kty99GdddgX1Y=";
-          allowedIPs = [ "10.105.42.28/32" ];
+          address = "134.99.154.242";
+          prefixLength = 24;
         }
       ];
     };
+    nat = {
+      enable = true;
+      externalInterface = "eth0";
+      internalInterfaces = [ "wg0" ];
+      internalIPs = [
+        "10.105.42.1/42"
+      ];
+    };
+    firewall = {
+      allowedUDPPorts = [ 51820 ];
+    };
   };
 
-  # Networking
-  networking.firewall.enable = true;
+  systemd.network = {
+    enable = true;
+    networks = {
+      # "wg0" is the network interface name. You can name the interface arbitrarily.
+      wg0 = {
+        matchConfig.Name = "wg0";
+        address = [ "10.105.42.1/24" ];
+        networkConfig = {
+          IPMasquerade = "ipv4";
+          IPv4Forwarding = true;
+        };
+      };
+    };
+
+    netdevs = {
+      "wg-50" = {
+        netdevConfig = {
+          Kind = "wireguard";
+          Name = "wg0";
+          MTUBytes = "1300";
+        };
+
+
+        wireguardConfig = {
+          PrivateKeyFile = "${config.sops.secrets.wireguard_private.path}";
+          ListenPort = 51820;
+        };
+
+        wireguardPeers = [
+          # List of allowed peers.
+          {
+            # 2
+            PublicKey = "qAzWfOAMP3w4vusIyjyHFl7aTLG7eZrCz20bE6PkVik=";
+            AllowedIPs = [ "10.105.42.2/32" ];
+          }
+          {
+            # 3
+            PublicKey = "X7SwpnOfNBFyXo5ELD7Jfd4psSu/WiF6ucyNP+zvrww=";
+            AllowedIPs = [ "10.105.42.3/32" ];
+          }
+          {
+            # 4
+            PublicKey = "/+DAqTxrCYqicFmJ3hGPc4++BwBbkni7MH5BNOKuinc=";
+            AllowedIPs = [ "10.105.42.4/32" ];
+          }
+          {
+            # 5
+            PublicKey = "Xt92xMbkfhiB63Yig3caZuPs7geA53LdCwFwCZjR/y0=";
+            AllowedIPs = [ "10.105.42.5/32" ];
+            Endpoint = "134.99.39.12:60538";
+          }
+          {
+            # 6
+            PublicKey = "Cxjqdj+sbnz1reh0INfylzyhkm18zjWgg3P6BOC+DW0=";
+            AllowedIPs = [ "10.105.42.6/32" ];
+          }
+          {
+            # 7
+            PublicKey = "uOKm/Gdqn7dGMYlzYuVB9LP2U2peLP6qqHP8neUNwEU=";
+            AllowedIPs = [ "10.105.42.7/32" ];
+          }
+          {
+            # 8
+            PublicKey = "zsqHwvlfiPVuPMVKoIeN1h0CE5ts9H/numnOIrNJZlk=";
+            AllowedIPs = [ "10.105.42.8/32" ];
+          }
+          {
+            # 9
+            PublicKey = "1FmBk72xRgoFxSBaeaxeHWBzlk+mKFAUzDnUUiGpKUo=";
+            AllowedIPs = [ "10.105.42.9/32" ];
+          }
+          {
+            # 10
+            PublicKey = "KdimHNVz4OmMlc+ZUz06ntBLdB6fw+lC4RmdWXDt00U=";
+            AllowedIPs = [ "10.105.42.10/32" ];
+          }
+          {
+            # 11
+            PublicKey = "t0hmDrrymNCcmkcaBpfEUWUBdJ2sOdexHFjwbJzIMHo=";
+            AllowedIPs = [ "10.105.42.11/32" ];
+          }
+          {
+            # 12
+            PublicKey = "mLZAKxex044RCUbIAiOC8LdlHyYvp+CVeciHRLZLDgE=";
+            AllowedIPs = [ "10.105.42.12/32" ];
+          }
+          {
+            # 13
+            PublicKey = "hC4d0h2ewwWFdHeKBRGJupR1Qm1pSv832rkv8K4xpgA=";
+            AllowedIPs = [ "10.105.42.13/32" ];
+          }
+          {
+            # 14
+            PublicKey = "4OV6hnXsTDdmF0hj0IyAyPg9fwJAOhqHEv04A9ZiFlQ=";
+            AllowedIPs = [ "10.105.42.14/32" ];
+          }
+          {
+            # 15
+            PublicKey = "LOJoxvbNiRZ3/EAd10kPolzcGb2VeMf1lAVTeiMriyU=";
+            AllowedIPs = [ "10.105.42.15/32" ];
+          }
+          {
+            # 16
+            PublicKey = "TTWhoxuCOJryuTfMcQ+7mWxpbYtOngfyqbK0LCF+qE0=";
+            AllowedIPs = [ "10.105.42.16/32" ];
+          }
+          {
+            # 17
+            PublicKey = "GMzQnVABjufZQ6Czm6D+X85C5qr9Y2FYF3fWMg313QM=";
+            AllowedIPs = [ "10.105.42.17/32" ];
+          }
+          {
+            # 18
+            PublicKey = "zZIOUcr6TTISKLSe0RzFpWyghKGD0PTsr5WlcRBl3xQ=";
+            AllowedIPs = [ "10.105.42.18/32" ];
+          }
+          {
+            # 19
+            PublicKey = "mNeA/lJCOVO78BxPiXhwbBjLAZwQ90NNMPDdf1Z3v24=";
+            AllowedIPs = [ "10.105.42.19/32" ];
+          }
+          {
+            # 20
+            PublicKey = "nJBfaylAfoTZjYco5ZgJusm60XOBCKzFeK30yY3e41k=";
+            AllowedIPs = [ "10.105.42.20/32" ];
+          }
+          {
+            # 21
+            PublicKey = "/hTh57oidbhGEWViahL4dxhCLxXQ/q0I8MIlZ7go/1E=";
+            AllowedIPs = [ "10.105.42.21/32" ];
+          }
+          {
+            # 22
+            PublicKey = "2ytpT/rSMOv0xpukKm5BL1ipDyv9MG8wqwxLG0790yE=";
+            AllowedIPs = [ "10.105.42.22/32" ];
+          }
+          {
+            # 23
+            PublicKey = "L235h97SbeoYKE25VzkJp7uilmQ3VJzGLZrr3SKbIHg=";
+            AllowedIPs = [ "10.105.42.23/32" ];
+          }
+          {
+            # 24
+            PublicKey = "ri3E91KHp15VrgdVSdHBQimb97DEQuDu8SiQ3SODB1I=";
+            AllowedIPs = [ "10.105.42.24/32" ];
+          }
+          {
+            # 25
+            PublicKey = "UPVDVIBvxODZLA/RTHt5sWRXBW9vdP8aXoHHR4LH6w4=";
+            AllowedIPs = [ "10.105.42.25/32" ];
+          }
+          {
+            # vorstand-05
+            PublicKey = "LMtCs1tQDvYGTA/juT+6vPjaYJ7a+SXx+gQ2OFxYIW4=";
+            AllowedIPs = [ "10.105.42.26/32" ];
+          }
+          {
+            # sotirislaptop
+            PublicKey = "epOFx7BPGQ1ZbN2aX90ARKp8+qi4Z4JhXy+fOqClo34=";
+            AllowedIPs = [ "10.105.42.27/32" ];
+          }
+          {
+            # sotirisdesktop
+            PublicKey = "HHlyGpKT07fHtBv3ggVhYzkcHfoA18Kty99GdddgX1Y=";
+            AllowedIPs = [ "10.105.42.28/32" ];
+          }
+        ];
+      };
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
