@@ -43,7 +43,7 @@
     enable = true;
     calendars = {
       fachschaften = {
-        "FS Physik" = "https://calendar.google.com/calendar/ical/fsphysik%40uni-duesseldorf.de/public/basic.ics";
+        "FS Physik" = "https://nextcloud.inphima.de/remote.php/dav/public-calendars/6tsADsaDtDHesoXa?export";
         "FS Info" = "https://nextcloud.inphima.de/remote.php/dav/public-calendars/CAx5MEp7cGrQ6cEe?export";
       };
     };
