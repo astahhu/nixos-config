@@ -30,6 +30,8 @@
         is_server = true;
       };
 
+      nix.settings.trusted-users = [ "root" "@wheel" ];
+
       services.openssh.enable = lib.mkIf config.astahhu.common.is_server true;
       security.pam.sshAgentAuth.enable = lib.mkIf config.astahhu.common.is_server true;
 
