@@ -37,6 +37,14 @@
         pkgs.dnsutils
       ];
 
+      nix-tun.storage.persist.subvolumes.kea = {
+        bindMountDirectories = true;
+        owner = "kea";
+        directories = {
+          "/var/lib/kea" = { };
+        };
+      };
+
       services.kea = {
         # DDNS via DHCP, with kerberos Authentication
         # Following the example at: https://kea.readthedocs.io/en/kea-2.7.5/arm/integrations.html#gss-tsig
@@ -74,7 +82,7 @@
         #};
 
         dhcp4 = {
-          enable = false;
+          enable = true;
           settings = {
             valid-lifetime = 4000;
             renew-timer = 1000;
@@ -87,13 +95,35 @@
             };
 
             lease-database = {
-              name = "/persist/kea/dhcp4.leases";
+              name = "/var/lib/kea/dhcp4.leases";
               persist = true;
               type = "memfile";
             };
 
             subnet4 = [
               {
+                id = 1;
+                option-data = [
+                  {
+                    name = "domain-name-servers";
+                    csv-format = true;
+                    data = "134.99.154.200, 134.99.154.201";
+                  }
+                  {
+                    name = "routers";
+                    csv-format = true;
+                    data = "134.99.154.1";
+                  }
+                  {
+                    name = "time-servers";
+                    csv-format = true;
+                    data = "134.99.154.200, 134.99.154.201";
+                  }
+                  {
+                    name = "domain-name";
+                    data = "ad.astahhu.de";
+                  }
+                ];
                 pools = [
                   {
                     pool = "134.99.154.10 - 134.99.154.80";

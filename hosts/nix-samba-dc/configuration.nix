@@ -93,12 +93,6 @@
     format = "binary";
   };
 
-  nix-tun.storage.persist.subvolumes.kea = {
-    owner = "kea";
-  };
-
-  # Networking
-
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
