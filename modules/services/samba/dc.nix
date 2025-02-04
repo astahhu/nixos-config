@@ -37,11 +37,20 @@
         pkgs.dnsutils
       ];
 
+      users.users.kea = {
+        isSystemUser = true;
+	group = "kea";
+      };
+
+      users.groups.kea = {};
+
       nix-tun.storage.persist.subvolumes.kea = {
         bindMountDirectories = true;
         owner = "kea";
         directories = {
-          "/var/lib/kea" = { };
+          "/var/lib/kea" = { 
+	    mode = "0700";
+	  };
         };
       };
 
