@@ -11,7 +11,7 @@
   ];
 
   # Change for each System
-  astahhu.common.disko.enable = false;
+  astahhu.common.is_lxc = true;
 
   # Uncomment if you need Secrets for this Hosts, AFTER the first install
   sops.defaultSopsFile = ../../secrets/nix-wireguard.yaml;
@@ -19,17 +19,8 @@
     owner = "systemd-network";
   };
 
-  virtualisation.docker.enable = false;
-  virtualisation.containerd.enable = false;
-
-  virtualisation.oci-containers.containers = { };
-
   networking = {
-    firewall.enable = true;
     hostName = "nix-wireguard";
-    domain = "ad.astahhu.de";
-    nameservers = [ "134.99.154.200" "134.99.154.201" ];
-    defaultGateway = { address = "134.99.154.1"; interface = "eth0"; };
     interfaces.eth0.ipv4 = {
       addresses = [
         {
@@ -49,6 +40,9 @@
     firewall = {
       allowedUDPPorts = [ 51820 ];
     };
+    domain = "ad.astahhu.de";
+    nameservers = [ "134.99.154.200" "134.99.154.201" ];
+    defaultGateway = { address = "134.99.154.1"; };
   };
 
   systemd.network = {
@@ -222,15 +216,6 @@
     };
   };
 
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    keyMap = "us";
-  };
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It's perfectly fine and recommended to leave
@@ -239,7 +224,4 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.10"; # Did you read the comment?
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  security.pam.sshAgentAuth.enable = true;
 }

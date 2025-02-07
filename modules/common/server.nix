@@ -1,11 +1,7 @@
 { config, lib, ... }: {
   config = lib.mkIf config.astahhu.common.is_server
     {
-      networking = {
-        domain = "ad.astahhu.de";
-        nameservers = [ "134.99.154.200" "134.99.154.201" ];
-        defaultGateway = { address = "134.99.154.1"; interface = "eth0"; };
-      };
+
 
       nix-tun.storage.persist = lib.mkIf config.astahhu.common.uses_btrfs {
         enable = true;
