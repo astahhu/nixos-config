@@ -3,6 +3,8 @@
   imports = [
     ./qemu-hardwareconfig.nix
     ./users.nix
+    ./server.nix
+    ./proxmox-lxc.nix
   ];
 
   options.astahhu.common = {
