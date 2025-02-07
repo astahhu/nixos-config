@@ -42,7 +42,7 @@
     };
     domain = "ad.astahhu.de";
     nameservers = [ "134.99.154.200" "134.99.154.201" ];
-    defaultGateway = { address = "134.99.154.1"; };
+    defaultGateway = { address = "134.99.154.1"; interface = "eth0";};
   };
 
   systemd.network = {
