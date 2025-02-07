@@ -39,20 +39,22 @@
 
       users.users.kea = {
         isSystemUser = true;
-	group = "kea";
+        group = "kea";
       };
 
-      users.groups.kea = {};
+      users.groups.kea = { };
 
       nix-tun.storage.persist.subvolumes.kea = {
-        bindMountDirectories = true;
+        #bindMountDirectories = true;
         owner = "kea";
         directories = {
-          "/var/lib/kea" = { 
-	    mode = "0700";
-	  };
+          "/var/lib/kea" = {
+            mode = "0700";
+          };
         };
       };
+
+      systemd.services.kea-dhcp4-server.serviceConfig.DynamicUser = lib.mkForce false;
 
       services.kea = {
         # DDNS via DHCP, with kerberos Authentication
