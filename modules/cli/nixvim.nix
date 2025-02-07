@@ -42,12 +42,14 @@
           servers = {
             lua_ls.enable = true;
 
-
             nixd = {
               enable = true;
               settings = {
-                #nixpkgs = "${inputs.nixpkgs}";
                 formatting.command = [ "nixpkgs-fmt" ];
+
+                options = {
+                  nixos.expr = "(builtins.getFlake \"${inputs.self}\").nixosConfigurations.${config.networking.hostName}";
+                };
               };
             };
 

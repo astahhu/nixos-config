@@ -34,6 +34,8 @@
     };
   };
 
+  networking.hostName = "it-laptop";
+
   sops.defaultSopsFile = ../../secrets/it-laptop.yaml;
 
   services = {
