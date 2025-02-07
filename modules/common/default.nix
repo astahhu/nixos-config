@@ -39,7 +39,6 @@
 
       nix.settings.trusted-users = [ "root" "@wheel" ];
 
-      common.uses_btrfs = config.astahhu.common.disko.enable;
 
     }
     (lib.mkIf config.astahhu.common.disko.enable (import ./disko.nix {
