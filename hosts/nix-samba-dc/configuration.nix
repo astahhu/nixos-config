@@ -27,7 +27,7 @@
       pkgs.openssh
     ];
     script = ''
-      ${pkgs.rsync}/bin/rsync -XAavz --delete-after /var/lib/samba/sysvol/ nix-samba-dc-01.ad.astahhu.de:/var/lib/samba/sysvol/
+      ${pkgs.rsync}/bin/rsync -XAavz --delete-after /var/lib/samba/sysvol/ nix-samba-dc-01.ad.astahhu.de:/var/lib/samba/sysvol/ -e "ssh -i /root/.ssh/sync"
     '';
     serviceConfig = {
       Type = "oneshot";
