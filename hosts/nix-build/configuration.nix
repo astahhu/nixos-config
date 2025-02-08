@@ -1,35 +1,54 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{pkgs, ...}: {
-  astahhu.common = {
-    is_server = true;
-    is_qemuvm = true;
-    disko = {
-      enable = true;
-      device = "/dev/sda";
-    };
-  };
+{ pkgs, config, modulesPath, ... }: {
+
+  astahhu.common.is_server = true;
+  astahhu.common.is_lxc = true;
+
+  # Nix does not like conditional module imports.
+  imports = [
+    (modulesPath + "/virtualisation/proxmox-lxc.nix")
+  ];
 
   # Change for each System
-  networking.hostName = "nix-sample-server";
-
-  # Uncomment if you need Secrets for this Hosts, AFTER the first install  
-  # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
-
-  # Networking
-  networking.firewall.enable = true;
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    keyMap = "us";
+  networking = {
+    hostName = "nix-build";
+    interfaces.eth0.ipv4 = {
+      addresses = [
+        {
+          address = "134.99.154.203";
+          prefixLength = 24;
+        }
+      ];
+    };
+    domain = "ad.astahhu.de";
+    nameservers = [ "134.99.154.200" "134.99.154.201" ];
+    defaultGateway = { address = "134.99.154.1"; interface = "eth0"; };
   };
 
+  sops.defaultSopsFile = ../../secrets/nix-build.yaml;
+  sops.secrets.github-token = { };
+  sops.secrets.ssh-key = { };
+
+  services.github-runners = {
+    nix-deploy = {
+      enable = true;
+      name = "nix-deploy";
+      tokenFile = config.sops.secrets.github-token.path;
+      url = "https://github.com/astahhu/nixos-config";
+      extraLabels = [ "deploy" ];
+      noDefaultLabels = true;
+      extraPackages = [
+        pkgs.nix
+        pkgs.deploy-rs
+      ];
+      extraEnvironment = {
+        SSH_KEY = config.sops.secrets.ssh-key.path;
+      };
+      replace = true;
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

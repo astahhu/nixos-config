@@ -21,9 +21,17 @@
           ];
         }
       ];
-      users.users = lib.mkIf config.astahhu.common.uses_btrfs {
-        btrbk.extraGroups = [ "wheel" ];
-        root.openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKPGx5yVTgRy/oXLuGvsK9PTr0hHbUCLz/+cKukb+L5K root@asta-backup" ];
+      users.users = {
+
+        btrbk = lib.mkIf config.astahhu.common.uses_btrfs {
+          extraGroups = [ "wheel" ];
+        };
+        root.openssh.authorizedKeys.keys = [
+          # Backup Server Key
+          (lib.mkIf config.astahhu.common.uses_btrfs "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKPGx5yVTgRy/oXLuGvsK9PTr0hHbUCLz/+cKukb+L5K asta-backup")
+          # Build Server Key
+          (lib.mkIf config.astahhu.common.is_server "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzeIDT98aQrchzNu/k2oCpOfQO8xK96nL+OwxQl/BM+ nix-build")
+        ];
       };
     };
 }

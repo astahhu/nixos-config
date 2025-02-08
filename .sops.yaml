@@ -13,14 +13,8 @@ keys:
   - &nix-samba-dc 2867d27b003006b1f3aaae218a41fb0bf5033e81
   - &nix-samba-dc-01 df414f5dc0babbe639ab91b3bbfa14b808b56972
   - &nix-samba-fs b6e78f63523f66cd29a3f9e4ec7f479f02e439e4
+  - &nix-build e1001e8f97a70d863c766ad334b1d990ee9a3226
 creation_rules:
-  - path_regex: secrets/nix-nextcloud*
-    key_groups:
-      - pgp:
-        - *nix-nextcloud
-        - *florian_other_yubikey
-        - *florian-yubikey
-        - *sotiris-primary-yubikey
   - path_regex: secrets/it-laptop.yaml
     key_groups:
       - pgp:
@@ -56,3 +50,18 @@ creation_rules:
         - *florian-yubikey
         - *nix-webserver
         - *sotiris-primary-yubikey
+  - path_regex: secrets/nix-nextcloud*
+    key_groups:
+      - pgp:
+        - *nix-nextcloud
+        - *florian_other_yubikey
+        - *florian-yubikey
+        - *sotiris-primary-yubikey
+  - path_regex: secrets/nix-build
+    key_groups:
+      - pgp:
+        - *nix-build
+        - *florian_other_yubikey
+        - *florian-yubikey
+        - *sotiris-primary-yubikey
+

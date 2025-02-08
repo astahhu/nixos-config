@@ -110,9 +110,22 @@
                 ./hosts/nix-wireguard/configuration.nix
                 ./modules
                 ./users/admin-users.nix
+                inputs.nixos-generators.nixosModules.all-formats
               ];
               specialArgs = { inherit inputs; };
             };
+
+            nixosConfigurations.nix-build = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [
+                ./hosts/nix-build/configuration.nix
+                ./modules
+                ./users/admin-users.nix
+                inputs.nixos-generators.nixosModules.all-formats
+              ];
+              specialArgs = { inherit inputs; };
+            };
+
 
             nixosConfigurations.nix-backup = inputs.nixpkgs.lib.nixosSystem {
               system = "x86_64-linux";
@@ -132,6 +145,7 @@
                   user = "root";
                 };
               };
+
               nix-samba-dc = {
                 hostname = "nix-samba-dc.ad.astahhu.de";
                 profiles.system = {
@@ -140,6 +154,7 @@
                   user = "root";
                 };
               };
+
               nix-samba-fs = {
                 hostname = "nix-samba-fs.ad.astahhu.de";
                 profiles.system = {
@@ -148,6 +163,7 @@
                   user = "root";
                 };
               };
+
               nix-webserver = {
                 hostname = "134.99.154.51";
                 profiles.system = {
@@ -155,8 +171,8 @@
                   remoteBuild = true;
                   user = "root";
                 };
-
               };
+
               nix-nextcloud = {
                 hostname = "nix-nextcloud.ad.astahhu.de";
                 profiles.system = {
@@ -165,10 +181,20 @@
                   user = "root";
                 };
               };
+
               nix-wireguard = {
                 hostname = "134.99.154.242";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-wireguard;
+                  remoteBuild = true;
+                  user = "root";
+                };
+              };
+
+              nix-build = {
+                hostname = "134.99.154.203";
+                profiles.system = {
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-build;
                   remoteBuild = true;
                   user = "root";
                 };
