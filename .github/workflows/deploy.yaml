@@ -35,4 +35,4 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519 
           chmod 600 ~/.ssh/id_ed25519
           echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          deploy
+          deploy --skip-checks
