@@ -31,6 +31,13 @@
   sops.secrets.github-token = { };
   sops.secrets.ssh-key = { };
 
+  users.users.gh-nix-deploy = {
+    group = "github-runner";
+    isSystemUser = true;
+  };
+
+  users.groups.github-runner = { };
+
   services.github-runners = {
     nix-deploy = {
       enable = true;
@@ -39,6 +46,7 @@
       url = "https://github.com/astahhu/nixos-config";
       extraLabels = [ "deploy" ];
       noDefaultLabels = true;
+      user = "gh-nix-deploy";
       workDir = "/var/lib/github/nix-deploy";
       extraPackages = [
         pkgs.nix
