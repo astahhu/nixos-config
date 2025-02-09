@@ -155,7 +155,7 @@
                   }
                   {
                     name = "domain-name";
-                    data = cfg.dhcp.domain;
+                    data = cfg.domain;
                   }
                 ];
                 pools = [

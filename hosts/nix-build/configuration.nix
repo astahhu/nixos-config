@@ -43,9 +43,6 @@
         pkgs.nix
         pkgs.deploy-rs
       ];
-      extraEnvironment = {
-        SSH_KEY = config.sops.secrets.ssh-key.path;
-      };
       replace = true;
     };
   };
