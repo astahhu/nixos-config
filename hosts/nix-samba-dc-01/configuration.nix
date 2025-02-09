@@ -25,6 +25,22 @@
     dc = {
       enable = true;
       primary = false;
+      dhcp = {
+        enable = true;
+        subnet = "134.99.154.0/24";
+        dns-servers = [
+          "134.99.154.200"
+          "134.99.154.201"
+        ];
+        time-servers = [
+          "134.99.154.200"
+          "134.99.154.201"
+        ];
+        routers = [
+          "134.99.154.1"
+        ];
+        pool = "134.99.154.81 - 134.99.154.150";
+      };
       dns = {
         dnssec-validation = "no";
         forwarders = [

@@ -10,6 +10,29 @@
         Whether this is the primary domain controller, or a replica.
         Only on the primary controller can sysvol be edited, so if it is missing sysvol can only be read.
       '';
+      dhcp = {
+        enable = lib.mkEnableOption "Enable Kea DHCP on this DC";
+        dns-servers = lib.mkOption {
+          description = "List of the dns servers for the Domain";
+          type = lib.types.listOf lib.types.str;
+        };
+        time-servers = lib.mkOption {
+          description = "List of the dns servers for the Domain";
+          type = lib.types.listOf lib.types.str;
+        };
+        routers = lib.mkOption {
+          description = "External routers/gateways for the ip range";
+          type = lib.types.listOf lib.types.str;
+        };
+        subnet = lib.mkOption {
+          description = "Subnet of the DHCP in the Format a.b.c.d/x";
+          type = lib.types.str;
+        };
+        pool = lib.mkOption {
+          description = "Address pool from which the dhcp server assigns ip-addresses. Format: \"a.a.a.a - b.b.b.b\"";
+          type = lib.types.str;
+        };
+      };
       dns = {
         forwarders = lib.mkOption {
           description = "The DNS servers to be used for requests not belonging to the domain";
@@ -118,29 +141,29 @@
                   {
                     name = "domain-name-servers";
                     csv-format = true;
-                    data = "134.99.154.200, 134.99.154.201";
+                    data = lib.strings.concatStringsSep ", " cfg.dc.dhcp.dns-servers;
                   }
                   {
                     name = "routers";
                     csv-format = true;
-                    data = "134.99.154.1";
+                    data = lib.strings.concatStringsSep ", " cfg.dc.dhcp.routers;
                   }
                   {
                     name = "time-servers";
                     csv-format = true;
-                    data = "134.99.154.200, 134.99.154.201";
+                    data = lib.strings.concatStringsSep ", " cfg.dc.dhcp.time-servers;
                   }
                   {
                     name = "domain-name";
-                    data = "ad.astahhu.de";
+                    data = cfg.dhcp.domain;
                   }
                 ];
                 pools = [
                   {
-                    pool = "134.99.154.10 - 134.99.154.80";
+                    pool = cfg.dc.dhcp.pool;
                   }
                 ];
-                subnet = "134.99.154.0/24";
+                subnet = cfg.dc.dhcp.subnet;
                 reservations = import ./dhcp.nix;
               }
             ];
