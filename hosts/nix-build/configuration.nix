@@ -39,13 +39,15 @@
       url = "https://github.com/astahhu/nixos-config";
       extraLabels = [ "deploy" ];
       noDefaultLabels = true;
+      workDir = "/var/lib/github/nix-deploy";
       extraPackages = [
         pkgs.nix
         pkgs.deploy-rs
+        pkgs.openssh
       ];
       replace = true;
       serviceOverrides = {
-        BindReadOnlyPaths = "/nix/store /nix/var/nix/db /nix/var/nix/daemon-socket";
+        BindPaths = "/nix/store /nix/var/nix/db /nix/var/nix/daemon-socket";
       };
     };
   };
