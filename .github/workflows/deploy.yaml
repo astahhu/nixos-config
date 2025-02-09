@@ -26,10 +26,10 @@ jobs:
       - name: Deploy Servers
         env: 
           SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
-          SSH_PRIVAYE_KEY: ${secrets.SSH_PRIVAYE_KEY}}
+          SSH_PRIVAYE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_PRIVAYE_KEY" > ~/.ssh/id_ed25519 
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519 
           chmod 600 ~/.ssh/id_ed25519
           echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           deploy
