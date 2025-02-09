@@ -44,6 +44,9 @@
         pkgs.deploy-rs
       ];
       replace = true;
+      serviceOverrides = {
+        BindReadOnlyPaths = "/nix/store /nix/var/nix/db /nix/var/nix/daemon-socket";
+      };
     };
   };
 
