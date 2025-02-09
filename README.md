@@ -4,6 +4,8 @@ These are the current Hosts:
 - __nix-nextcloud__ - Nextcloud Instance for AStA
 - __nix-wordpress__ - Worpress Hosts for AStA 
 
+[![Deploy Servers](https://github.com/astahhu/nixos-config/actions/workflows/deploy.yaml/badge.svg?branch=main)](https://github.com/astahhu/nixos-config/actions/workflows/deploy.yaml)
+
 ## GOALS for Recovery/Deployment:
 To Recover a Machine from a failed State, only the explicit Persistend Data and the Current Configuration should be Needed. 
 
