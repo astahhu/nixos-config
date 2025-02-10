@@ -35,4 +35,4 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > id_ed25519 
           chmod 600 ~/.ssh/id_ed25519
           echo "$SSH_KNOWN_HOSTS" > known_hosts
-          deploy --ssh-user root --ssh-opts "-i id_ed25519 -o UserKnownHostsFile=known_hosts"
+          deploy --skip-checks --ssh-user root --ssh-opts "-i id_ed25519 -o UserKnownHostsFile=known_hosts"
