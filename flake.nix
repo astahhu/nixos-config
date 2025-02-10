@@ -110,7 +110,7 @@
                 ./hosts/nix-wireguard/configuration.nix
                 ./modules
                 ./users/admin-users.nix
-                inputs.nixos-generators.nixosModules.all-formats
+                #inputs.nixos-generators.nixosModules.all-formats
               ];
               specialArgs = { inherit inputs; };
             };
@@ -121,7 +121,7 @@
                 ./hosts/nix-build/configuration.nix
                 ./modules
                 ./users/admin-users.nix
-                inputs.nixos-generators.nixosModules.all-formats
+                #inputs.nixos-generators.nixosModules.all-formats
               ];
               specialArgs = { inherit inputs; };
             };
