@@ -31,9 +31,8 @@ jobs:
           SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
           SSH_PRIVAYE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
         run: |
-          nix run nixpkgs#dig nix-nextcloud.ad.astahhu.de
           mkdir -p ~/.ssh/
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519 
           chmod 600 ~/.ssh/id_ed25519
           echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          deploy --skip-checks --ssh-user root
+          deploy --skip-checks --ssh-user root --ssh-opts "-i ~/.ssh/id_ed25519 -o UserKnownHostsFile=~/.ssh/known_hosts"
