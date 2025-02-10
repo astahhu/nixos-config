@@ -32,7 +32,7 @@ jobs:
           SSH_PRIVAYE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519 
+          echo "$SSH_PRIVATE_KEY" > id_ed25519 
           chmod 600 ~/.ssh/id_ed25519
-          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          deploy --skip-checks --ssh-user root --ssh-opts "-i ~/.ssh/id_ed25519 -o UserKnownHostsFile=~/.ssh/known_hosts"
+          echo "$SSH_KNOWN_HOSTS" > known_hosts
+          deploy --ssh-user root --ssh-opts "-i id_ed25519 -o UserKnownHostsFile=known_hosts"
