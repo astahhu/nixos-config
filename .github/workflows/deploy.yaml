@@ -29,7 +29,7 @@ jobs:
       - name: Deploy Servers
         env: 
           SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
-          SSH_PRIVAYE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
         run: |
           echo "$SSH_PRIVATE_KEY" > id_ed25519 
           chmod 600 id_ed25519
