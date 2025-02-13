@@ -31,8 +31,8 @@ jobs:
           SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
           SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
         run: |
-          echo "$SSH_PRIVATE_KEY" > id_ed25519 
-          chmod 600 id_ed25519
-          echo "$SSH_KNOWN_HOSTS" > known_hosts
-          ssh -i id_ed25519 -o UserKnownHostsFile=known_hosts root@nix-samba-dc.ad.astahhu.de echo a
-          deploy --skip-checks --ssh-user root --ssh-opts "-i id_ed25519 -o StrictHostKeyChecking=no"
+          echo "$SSH_PRIVATE_KEY" > $GITHUB_WORKSPACE/id_ed25519 
+          chmod 600 $GITHUB_WORKSPACE/id_ed25519
+          echo "$SSH_KNOWN_HOSTS" > $GITHUB_WORKSPACE/known_hosts
+          ssh -i $GITHUB_WORKSPACE/id_ed25519 -0 UserKnonwnHostsFile=$GITHUB_WORKSPACE/known_hosts root@nix-samba-dc.ad.astahhu.de echo a
+          deploy --skip-checks --ssh-user root --ssh-opts "-i $GITHUB_WORKSPACE/id_ed25519 -o UserKnownHostsFile=$GITHUB_WORKSPACE/known_hosts"
