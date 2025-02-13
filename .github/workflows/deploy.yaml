@@ -35,4 +35,4 @@ jobs:
           chmod 600 id_ed25519
           echo "$SSH_KNOWN_HOSTS" > known_hosts
           ssh -i id_ed25519 -o UserKnownHostsFile=known_hosts root@nix-samba-dc.ad.astahhu.de echo a
-          deploy --skip-checks --ssh-user root --ssh-opts "-i id_ed25519 -o UserKnownHostsFile=known_hosts -o HostKeyAlgorithms=ssh-ed25519"
+          deploy --skip-checks --ssh-user root --ssh-opts "-i id_ed25519 -o StrictHostKeyChecking=no"
