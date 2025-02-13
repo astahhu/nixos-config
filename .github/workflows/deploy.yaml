@@ -34,5 +34,5 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > $GITHUB_WORKSPACE/id_ed25519 
           chmod 600 $GITHUB_WORKSPACE/id_ed25519
           echo "$SSH_KNOWN_HOSTS" > $GITHUB_WORKSPACE/known_hosts
-          ssh -i $GITHUB_WORKSPACE/id_ed25519 -o UserKnonwnHostsFile=$GITHUB_WORKSPACE/known_hosts root@nix-samba-dc.ad.astahhu.de echo a
+          ssh -i $GITHUB_WORKSPACE/id_ed25519 -o UserKnownHostsFile=$GITHUB_WORKSPACE/known_hosts root@nix-samba-dc.ad.astahhu.de echo a
           deploy --skip-checks --ssh-user root --ssh-opts "-i $GITHUB_WORKSPACE/id_ed25519 -o UserKnownHostsFile=$GITHUB_WORKSPACE/known_hosts"
