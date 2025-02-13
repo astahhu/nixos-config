@@ -15,8 +15,8 @@
 
   config = lib.mkIf config.astahhu.cli.nixvim.enable {
     environment.systemPackages = with pkgs; [
-      cargo-nextest
-      rust-analyzer
+      (lib.mkIf (!config.astahhu.common.is_server) cargo-nextest)
+      (lib.mkIf (!config.astahhu.common.is_server) rust-analyzer)
       ripgrep
     ];
 
@@ -38,12 +38,12 @@
         lualine.enable = true;
         fidget.enable = true;
         lsp = {
-          enable = true;
+          enable = !config.astahhu.common.is_server;
           servers = {
-            lua_ls.enable = true;
+            lua_ls.enable = !config.astahhu.common.is_server;
 
             nixd = {
-              enable = true;
+              enable = !config.astahhu.common.is_server;
               settings = {
                 formatting.command = [ "nixpkgs-fmt" ];
 
@@ -53,45 +53,58 @@
               };
             };
 
-            java_language_server.enable = true;
+            java_language_server.enable = !config.astahhu.common.is_server;
 
-            texlab.enable = true;
+            texlab.enable = !config.astahhu.common.is_server;
 
-            gopls.enable = true;
+            gopls.enable = !config.astahhu.common.is_server;
 
-            ccls.enable = true;
+            ccls.enable = !config.astahhu.common.is_server;
 
-            ansiblels.enable = true;
+            ansiblels.enable = !config.astahhu.common.is_server;
 
-            marksman.enable = true;
+            marksman.enable = !config.astahhu.common.is_server;
           };
         };
-        rustaceanvim.enable = true;
+        rustaceanvim.enable = !config.astahhu.common.is_server;
 
-        web-devicons.enable = true;
 
-        lsp-format.enable = true;
-        lspsaga.enable = true;
+        web-devicons.enable = !config.astahhu.common.is_server;
+
+
+        lsp-format.enable = !config.astahhu.common.is_server;
+
+        lspsaga.enable = !config.astahhu.common.is_server;
+
 
         dap = {
-          enable = true;
+          enable = !config.astahhu.common.is_server;
+
         };
         neotest = {
-          enable = true;
+          enable = !config.astahhu.common.is_server;
+
         };
 
         telescope.enable = true;
-        markdown-preview.enable = true;
-        oil.enable = true;
 
-        luasnip.enable = true;
-        treesitter.enable = true;
-        crates.enable = true;
+        markdown-preview.enable = !config.astahhu.common.is_server;
 
-        rainbow-delimiters.enable = true;
+        oil.enable = !config.astahhu.common.is_server;
+
+        luasnip.enable = !config.astahhu.common.is_server;
+
+        treesitter.enable = !config.astahhu.common.is_server;
+
+        crates.enable = !config.astahhu.common.is_server;
+
+
+        rainbow-delimiters.enable = !config.astahhu.common.is_server;
+
         cmp = {
-          enable = true;
-          autoEnableSources = true;
+          enable = !config.astahhu.common.is_server;
+          autoEnableSources = !config.astahhu.common.is_server;
+
 
           settings = {
             mapping = {

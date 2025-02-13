@@ -14,10 +14,6 @@
     nix-tun.url = "github:nix-tun/nixos-modules";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-tun.inputs.nixpkgs.follows = "nixpkgs";
-    wp4nix = {
-      url = "github:helsinki-systems/wp4nix";
-      flake = false;
-    };
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,7 +24,6 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     nix-topology.url = "github:oddlama/nix-topology";
-    authentik-nix.url = "github:nix-community/authentik-nix";
   };
 
   outputs =
