@@ -38,104 +38,127 @@
         flake =
           {
 
-            nixosConfigurations.it-laptop = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                (import ./hosts/it-laptop/disko.nix { device = "/dev/nvme0n1"; })
-                ./hosts/it-laptop/configuration.nix
-                ./hosts/it-laptop/hardware-configuration.nix
-                ./hosts/it-laptop/boot.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
+            nixosConfigurations = {
+              it-laptop = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  (import ./hosts/it-laptop/disko.nix { device = "/dev/nvme0n1"; })
+                  ./hosts/it-laptop/configuration.nix
+                  ./hosts/it-laptop/hardware-configuration.nix
+                  ./hosts/it-laptop/boot.nix
+                ];
+                specialArgs = { inherit inputs; };
+              };
 
-            nixosConfigurations.nix-nextcloud = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-nextcloud/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
+              nix-nextcloud = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  ./hosts/nix-nextcloud/configuration.nix
+                  ./modules
+                  ./users/admin-users.nix
+                ];
+                specialArgs = { inherit inputs; };
+              };
 
-            nixosConfigurations.nix-samba-fs = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-samba-fs/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
+              nix-samba-fs = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  ./hosts/nix-samba-fs/configuration.nix
+                  ./modules
+                  ./users/admin-users.nix
+                ];
+                specialArgs = { inherit inputs; };
+              };
 
-            nixosConfigurations.nix-samba-dc = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-samba-dc/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
+              nix-samba-dc = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  ./hosts/nix-samba-dc/configuration.nix
+                  ./modules
+                  ./users/admin-users.nix
+                ];
+                specialArgs = { inherit inputs; };
+              };
 
-            nixosConfigurations.nix-samba-dc-01 = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-samba-dc-01/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
+              nix-samba-dc-01 = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  ./hosts/nix-samba-dc-01/configuration.nix
+                  ./modules
+                  ./users/admin-users.nix
+                ];
+                specialArgs = { inherit inputs; };
+              };
 
-            nixosConfigurations.nix-webserver = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-webserver/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
+              nix-webserver = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  ./hosts/nix-webserver/configuration.nix
+                  ./modules
+                  ./users/admin-users.nix
+                ];
+                specialArgs = { inherit inputs; };
+              };
 
-            nixosConfigurations.nix-wireguard = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-wireguard/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-                #inputs.nixos-generators.nixosModules.all-formats
-              ];
-              specialArgs = { inherit inputs; };
-            };
+              nix-wireguard = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  ./hosts/nix-wireguard/configuration.nix
+                  ./modules
+                  ./users/admin-users.nix
+                  inputs.nixos-generators.nixosModules.all-formats
+                ];
+                specialArgs = { inherit inputs; };
+              };
 
-            nixosConfigurations.nix-build = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-build/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-                #inputs.nixos-generators.nixosModules.all-formats
-              ];
-              specialArgs = { inherit inputs; };
-            };
+              nix-build = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  ./hosts/nix-build/configuration.nix
+                  ./modules
+                  ./users/admin-users.nix
+                  inputs.nixos-generators.nixosModules.all-formats
+                ];
+                specialArgs = { inherit inputs; };
+              };
 
+              nix-asta2012-dc = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  ./hosts/nix-asta2012-dc/configuration.nix
+                  ./modules
+                  ./users/admin-users.nix
+                  inputs.nixos-generators.nixosModules.all-formats
+                ];
+                specialArgs = { inherit inputs; };
+              };
 
-            nixosConfigurations.nix-backup = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-backup/configuration.nix
-                ./modules
-              ];
-              specialArgs = { inherit inputs; };
+              nix-asta2012-dc-01 = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  ./hosts/nix-asta2012-dc-01/configuration.nix
+                  ./modules
+                  ./users/admin-users.nix
+                  inputs.nixos-generators.nixosModules.all-formats
+                ];
+                specialArgs = { inherit inputs; };
+              };
+
+              nix-backup = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  ./hosts/nix-backup/configuration.nix
+                  ./modules
+                ];
+                specialArgs = { inherit inputs; };
+              };
             };
 
             deploy.nodes = {
               nix-samba-dc-01 = {
                 hostname = "nix-samba-dc-01.ad.astahhu.de";
                 profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc-01;
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nix-samba-dc-01;
                   remoteBuild = true;
                   user = "root";
                 };
@@ -144,7 +167,7 @@
               nix-samba-dc = {
                 hostname = "nix-samba-dc.ad.astahhu.de";
                 profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc;
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nix-samba-dc;
                   remoteBuild = true;
                   user = "root";
                 };
@@ -153,7 +176,7 @@
               nix-samba-fs = {
                 hostname = "nix-samba-fs.ad.astahhu.de";
                 profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-fs;
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nix-samba-fs;
                   remoteBuild = true;
                   user = "root";
                 };
@@ -162,7 +185,7 @@
               nix-webserver = {
                 hostname = "134.99.154.51";
                 profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-webserver;
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nix-webserver;
                   remoteBuild = true;
                   user = "root";
                 };
@@ -171,7 +194,7 @@
               nix-nextcloud = {
                 hostname = "nix-nextcloud.ad.astahhu.de";
                 profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-nextcloud;
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nix-nextcloud;
                   remoteBuild = true;
                   user = "root";
                 };
@@ -180,7 +203,7 @@
               nix-wireguard = {
                 hostname = "134.99.154.242";
                 profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-wireguard;
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nix-wireguard;
                   remoteBuild = true;
                   user = "root";
                 };
@@ -189,7 +212,7 @@
               nix-build = {
                 hostname = "134.99.154.203";
                 profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-build;
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nix-build;
                   remoteBuild = true;
                   user = "root";
                 };

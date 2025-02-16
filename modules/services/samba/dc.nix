@@ -79,7 +79,7 @@
 
       systemd.services.kea-dhcp4-server.serviceConfig.DynamicUser = lib.mkForce false;
 
-      services.kea = {
+      services.kea = lib.mkIf config.astahhu.services.samba.dc.dhcp.enable {
         # DDNS via DHCP, with kerberos Authentication
         # Following the example at: https://kea.readthedocs.io/en/kea-2.7.5/arm/integrations.html#gss-tsig
         #  dhcp-ddns = {
