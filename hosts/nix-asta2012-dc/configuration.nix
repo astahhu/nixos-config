@@ -62,9 +62,22 @@
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
   # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
 
+  services.samba.settings = {
+    intern = {
+      "msdfs root" = "yes";
+      "msdfs proxy" = "asta-fs-v-02.asta2012.local/intern";
+      "browseable" = "yes";
+    };
+    public = {
+      "msdfs root" = "yes";
+      "msdfs proxy" = "asta-fs-v-02.asta2012.local/public";
+      "browseable" = "yes";
+    };
+  };
+
   astahhu.services.samba = {
     enable = true;
-    workgroup = "ASTA2012.LOCAL";
+    workgroup = "ASTA2012";
     dc = {
       enable = true;
       primary = true;

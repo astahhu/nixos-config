@@ -46,13 +46,13 @@
       ];
       defaultGateway = { address = "134.99.154.1"; interface = "eth0"; };
       useDHCP = false;
-      hostName = "nix-asta2012-dc";
+      hostName = "nix-asta2012dc1";
       domain = "asta2012.local";
       interfaces.eth0 = {
         ipv4 = {
           "addresses" = [
             {
-              address = "134.99.154.226";
+              address = "134.99.154.228";
               prefixLength = 24;
             }
           ];
@@ -62,12 +62,25 @@
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
   # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
 
+  services.samba.settings = {
+    intern = {
+      "msdfs root" = "yes";
+      "msdfs proxy" = "asta-fs-v-02.asta2012.local/intern";
+      "browseable" = "yes";
+    };
+    public = {
+      "msdfs root" = "yes";
+      "msdfs proxy" = "asta-fs-v-02.asta2012.local/public";
+      "browseable" = "yes";
+    };
+  };
+
   astahhu.services.samba = {
     enable = true;
-    workgroup = "ASTA2012.LOCAL";
+    workgroup = "ASTA2012";
     dc = {
       enable = true;
-      primary = true;
+      primary = false;
       dns = {
         dnssec-validation = "no";
         forwarders = [
