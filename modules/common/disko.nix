@@ -1,12 +1,12 @@
-{
-  device ? throw "Set this to your disk device, e.g. /dev/sda",
-  swap ? "8G",
-  ...
+{ device ? throw "Set this to your disk device, e.g. /dev/sda"
+, swap ? "8G"
+, ...
 }: {
   disko.devices = {
     disk.main = {
       inherit device;
       type = "disk";
+      imageSize = "30G";
       content = {
         type = "gpt";
         partitions = {
@@ -51,7 +51,7 @@
             size = "100%FREE";
             content = {
               type = "btrfs";
-              extraArgs = ["-f"];
+              extraArgs = [ "-f" ];
 
               subvolumes = {
                 "/root" = {
@@ -59,7 +59,7 @@
                 };
 
                 "/persist" = {
-                  mountOptions = ["noatime"];
+                  mountOptions = [ "noatime" ];
                   mountpoint = "/persist";
                 };
 
