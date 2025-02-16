@@ -234,6 +234,10 @@ in
                 Description = "Root for ${name} Wordpress Docker containers";
               };
               wantedBy = [ "multi-user.target" ];
+              requires = [
+                "docker.service"
+                "docker.socket"
+              ];
             };
           })
         config.astahhu.wordpress.sites);
