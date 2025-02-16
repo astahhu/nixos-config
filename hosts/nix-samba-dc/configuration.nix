@@ -36,6 +36,28 @@
   };
 
 
+  systemd.timers.sync-idmap = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnBootSec = "5m";
+      OnUnitActiveSec = "3h";
+      Unit = "sync-idmap.service'";
+    };
+  };
+
+
+  systemd.services.sync-idmap = {
+    script = ''
+      ${pkgs.tdb}/bin/tdbbackup -s .bak /var/lib/samba/private/idmap.ldb
+      ${pkgs.rsync}/bin/rsync -XAavz --delete-after /var/lib/samba/private/idmap.ldb.bak nix-samba-dc-01.ad.astahhu.de:/var/lib/samba/private/idmap.ldb -e "${pkgs.openssh}/bin/ssh -i /root/.ssh/sync"
+      ${pkgs.openssh}/bin/ssh -i /root/.ssh/sync nix-samba-dc-01.ad.astahhu.de net cache flush
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
+  };
+
   # Change for each System
   networking =
     {

@@ -21,19 +21,9 @@
     };
   };
 
-
-  systemd.services.sync-sysvol = {
-    path = [
-      pkgs.openssh
-    ];
-    script = ''
-      ${pkgs.rsync}/bin/rsync -XAavz --delete-after /var/lib/samba/sysvol/ nix-asta2012-dc-01.ad.astahhu.de:/var/lib/samba/sysvol/ -e "ssh -i /root/.ssh/sync"
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-    };
-  };
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG7K8KVbQFb805ZFHBScWi7YmG0hS26m4egNaZELwtMu root@nix-asta2012-dc"
+  ];
 
 
   # Change for each System

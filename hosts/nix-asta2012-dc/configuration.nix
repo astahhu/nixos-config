@@ -27,7 +27,29 @@
       pkgs.openssh
     ];
     script = ''
-      ${pkgs.rsync}/bin/rsync -XAavz --delete-after /var/lib/samba/sysvol/ nix-asta2012-dc-01.ad.astahhu.de:/var/lib/samba/sysvol/ -e "ssh -i /root/.ssh/sync"
+      ${pkgs.rsync}/bin/rsync -XAavz --delete-after /var/lib/samba/sysvol/ nix-asta2012dc1.asta2012.local:/var/lib/samba/sysvol/ -e "ssh -i /root/.ssh/sync"
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
+  };
+
+  systemd.timers.sync-idmap = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnBootSec = "5m";
+      OnUnitActiveSec = "3h";
+      Unit = "sync-idmap.service'";
+    };
+  };
+
+
+  systemd.services.sync-idmap = {
+    script = ''
+      ${pkgs.tdb}/bin/tdbbackup -s .bak /var/lib/samba/private/idmap.ldb
+      ${pkgs.rsync}/bin/rsync -XAavz --delete-after /var/lib/samba/private/idmap.ldb.bak nix-asta2012dc1.asta2012.local:/var/lib/samba/private/idmap.ldb -e "${pkgs.openssh}/bin/ssh -i /root/.ssh/sync"
+      ${pkgs.openssh}/bin/ssh -i /root/.ssh/sync nix-asta2012dc1.asta2012.local net cache flush
     '';
     serviceConfig = {
       Type = "oneshot";
