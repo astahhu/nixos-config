@@ -73,6 +73,12 @@
       fsbio = {
         hostname = "fsbio.astahhu.de";
       };
+      tinby = {
+        hostname = "tinby.astahhu.de";
+      };
+      femref = {
+        hostname = "femref.astahhu.de";
+      };
     };
   };
 
