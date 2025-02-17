@@ -202,14 +202,6 @@
                   user = "root";
                 };
               };
-
-              nix-build = {
-                hostname = "134.99.154.203";
-                profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-build;
-                  user = "root";
-                };
-              };
             };
 
 
