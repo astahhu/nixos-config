@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }: {
   options.astahhu.traefik = {
     enable = lib.mkEnableOption "Enable the Traefik Reverse Proxy";
@@ -21,10 +20,9 @@
       '';
     };
     redirects =
-      lib.mkOption {
-      };
+      lib.mkOption { };
     services = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.submodule ({...}: {
+      type = lib.types.attrsOf (lib.types.submodule ({ ... }: {
         options = {
           router = {
             rule = lib.mkOption {
@@ -58,14 +56,14 @@
             };
             middlewares = lib.mkOption {
               type = lib.types.listOf (lib.types.str);
-              default = [];
+              default = [ ];
               description = ''
                 The middlewares applied to the router, the middlewares are applied in order.
               '';
             };
             entryPoints = lib.mkOption {
               type = lib.types.listOf (lib.types.str);
-              default = ["websecure"];
+              default = [ "websecure" ];
               description = ''
                 The Entrypoint of the service, default is 443 (websecure)
               '';
@@ -73,14 +71,14 @@
           };
           servers = lib.mkOption {
             type = lib.types.listOf (lib.types.str);
-            default = [];
+            default = [ ];
             description = ''
               The hosts of the service
             '';
           };
         };
       }));
-      default = {};
+      default = { };
       description = ''
         A simple setup to configure http loadBalancer services and routers.
       '';
@@ -88,36 +86,38 @@
   };
 
   config = lib.mkIf config.astahhu.traefik.enable {
-    networking.firewall.allowedTCPPorts = [80 443];
+    networking.firewall.allowedTCPPorts = [ 80 443 ];
 
     services.traefik = {
       enable = true;
       dynamicConfigOptions = {
         http = {
           routers =
-            lib.attrsets.mapAttrs (
-              name: value:
-                lib.mkMerge [
-                  {
-                    rule = value.router.rule;
-                    priority = value.router.priority;
-                    middlewares = value.router.middlewares;
-                    service = name;
-                    entryPoints = value.router.entryPoints;
-                  }
-                  (lib.mkIf value.router.tls.enable {
-                    tls = value.router.tls.options;
-                  })
-                ]
-            )
-            config.astahhu.traefik.services;
+            lib.attrsets.mapAttrs
+              (
+                name: value:
+                  lib.mkMerge [
+                    {
+                      rule = value.router.rule;
+                      priority = value.router.priority;
+                      middlewares = value.router.middlewares;
+                      service = name;
+                      entryPoints = value.router.entryPoints;
+                    }
+                    (lib.mkIf value.router.tls.enable {
+                      tls = value.router.tls.options;
+                    })
+                  ]
+              )
+              config.astahhu.traefik.services;
           services =
-            lib.attrsets.mapAttrs (name: value: {
-              loadBalancer = {
-                servers = builtins.map (value: {url = value;}) value.servers;
-              };
-            })
-            config.astahhu.traefik.services;
+            lib.attrsets.mapAttrs
+              (name: value: {
+                loadBalancer = {
+                  servers = builtins.map (value: { url = value; }) value.servers;
+                };
+              })
+              config.astahhu.traefik.services;
         };
       };
 
@@ -127,14 +127,14 @@
             acme = {
               email = config.astahhu.traefik.letsencryptMail;
               storage = "/var/lib/traefik/acme.json";
-              tlsChallenge = {};
+              tlsChallenge = { };
             };
           };
         };
 
         entryPoints = {
           web = {
-            address = ":80";
+            address = "0.0.0.0:80";
             http = {
               redirections = {
                 entryPoint = {
@@ -145,7 +145,7 @@
             };
           };
           websecure = {
-            address = ":443";
+            address = "0.0.0.0:443";
           };
         };
 
