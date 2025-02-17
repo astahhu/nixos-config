@@ -17,7 +17,7 @@
     interfaces.eth0.ipv4 = {
       addresses = [
         {
-          address = "134.99.154.203";
+          address = "134.99.154.210";
           prefixLength = 24;
         }
       ];
