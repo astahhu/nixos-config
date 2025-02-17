@@ -238,6 +238,10 @@ in
                 "docker.service"
                 "docker.socket"
               ];
+              after = [
+                "docker.service"
+                "docker.socket"
+              ];
             };
           })
         config.astahhu.wordpress.sites);
