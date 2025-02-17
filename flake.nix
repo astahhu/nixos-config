@@ -159,7 +159,6 @@
                 hostname = "nix-samba-dc-01.ad.astahhu.de";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc-01;
-                  remoteBuild = true;
                   user = "root";
                 };
               };
@@ -168,7 +167,6 @@
                 hostname = "nix-samba-dc.ad.astahhu.de";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc;
-                  remoteBuild = true;
                   user = "root";
                 };
               };
@@ -177,7 +175,6 @@
                 hostname = "nix-samba-fs.ad.astahhu.de";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-fs;
-                  remoteBuild = true;
                   user = "root";
                 };
               };
@@ -186,7 +183,6 @@
                 hostname = "134.99.154.51";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-webserver;
-                  remoteBuild = true;
                   user = "root";
                 };
               };
@@ -195,7 +191,6 @@
                 hostname = "nix-nextcloud.ad.astahhu.de";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-nextcloud;
-                  remoteBuild = true;
                   user = "root";
                 };
               };
@@ -204,7 +199,6 @@
                 hostname = "134.99.154.242";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-wireguard;
-                  remoteBuild = true;
                   user = "root";
                 };
               };
@@ -213,7 +207,6 @@
                 hostname = "134.99.154.203";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-build;
-                  remoteBuild = true;
                   user = "root";
                 };
               };
