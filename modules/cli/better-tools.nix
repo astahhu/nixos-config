@@ -33,7 +33,10 @@
       astahhu.cli.nixvim.enable = true;
 
       programs.git.enable = true;
-
+      programs.direnv = {
+        enable = true;
+        silent = true;
+      };
       users.defaultUserShell = pkgs.fish;
       programs.fish.enable = true;
       programs.fish.shellAliases = {

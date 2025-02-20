@@ -14,10 +14,12 @@
   ];
 
   config = lib.mkIf config.astahhu.cli.nixvim.enable {
-    environment.systemPackages = with pkgs; [
-      (lib.mkIf (!config.astahhu.common.is_server) cargo-nextest)
-      (lib.mkIf (!config.astahhu.common.is_server) rust-analyzer)
-      ripgrep
+    environment.systemPackages = [
+      (lib.mkIf (!config.astahhu.common.is_server) pkgs.cargo-nextest)
+      (lib.mkIf (!config.astahhu.common.is_server) pkgs.rust-analyzer)
+      (lib.mkIf (!config.astahhu.common.is_server) pkgs.rustfmt)
+      (lib.mkIf (!config.astahhu.common.is_server) pkgs.lldb)
+      pkgs.ripgrep
     ];
 
     environment.variables = {
@@ -66,11 +68,12 @@
             marksman.enable = !config.astahhu.common.is_server;
           };
         };
-        rustaceanvim.enable = !config.astahhu.common.is_server;
+        rustaceanvim = {
+          enable = !config.astahhu.common.is_server;
+        };
 
 
         web-devicons.enable = !config.astahhu.common.is_server;
-
 
         lsp-format.enable = !config.astahhu.common.is_server;
 
