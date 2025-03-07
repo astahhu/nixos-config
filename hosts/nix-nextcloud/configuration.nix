@@ -114,11 +114,6 @@
       mountPoint = "/run/docker.sock";
     };
 
-    bindMounts.resolvconf = {
-      hostPath = "/etc/resolv.conf";
-      mountPoint = "/etc/resolv.conf";
-    };
-
     config = { ... }: {
       environment.systemPackages = [
         pkgs.docker
@@ -129,6 +124,9 @@
         dbuser = lib.mkForce "nextcloud";
         dbhost = lib.mkForce "localhost:/run/mysqld/mysqld.sock";
       };
+
+      users.users.nextcloud.extraGroups = [ "docker" ];
+      networking.useHostResolvConf = true;
 
       services.nginx.virtualHosts."cloud.astahhu.de".extraConfig = lib.mkForce ''
         index index.php index.html /index.php$request_uri;
@@ -143,7 +141,6 @@
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         client_max_body_size ${config.services.nextcloud.maxUploadSize};
         fastcgi_buffers 64 4K;
-        fastcgi_hide_header X-Powered-By;
         gzip on;
         gzip_vary on;
         gzip_comp_level 4;
