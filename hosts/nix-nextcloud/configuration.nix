@@ -132,7 +132,7 @@
 
       users.users.nextcloud.extraGroups = [ "docker" ];
       networking.useHostResolvConf = lib.mkForce false;
-      environment.etc."resolv.conf" = lib.mkForce null;
+      environment.etc."resolv.conf".enable = lib.mkForce false;
 
       services.nginx.virtualHosts."cloud.astahhu.de".extraConfig = lib.mkForce ''
         index index.php index.html /index.php$request_uri;
