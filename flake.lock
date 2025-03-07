@@ -12,11 +12,11 @@
         "systems": "systems_4"
       },
       "locked": {
-        "lastModified": 1738503522,
-        "narHash": "sha256-1yrVbGLBMBPl34EibVARkUB9Gak1GjLRLZXJk9jbHxU=",
+        "lastModified": 1740601740,
+        "narHash": "sha256-YQ8lMeT/KkMDavXrqPvoO6pKQdfSSAZBcNp/Cer4vWc=",
         "owner": "nix-community",
         "repo": "authentik-nix",
-        "rev": "bc62d5509989f5dca633c65b58aa0ac79a48db3e",
+        "rev": "bfcad34becd76d148e1ad537b5dcbd58d858a5bb",
         "type": "github"
       },
       "original": {
@@ -28,16 +28,16 @@
     "authentik-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1738183650,
-        "narHash": "sha256-4XdYlqfd23TVPaJ0R5tEBIpDXLV4mFHdXhIWp5dIvIE=",
+        "lastModified": 1740599692,
+        "narHash": "sha256-KZalpsM9rvki9GD+urf8idHOEnvBJtkSvE1b2b4KL/4=",
         "owner": "goauthentik",
         "repo": "authentik",
-        "rev": "f1b7a9f934e6b58a1884ba753575eac6267f4b6e",
+        "rev": "31fe0e59234e487a42012510d1a4e4819b9aba26",
         "type": "github"
       },
       "original": {
         "owner": "goauthentik",
-        "ref": "version/2024.12.3",
+        "ref": "version/2025.2.1",
         "repo": "authentik",
         "type": "github"
       }
@@ -310,11 +310,11 @@
         "nixpkgs-lib": "nixpkgs-lib_2"
       },
       "locked": {
-        "lastModified": 1736143030,
-        "narHash": "sha256-+hu54pAoLDEZT9pjHlqL9DNzWz0NbUn8NEAHP7PQPzU=",
+        "lastModified": 1738453229,
+        "narHash": "sha256-7H9XgNiGLKN1G1CgRh0vUL4AheZSYzPm+zmZ7vxbJdo=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "b905f6fc23a9051a6e1b741e1438dbfc0634c6de",
+        "rev": "32ea77a06711b758da0ad9bd6a844c5740a87abd",
         "type": "github"
       },
       "original": {
@@ -782,11 +782,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1739791620,
-        "narHash": "sha256-yFfrAWc60GyTOEk0kRi6RxwXI1WXv+CSDduD9vw45eM=",
+        "lastModified": 1741349345,
+        "narHash": "sha256-91zYBV4RT0QOTn1V6e6Uil3wI+PLLa/4r68IfgaCwzc=",
         "owner": "nix-tun",
         "repo": "nixos-modules",
-        "rev": "e01add6c09cee6058e277eea0896f6683a98b34a",
+        "rev": "225c9735792b8ef87b562509895df426144dedde",
         "type": "github"
       },
       "original": {
@@ -857,14 +857,14 @@
     },
     "nixpkgs-lib_2": {
       "locked": {
-        "lastModified": 1735774519,
-        "narHash": "sha256-CewEm1o2eVAnoqb6Ml+Qi9Gg/EfNAxbRx1lANGVyoLI=",
+        "lastModified": 1738452942,
+        "narHash": "sha256-vJzFZGaCpnmo7I6i416HaBLpC+hvcURh/BQwROcGIp8=",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/e9b51731911566bbf7e4895475a87fe06961de0b.tar.gz"
+        "url": "https://github.com/NixOS/nixpkgs/archive/072a6db25e947df2f31aab9eccd0ab75d5b2da11.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/e9b51731911566bbf7e4895475a87fe06961de0b.tar.gz"
+        "url": "https://github.com/NixOS/nixpkgs/archive/072a6db25e947df2f31aab9eccd0ab75d5b2da11.tar.gz"
       }
     },
     "nixpkgs_10": {
@@ -965,11 +965,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1737632463,
-        "narHash": "sha256-38J9QfeGSej341ouwzqf77WIHAScihAKCt8PQJ+NH28=",
+        "lastModified": 1740367490,
+        "narHash": "sha256-WGaHVAjcrv+Cun7zPlI41SerRtfknGQap281+AakSAw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0aa475546ed21629c4f5bbf90e38c846a99ec9e9",
+        "rev": "0196c0175e9191c474c26ab5548db27ef5d34b05",
         "type": "github"
       },
       "original": {
@@ -1098,11 +1098,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1736884309,
-        "narHash": "sha256-eiCqmKl0BIRiYk5/ZhZozwn4/7Km9CWTbc15Cv+VX5k=",
+        "lastModified": 1739883580,
+        "narHash": "sha256-3ydikhrNaWy8j0cqHju/94PcD4GZ9T4Ju4rHh34oz3k=",
         "owner": "nix-community",
         "repo": "poetry2nix",
-        "rev": "75d0515332b7ca269f6d7abfd2c44c47a7cbca7b",
+        "rev": "d90f9db68a4bda31c346be16dfd8d3263be4547e",
         "type": "github"
       },
       "original": {
