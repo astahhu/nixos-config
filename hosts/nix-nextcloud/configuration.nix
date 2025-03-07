@@ -114,6 +114,11 @@
       mountPoint = "/run/docker.sock";
     };
 
+    bindMounts.resolv = {
+      hostPath = "/etc/resolv.conf";
+      mountPoint = "/etc/resolv.conf";
+    };
+
     config = { ... }: {
       environment.systemPackages = [
         pkgs.docker
@@ -126,7 +131,7 @@
       };
 
       users.users.nextcloud.extraGroups = [ "docker" ];
-      networking.useHostResolvConf = false;
+      networking.useHostResolvConf = lib.mkForce false;
 
       services.nginx.virtualHosts."cloud.astahhu.de".extraConfig = lib.mkForce ''
         index index.php index.html /index.php$request_uri;
