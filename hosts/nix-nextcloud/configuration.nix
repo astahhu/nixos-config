@@ -126,7 +126,7 @@
       };
 
       users.users.nextcloud.extraGroups = [ "docker" ];
-      networking.useHostResolvConf = true;
+      networking.useHostResolvConf = false;
 
       services.nginx.virtualHosts."cloud.astahhu.de".extraConfig = lib.mkForce ''
         index index.php index.html /index.php$request_uri;
