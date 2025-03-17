@@ -27,6 +27,21 @@
     keyMap = "us";
   };
 
+  services.grafana = {
+    enable = true;
+    settings.server.protocol = "socket";
+    settings.server.root_url = "https://grafana.astahhu.de";
+    settings.server.domain = "grafana.astahhu.de";
+  };
+
+  nix-tun.services.traefik.services.grafana = {
+    servers = [
+      "unix://run/grafana/grafana.sock"
+    ];
+    router.rule = "Host(`grafana.astahhu.de`)";
+    router.tls.enable = false;
+  };
+
 
   nix-tun.services.traefik = {
     enable = true;

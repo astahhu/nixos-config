@@ -104,9 +104,7 @@
     };
   };
 
-  services.traefik.staticConfigOptions.entryPoints.web.proxyProtocol.insecure = true;
-
-  services.traefik.staticConfigOptions.entryPoints.websecure.proxyProtocol.insecure = true; #.trustedIPs = [ "192.168.0.0/16" "127.0.0.1" ];
+  services.traefik.staticConfigOptions.entryPoints.websecure.forwardedHeaders.trustedIPs = [ "192.168.0.0/16" "127.0.0.1" ];
 
   containers.nextcloud = {
     bindMounts.docker = {
@@ -125,6 +123,7 @@
       ];
 
       services.nextcloud.settings.default_phone_region = "DE";
+      services.nextcloud.maxUploadSize = "3G";
       services.nextcloud.notify_push = {
         dbuser = lib.mkForce "nextcloud";
         dbhost = lib.mkForce "localhost:/run/mysqld/mysqld.sock";
@@ -149,7 +148,6 @@
           add_header X-Content-Type-Options nosniff;
           add_header Referrer-Policy no-referrer always;
           add_header Strict-Transport-Security "max-age=${toString config.services.nextcloud.nginx.hstsMaxAge}; includeSubDomains" always;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
           client_max_body_size ${config.services.nextcloud.maxUploadSize};
           fastcgi_buffers 64 4K;
           gzip on;
