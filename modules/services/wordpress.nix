@@ -175,6 +175,8 @@ in
             ];
             requires = [
               "docker-network-wp_${name}_default.service"
+              "docker.service"
+              "docker.socket"
             ];
             partOf = [
               "docker-compose-wp-${name}-root.target"
@@ -199,6 +201,8 @@ in
             ];
             requires = [
               "docker-network-wp_${name}_default.service"
+              "docker.service"
+              "docker.socket"
             ];
             partOf = [
               "docker-compose-wp-${name}-root.target"
@@ -223,6 +227,10 @@ in
             '';
             partOf = [ "docker-compose-wp-${name}-root.target" ];
             wantedBy = [ "docker-compose-wp-${name}-root.target" ];
+            requires = [
+              "docker.service"
+              "docker.socket"
+            ];
           };
         })
         config.astahhu.wordpress.sites) // (lib.attrsets.mapAttrs'
