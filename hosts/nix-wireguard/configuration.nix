@@ -211,6 +211,11 @@
             PublicKey = "HHlyGpKT07fHtBv3ggVhYzkcHfoA18Kty99GdddgX1Y=";
             AllowedIPs = [ "10.105.42.28/32" ];
           }
+          {
+            # sotiristablet
+            PublicKey = "Pwp6d3ZznOss6Rz6JLly6deJymh7NDT9N0a9B0YJKRU=";
+            AllowedIPs = [ "10.105.42.29/32" ];
+          }
         ];
       };
     };
