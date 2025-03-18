@@ -94,6 +94,9 @@
       femref = {
         hostname = "femref.astahhu.de";
       };
+      fssowi = {
+        hostname = "fssowi.astahhu.de";
+      };
     };
   };
 
