@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   astahhu.common = {
     is_server = true;
     is_qemuvm = true;
@@ -8,11 +8,21 @@
     };
   };
 
+
   # Change for each System
   networking.hostName = "nix-webserver";
 
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
   sops.defaultSopsFile = ../../secrets/nix-webserver.yaml;
+
+  # Networking
+  networking.nat = {
+    enable = true;
+    internalInterfaces = [ "ve-+" ];
+    externalInterface = "ens18";
+    # Lazy IPv6 connectivity for the container
+    enableIPv6 = true;
+  };
 
   # Networking
   networking.firewall.enable = true;
@@ -25,21 +35,6 @@
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     keyMap = "us";
-  };
-
-  services.grafana = {
-    enable = true;
-    settings.server.protocol = "socket";
-    settings.server.root_url = "https://grafana.astahhu.de";
-    settings.server.domain = "grafana.astahhu.de";
-  };
-
-  nix-tun.services.traefik.services.grafana = {
-    servers = [
-      "unix://run/grafana/grafana.sock"
-    ];
-    router.rule = "Host(`grafana.astahhu.de`)";
-    router.tls.enable = false;
   };
 
 
@@ -62,6 +57,11 @@
         "FS Info" = "https://nextcloud.inphima.de/remote.php/dav/public-calendars/CAx5MEp7cGrQ6cEe?export";
       };
     };
+  };
+
+  astahhu.services.grafana = {
+    enable = true;
+    domain = "grafana.astahhu.de";
   };
 
   astahhu.wordpress = {
