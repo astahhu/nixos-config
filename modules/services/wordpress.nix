@@ -233,26 +233,28 @@ in
             ];
           };
         })
-        config.astahhu.wordpress.sites) // (lib.attrsets.mapAttrs'
-        (name: value:
-          {
-            name = "docker-compose-wp-${name}-root";
-            value = {
-              unitConfig = {
-                Description = "Root for ${name} Wordpress Docker containers";
-              };
-              wantedBy = [ "multi-user.target" ];
-              requires = [
-                "docker.service"
-                "docker.socket"
-              ];
-              after = [
-                "docker.service"
-                "docker.socket"
-              ];
-            };
-          })
         config.astahhu.wordpress.sites);
+
+    systemd.targets = (lib.attrsets.mapAttrs'
+      (name: value:
+        {
+          name = "docker-compose-wp-${name}-root";
+          value = {
+            unitConfig = {
+              Description = "Root for ${name} Wordpress Docker containers";
+            };
+            wantedBy = [ "multi-user.target" ];
+            requires = [
+              "docker.service"
+              "docker.socket"
+            ];
+            after = [
+              "docker.service"
+              "docker.socket"
+            ];
+          };
+        })
+      config.astahhu.wordpress.sites);
 
   };
 }

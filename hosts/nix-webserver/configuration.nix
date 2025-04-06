@@ -62,7 +62,10 @@
   astahhu.services.grafana = {
     enable = true;
     domain = "grafana.astahhu.de";
+    prometheus.domain = "prometheus.astahhu.de";
   };
+
+  astahhu.common.enable-node-exporter = true;
 
   astahhu.wordpress = {
     enable = true;

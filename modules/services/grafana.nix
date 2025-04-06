@@ -6,6 +6,15 @@
         description = "The domain from which grafana should be reached";
         type = lib.types.str;
       };
+      prometheus = {
+        scrapeConfigs = lib.mkOption {
+          type = lib.types.attrs;
+        };
+        domain = lib.mkOption {
+          description = "The domain from which prometheus should be reached";
+          type = lib.types.str;
+        };
+      };
     };
   };
 
@@ -16,6 +25,9 @@
       timeoutStartSec = "5min";
       hostAddress = "192.168.100.10";
       localAddress = "192.168.100.12";
+      bindMounts."${config.sops.secrets.node-exporter-pass.path}" = {
+        hostPath = config.sops.secrets.node-exporter-pass.path;
+      };
     };
 
     nix-tun.services.traefik.services."grafana" = {
@@ -24,19 +36,40 @@
       servers = [ "http://grafana.containers:3000" ];
     };
 
+    sops.secrets.node-exporter-pass = {
+      uid = config.containers.grafana.config.users.users.grafana.uid;
+    };
+
     nix-tun.utils.containers.grafana = {
       volumes = {
         "/var/lib/grafana" = { };
+        "/var/lib/prometheus2" = { };
       };
       config = { ... }: {
         boot.isContainer = true;
+        services.prometheus = {
+          enable = true;
+          port = 9000;
+          scrapeConfigs = [{
+            job_name = "nix-webserver-metrics";
+            #basic_auth = {
+            #  username = "node-exporter";
+            #  password_file = config.sops.secrets.node-exporter-pass.path;
+            #};
+            #tls_config.insecure_skip_verify = true;
+            static_configs = [{
+              targets = [ "192.168.100.13:9100" "nix-nextcloud.ad.astahhu.de:9100" ];
+            }];
+          }];
+        };
+
         services.grafana = {
           enable = true;
           settings = {
             server = {
-              domain = "grafana.astahhu.de";
+              domain = config.astahhu.services.grafana.domain;
               http_addr = "0.0.0.0";
-              root_url = "https://grafana.astahhu.de";
+              root_url = "https://${config.astahhu.services.grafana.domain}";
             };
             "auth.basic".enable = false;
             auth.disable_login_form = true;
@@ -52,7 +85,7 @@
               auth_url = "https://keycloak.astahhu.de/realms/astaintern/protocol/openid-connect/auth";
               token_url = "https://keycloak.astahhu.de/realms/astaintern/protocol/openid-connect/token";
               api_url = "https://keycloak.astahhu.de/realms/astaintern/protocol/openid-connect/userinfo";
-              role_attribute_path = "contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'";
+              role_attribute_path = "contains(roles[*], 'Admin') && 'Admin' || contains(roles[*], 'Editor') && 'Editor' || 'Viewer'";
             };
           };
         };

@@ -5,6 +5,7 @@
     ./users.nix
     ./server.nix
     ./proxmox-lxc.nix
+    ./node-exporter.nix
   ];
 
   options.astahhu.common = {

@@ -160,7 +160,7 @@
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc-01;
                   user = "root";
-                  confirmTimeout = 120;
+                  confirmTimeout = 180;
                   activationTimeout = 600;
                 };
               };
@@ -170,7 +170,7 @@
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc;
                   user = "root";
-                  confirmTimeout = 120;
+                  confirmTimeout = 180;
                   activationTimeout = 600;
                 };
               };
@@ -180,7 +180,7 @@
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-fs;
                   user = "root";
-                  confirmTimeout = 120;
+                  confirmTimeout = 180;
                   activationTimeout = 600;
                 };
               };
@@ -190,7 +190,7 @@
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-webserver;
                   user = "root";
-                  confirmTimeout = 120;
+                  confirmTimeout = 180;
                   activationTimeout = 600;
                 };
               };
@@ -200,7 +200,7 @@
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-nextcloud;
                   user = "root";
-                  confirmTimeout = 120;
+                  confirmTimeout = 180;
                   activationTimeout = 600;
                 };
               };
@@ -210,7 +210,7 @@
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-wireguard;
                   user = "root";
-                  confirmTimeout = 120;
+                  confirmTimeout = 180;
                   activationTimeout = 600;
                 };
               };
