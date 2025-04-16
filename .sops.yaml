@@ -3,6 +3,8 @@ keys:
   - &florian-yubikey CFAA36038DF83F58F38090E2358EE66F828961B3
   - &florian_other_yubikey 6CC9DAFA22A1DB345F18A7AD5437D56471EC435B
   - &sotiris-primary-yubikey 7FBACEF23172884FF4967ABCF9E644AF94BE1EAE
+  - &sotiris-backup-yubikey  98FD09AC654B27772A03E6C7C0DC5C74462B385B
+  - &sotiris-c-yubikey       93E75346EC76A38F684EFA248125744461D04398
   ## Hosts
   - &nix-authentik 28528b7b6322273d9c4178da8c125eb8d6231af2
   - &nix-nextcloud 6929705d3549cc8d112ad656ec4fabf6aaefe763
@@ -27,6 +29,8 @@ creation_rules:
         - *florian-yubikey
         - *florian_other_yubikey
         - *sotiris-primary-yubikey
+        - *sotiris-backup-yubikey
+        - *sotiris-c-yubikey
         - *nix-samba-fs
   - path_regex: secrets/nix-samba-dc*
     key_groups:
@@ -34,6 +38,8 @@ creation_rules:
         - *florian-yubikey
         - *florian_other_yubikey
         - *sotiris-primary-yubikey
+        - *sotiris-backup-yubikey
+        - *sotiris-c-yubikey
         - *nix-samba-dc
         - *nix-samba-dc-01
   - path_regex: secrets/nix-wireguard.yaml
@@ -43,6 +49,8 @@ creation_rules:
         - *florian-yubikey
         - *florian_other_yubikey
         - *sotiris-primary-yubikey
+        - *sotiris-backup-yubikey
+        - *sotiris-c-yubikey
   - path_regex: secrets/nix-webserver*
     key_groups:
       - pgp:
@@ -50,6 +58,8 @@ creation_rules:
         - *florian-yubikey
         - *nix-webserver
         - *sotiris-primary-yubikey
+        - *sotiris-backup-yubikey
+        - *sotiris-c-yubikey
   - path_regex: secrets/nix-nextcloud*
     key_groups:
       - pgp:
@@ -57,6 +67,8 @@ creation_rules:
         - *florian_other_yubikey
         - *florian-yubikey
         - *sotiris-primary-yubikey
+        - *sotiris-backup-yubikey
+        - *sotiris-c-yubikey
   - path_regex: secrets/nix-build
     key_groups:
       - pgp:
@@ -64,4 +76,6 @@ creation_rules:
         - *florian_other_yubikey
         - *florian-yubikey
         - *sotiris-primary-yubikey
+        - *sotiris-backup-yubikey
+        - *sotiris-c-yubikey
 
