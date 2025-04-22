@@ -100,6 +100,9 @@
       fssowi = {
         hostname = "fssowi.astahhu.de";
       };
+      itref = {
+        hostname = "it.astahhu.de";
+      };
     };
   };
 
