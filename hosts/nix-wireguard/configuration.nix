@@ -86,7 +86,7 @@
             AllowedIPs = [ "10.105.42.3/32" ];
           }
           {
-            # 4
+            # Petra's Laptop
             PublicKey = "/+DAqTxrCYqicFmJ3hGPc4++BwBbkni7MH5BNOKuinc=";
             AllowedIPs = [ "10.105.42.4/32" ];
           }
