@@ -137,7 +137,7 @@
             (name: value: {
               name = "${name}";
               value = {
-                path = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
+                path = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}".path;
                 "read only" = "no";
                 "veto files" = "/.snapshots/";
                 "veto oplock files" = "/.snapshots/";
@@ -148,7 +148,7 @@
                 "shadow:format" = "${name}.%Y%m%dT%H%M%S%z";
                 "shadow:snapdir" = ".snapshots";
                 "shadow:crossmountpoints" = "yes";
-                "shadow:mountpoint" = "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
+                "shadow:mountpoint" = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}".path;
                 "inherit permissions" = "yes";
                 "inherit owner" = "yes";
               } // value;

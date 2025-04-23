@@ -10,6 +10,17 @@
         Whether this is the primary domain controller, or a replica.
         Only on the primary controller can sysvol be edited, so if it is missing sysvol can only be read.
       '';
+      domain-dfs = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.attrsOf lib.types.str);
+        description = ''
+          Setup domain wide dfs, so that shares that reside on a fileserver, can also be accesed via a "virtual" share on the whole domain.
+          This enables one to change the underlying fileserver, without having to updates the address of the share on each use.
+        '';
+        default = { };
+        example = ''
+          astahhu.services.samba.dc.domain-dfs.<virutal-share-name>.<filename> = <fileserver>/<share>
+        '';
+      };
       dhcp = {
         enable = lib.mkEnableOption "Enable Kea DHCP on this DC";
         dns-servers = lib.mkOption {
@@ -53,7 +64,43 @@
     in
     lib.mkIf cfg.dc.enable {
 
-      security.pam.krb5.enable = false;
+      astahhu.services.samba.fs.shares =
+        (lib.mergeAttrsList
+          (lib.attrsets.mapAttrsToList
+            (name: value:
+              {
+                "${name}" = {
+                  "msdfs root" = "yes";
+                  "msdfs proxy" = "${config.astahhu.services.samba.hostname}.${config.astahhu.services.samba.domain}/${name}-dfs";
+                  "browseable" = "yes";
+                };
+                "${name}-dfs" = {
+                  "msdfs root" = "yes";
+                  "browseable" = "no";
+                };
+              })
+            config.astahhu.services.samba.dc.domain-dfs));
+
+      # This setups the dfs links, with systemd tmpfiles.
+      # See also: https://wiki.samba.org/index.php/Distributed_File_System_(DFS)#Configure_stand-alone_DFS_in_Samba
+      # and: https://www.freedesktop.org/software/systemd/man/tmpfiles.d
+      systemd.tmpfiles.settings.samba-domain-dfs =
+        lib.mergeAttrsList (
+          lib.attrsets.mapAttrsToList
+            (virtual-share: value:
+              (lib.attrsets.mapAttrs'
+                (file: server: {
+                  name = config.nix-tun.storage.persist.subvolumes."samba-shares/${virtual-share}-dfs".path + "/" + file;
+                  value."L+" = {
+                    argument = "msdfs:${server}";
+                  };
+                })
+                value)
+            )
+            config.astahhu.services.samba.dc.domain-dfs);
+
+      security.pam.krb5.enable =
+        false;
 
       environment.systemPackages = [
         pkgs.dig.out
@@ -67,12 +114,19 @@
 
       users.groups.kea = { };
 
-      nix-tun.storage.persist.subvolumes.kea = {
-        #bindMountDirectories = true;
-        owner = "kea";
-        directories = {
-          "/var/lib/kea" = {
-            mode = "0700";
+      nix-tun.storage.persist.subvolumes = (lib.attrsets.mapAttrs'
+        (name: value: {
+          name = "samba-shares/${name}-dfs";
+          value.mode = "0770";
+        })
+        config.astahhu.services.samba.dc.domain-dfs) // {
+        kea = {
+          #bindMountDirectories = true;
+          owner = "kea";
+          directories = {
+            "/var/lib/kea" = {
+              mode = "0700";
+            };
           };
         };
       };
@@ -264,7 +318,21 @@
             path = "/var/lib/samba/sysvol/${cfg.domain}/scripts";
             "read only" = if cfg.dc.primary then "no" else "yes";
           };
-        };
+        } // (lib.mergeAttrsList
+          (lib.attrsets.mapAttrsToList
+            (name: value:
+              {
+                "${name}" = {
+                  "msdfs root" = "yes";
+                  "msdfs proxy" = "${config.astahhu.services.samba.hostname}.${config.astahhu.services.samba.domain}/${name}-dfs";
+                  "browseable" = "yes";
+                };
+                "${name}-dfs" = {
+                  "msdfs root" = "yes";
+                  "browseable" = "no";
+                };
+              })
+            config.astahhu.services.samba.dc.domain-dfs));
       };
 
       environment.etc."resolv.conf".text = ''
@@ -290,7 +358,7 @@
             139 # NetBIOS Session
             389 # LDAP
             445 # SMB over TCP
-            464 # Kerberos kpasswd
+            464 # Kerberos kpasswd/
             636 # LDAPS
             953 # DNS
             3268 # Global Catalog
@@ -318,4 +386,3 @@
       };
     };
 }
-

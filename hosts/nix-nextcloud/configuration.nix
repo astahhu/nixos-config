@@ -26,34 +26,36 @@
     cargo
   ];
 
-  # Networking
-  networking.nat = {
+  systemd.network = {
     enable = true;
-    internalInterfaces = [ "ve-+" ];
-    externalInterface = "ens18";
-    # Lazy IPv6 connectivity for the container
-    enableIPv6 = true;
+    networks."astahhu" = {
+      name = "ens18";
+      gateway = [
+        "134.99.154.1"
+      ];
+      dns = [
+        "134.99.154.200"
+        "134.99.154.201"
+      ];
+      address = [
+        "134.99.154.202/24"
+      ];
+      ntp = [
+        "134.99.154.200"
+        "134.99.154.201"
+      ];
+      domains = [
+        "ad.astahhu.de"
+        "asta2012.local"
+      ];
+    };
   };
 
   networking = {
     hostName = "nix-nextcloud"; # Define your hostname.
     domain = "ad.astahhu.de";
-    defaultGateway = { address = "134.99.154.1"; interface = "ens18"; };
-    nameservers = [ "134.99.154.200" "134.99.154.201" ];
     useDHCP = false;
-    interfaces.ens18 = {
-      ipv4 = {
-        "addresses" = [
-          {
-            address = "134.99.154.202";
-            prefixLength = 24;
-          }
-        ];
-      };
-    };
   };
-
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   sops.defaultSopsFile = ../../secrets/nix-nextcloud.yaml;
   sops.secrets.proxyCert = {
@@ -92,6 +94,10 @@
   };
 
   services.traefik.dynamicConfigOptions.http.serversTransports.collabora.insecureSkipVerify = true;
+  services.resolved = {
+    enable = true;
+    fallbackDns = [ ];
+  };
 
   # List services that you want to enable:
   nix-tun = {
@@ -103,23 +109,19 @@
     services.containers.nextcloud = {
       enable = true;
       hostname = "cloud.astahhu.de";
-      extraTrustedProxies = [ "134.99.154.202" "192.168.100.10" "192.168.100.11" "127.0.0.1" ];
+      extraTrustedProxies = [ "134.99.154.202" ];
     };
   };
 
-  services.traefik.staticConfigOptions.entryPoints.websecure.forwardedHeaders.trustedIPs = [ "192.168.0.0/16" "127.0.0.1" ];
+  services.traefik.staticConfigOptions.entryPoints.websecure.forwardedHeaders.trustedIPs = [ "192.168.0.0/16" "172.16.0.0/12" "10.0.0.0/8" "127.0.0.1" ];
 
   containers.nextcloud = {
     bindMounts.docker = {
       hostPath = "/run/docker.sock";
       mountPoint = "/run/docker.sock";
     };
-
-    bindMounts.resolv = {
-      hostPath = "/etc/resolv.conf";
-      mountPoint = "/etc/resolv.conf";
-    };
   };
+
   nix-tun.utils.containers.nextcloud.config = { ... }: {
     environment.systemPackages = [
       pkgs.docker
@@ -127,40 +129,8 @@
 
     services.nextcloud.settings.default_phone_region = "DE";
     services.nextcloud.maxUploadSize = "3G";
-    services.nextcloud.notify_push = {
-      dbuser = lib.mkForce "nextcloud";
-      dbhost = lib.mkForce "localhost:/run/mysqld/mysqld.sock";
-    };
 
     users.users.nextcloud.extraGroups = [ "docker" ];
-    networking.useHostResolvConf = lib.mkForce false;
-    environment.etc."resolv.conf".enable = lib.mkForce false;
-
-    services.nginx.virtualHosts."cloud.astahhu.de" = {
-      locations."^~ /push/".extraConfig = ''
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      '';
-      extraConfig = lib.mkForce ''
-        index index.php index.html /index.php$request_uri;
-        add_header X-XSS-Protection "1; mode=block" always;
-        add_header X-Robots-Tag "noindex, nofollow" always;
-        add_header X-Download-Options noopen always;
-        add_header X-Permitted-Cross-Domain-Policies none always;
-        add_header X-Frame-Options sameorigin always;
-        add_header X-Content-Type-Options nosniff;
-        add_header Referrer-Policy no-referrer always;
-        add_header Strict-Transport-Security "max-age=${toString config.services.nextcloud.nginx.hstsMaxAge}; includeSubDomains" always;
-        client_max_body_size ${config.services.nextcloud.maxUploadSize};
-        fastcgi_buffers 64 4K;
-        gzip on;
-        gzip_vary on;
-        gzip_comp_level 4;
-        gzip_min_length 256;
-        gzip_proxied expired no-cache no-store private no_last_modified no_etag auth;
-        gzip_types application/atom+xml application/javascript application/json application/ld+json application/manifest+json application/rss+xml application/vnd.geo+json application/vnd.ms-fontobject application/x-font-ttf application/x-web-app-manifest+json application/xhtml+xml application/xml font/opentype image/bmp image/svg+xml image/x-icon text/cache-manifest text/css text/plain text/vcard text/vnd.rim.location.xloc text/vtt text/x-component text/x-cross-domain-policy text/javascript;
-      '';
-    };
   };
 
 

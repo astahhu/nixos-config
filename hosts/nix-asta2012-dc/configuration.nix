@@ -84,17 +84,8 @@
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
   # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
 
-  services.samba.settings = {
-    intern = {
-      "msdfs root" = "yes";
-      "msdfs proxy" = "asta-fs-v-02.asta2012.local/intern";
-      "browseable" = "yes";
-    };
-    public = {
-      "msdfs root" = "yes";
-      "msdfs proxy" = "asta-fs-v-02.asta2012.local/public";
-      "browseable" = "yes";
-    };
+  services.samba.settings.global = {
+    "additional dns hostnames" = "asta2012";
   };
 
   astahhu.services.samba = {
@@ -109,6 +100,66 @@
           "134.99.128.2"
           "134.99.128.5"
         ];
+      };
+      domain-dfs = {
+        "intern" = {
+          "Intern AntiFaRaDis" = "asta-fs-v-02.asta2012.local/intern/Intern AntiFaRaDis";
+          "Intern Autonom" = "asta-fs-v-02.asta2012.local/intern/Intern Autonom";
+          "Intern AWO" = "asta-fs-v-02.asta2012.local/intern/Intern AWO";
+          "Intern Barriereref" = "asta-fs-v-02.asta2012.local/intern/Intern Barriereref";
+          "Intern BiSchwu" = "asta-fs-v-02.asta2012.local/intern/Intern BiSchwu";
+          "Intern Buchhaltung" = "asta-fs-v-02.asta2012.local/intern/Intern Buchhaltung";
+          "Intern Deutschkurse" = "asta-fs-v-02.asta2012.local/intern/Intern Deutschkurse";
+          "Intern Fachschaftsref" = "asta-fs-v-02.asta2012.local/intern/Intern Fachschaftsref";
+          "Intern Finanzref" = "asta-fs-v-02.asta2012.local/intern/Intern Finanzref";
+          "Intern Flüchtlingsarbeit" = "asta-fs-v-02.asta2012.local/intern/Intern Flüchtlingsarbeit";
+          "Intern Frauenref" = "asta-fs-v-02.asta2012.local/intern/Intern Frauenref";
+          "Intern HoPoref" = "asta-fs-v-02.asta2012.local/intern/Intern HoPoref";
+          "Intern Internationalesref" = "asta-fs-v-02.asta2012.local/intern/Intern Internationalesref";
+          "Intern ITref" = "asta-fs-v-02.asta2012.local/intern/Intern ITref";
+          "Intern Kommref" = "asta-fs-v-02.asta2012.local/intern/Intern Kulturref";
+          "Intern Kulturref" = "asta-fs-v-02.asta2012.local/intern/Intern Kommref";
+          "Intern LesBiref" = "asta-fs-v-02.asta2012.local/intern/Intern LesBiref";
+          "Intern Material" = "asta-fs-v-02.asta2012.local/intern/Intern Material";
+          "Intern Materialbeauftragter" = "asta-fs-v-02.asta2012.local/intern/Intern Materialbeauftragter";
+          "Intern Mieterverein" = "asta-fs-v-02.asta2012.local/intern/Intern Mieterverein";
+          "Intern Oekoref" = "asta-fs-v-02.asta2012.local/intern/Intern Oekoref";
+          "Intern Presseref" = "asta-fs-v-02.asta2012.local/intern/Intern Presseref";
+          "Intern Rechtsberatung" = "asta-fs-v-02.asta2012.local/intern/Intern Rechtsberatung";
+          "Intern Sekretariat Finanz Buchhaltung" = "asta-fs-v-02.asta2012.local/intern/Intern Sekretariat Finanz Buchhaltung";
+          "Intern Sozialref" = "asta-fs-v-02.asta2012.local/intern/Intern Sozialref";
+          "Intern SP" = "asta-fs-v-02.asta2012.local/intern/Intern SP";
+          "Intern Steuern" = "asta-fs-v-02.asta2012.local/intern/Intern Steuern";
+          "Intern Teamassistenz" = "asta-fs-v-02.asta2012.local/intern/Intern Teamassistenz";
+          "Intern Vorstand" = "asta-fs-v-02.asta2012.local/intern/Intern Vorstand";
+        };
+        "public" = {
+          "Public AntiFaRaDis" = "asta-fs-v-02.asta2012.local/public/Public AntiFaRaDis";
+          "Public Autonom" = "asta-fs-v-02.asta2012.local/public/Public Autonom";
+          "Public Barriereref" = "asta-fs-v-02.asta2012.local/public/Public Barriereref";
+          "Public BiSchwu" = "asta-fs-v-02.asta2012.local/public/Public BiSchwu";
+          "Public Deutschkurse" = "asta-fs-v-02.asta2012.local/public/Public Deutschkurse";
+          "Public Fachschaftsref" = "asta-fs-v-02.asta2012.local/public/Public Fachschaftsref";
+          "Public Finanzref" = "asta-fs-v-02.asta2012.local/public/Public Finanzref";
+          "Public Flüchtlingsarbeit" = "asta-fs-v-02.asta2012.local/public/Public Flüchtlingsarbeit";
+          "Public Frauenref" = "asta-fs-v-02.asta2012.local/public/Public Frauenref";
+          "Public HoPoref" = "asta-fs-v-02.asta2012.local/public/Public HoPoref";
+          "Public Internationalesref" = "asta-fs-v-02.asta2012.local/public/Public Internationalesref";
+          "Public ITref" = "asta-fs-v-02.asta2012.local/public/Public ITref";
+          "Public Kommref" = "asta-fs-v-02.asta2012.local/public/Public Kommref";
+          "Public Kulturref" = "asta-fs-v-02.asta2012.local/public/Public LesBiref";
+          "Public Lesbiref" = "asta-fs-v-02.asta2012.local/public/Public Kulturref";
+          "Public Materialbeauftragter" = "asta-fs-v-02.asta2012.local/public/Public Materialbeauftragter";
+          "Public Mieterverein" = "asta-fs-v-02.asta2012.local/public/Public Mieterverein";
+          "Public Oekoref" = "asta-fs-v-02.asta2012.local/public/Public Oekoref";
+          "Public Praesidium" = "asta-fs-v-02.asta2012.local/public/Public Oekoref";
+          "Public Presseref" = "asta-fs-v-02.asta2012.local/public/Public Praesidium";
+          "Public Rechtsberatung" = "asta-fs-v-02.asta2012.local/public/Public Rechtsberatung";
+          "Public Sekretariat Finanz Buchhaltung" = "asta-fs-v-02.asta2012.local/public/Public Sekretariat Finanz Buchhaltung";
+          "Public Sozialref" = "asta-fs-v-02.asta2012.local/public/Public Sozialref";
+          "Public Teamassistenz" = "asta-fs-v-02.asta2012.local/public/Public Teamassistenz";
+          "Public Vorstand" = "asta-fs-v-02.asta2012.local/public/Public Vorstand";
+        };
       };
     };
   };
