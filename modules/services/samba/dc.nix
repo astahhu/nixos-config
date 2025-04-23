@@ -63,24 +63,6 @@
       cfg = config.astahhu.services.samba;
     in
     lib.mkIf cfg.dc.enable {
-
-      astahhu.services.samba.fs.shares =
-        (lib.mergeAttrsList
-          (lib.attrsets.mapAttrsToList
-            (name: value:
-              {
-                "${name}" = {
-                  "msdfs root" = "yes";
-                  "msdfs proxy" = "${config.astahhu.services.samba.hostname}.${config.astahhu.services.samba.domain}/${name}-dfs";
-                  "browseable" = "yes";
-                };
-                "${name}-dfs" = {
-                  "msdfs root" = "yes";
-                  "browseable" = "no";
-                };
-              })
-            config.astahhu.services.samba.dc.domain-dfs));
-
       # This setups the dfs links, with systemd tmpfiles.
       # See also: https://wiki.samba.org/index.php/Distributed_File_System_(DFS)#Configure_stand-alone_DFS_in_Samba
       # and: https://www.freedesktop.org/software/systemd/man/tmpfiles.d
@@ -117,7 +99,7 @@
       nix-tun.storage.persist.subvolumes = (lib.attrsets.mapAttrs'
         (name: value: {
           name = "samba-shares/${name}-dfs";
-          value.mode = "0770";
+          value.mode = "0555";
         })
         config.astahhu.services.samba.dc.domain-dfs) // {
         kea = {
@@ -318,21 +300,22 @@
             path = "/var/lib/samba/sysvol/${cfg.domain}/scripts";
             "read only" = if cfg.dc.primary then "no" else "yes";
           };
-        } // (lib.mergeAttrsList
-          (lib.attrsets.mapAttrsToList
-            (name: value:
-              {
-                "${name}" = {
-                  "msdfs root" = "yes";
-                  "msdfs proxy" = "${config.astahhu.services.samba.hostname}.${config.astahhu.services.samba.domain}/${name}-dfs";
-                  "browseable" = "yes";
-                };
-                "${name}-dfs" = {
-                  "msdfs root" = "yes";
-                  "browseable" = "no";
-                };
-              })
-            config.astahhu.services.samba.dc.domain-dfs));
+        }// (lib.mergeAttrsList
+         (lib.attrsets.mapAttrsToList
+           (name: value:
+             {
+               "${name}" = {
+                 "msdfs root" = "yes";
+                 "msdfs proxy" = "${lib.strings.toLower config.astahhu.services.samba.hostname}.${config.astahhu.services.samba.domain}/${name}-dfs";
+                 "browseable" = "yes";
+               };
+               "${name}-dfs" = {
+                 "path" = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}-dfs".path;
+                 "msdfs root" = "yes";
+                 "browseable" = "no";
+               };
+             })
+           config.astahhu.services.samba.dc.domain-dfs));
       };
 
       environment.etc."resolv.conf".text = ''

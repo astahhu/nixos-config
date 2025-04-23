@@ -114,4 +114,9 @@
     "hw-address" = "381a52ede236";
 
   }
+  {
+    "ip-address" = "134.99.154.238";
+    "hostname" = "nix-sp.ad.astahhu.de";
+    "hw-address" = "bc2411113683";
+  }
 ]
