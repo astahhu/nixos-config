@@ -11,22 +11,45 @@
 
   # Change for each System
   networking.hostName = "nix-webserver";
+  networking.useDHCP = false;
 
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
   sops.defaultSopsFile = ../../secrets/nix-webserver.yaml;
 
-  # Networking
-  networking.nat = {
+  systemd.network = {
     enable = true;
-    internalInterfaces = [ "ve-+" ];
-    externalInterface = "ens18";
-    # Lazy IPv6 connectivity for the container
-    enableIPv6 = true;
+    networks."astahhu" = {
+      name = "ens18";
+      gateway = [
+        "134.99.154.1"
+      ];
+      dns = [
+        "134.99.154.200"
+        "134.99.154.201"
+      ];
+      address = [
+        "134.99.154.51/24"
+      ];
+      ntp = [
+        "134.99.154.200"
+        "134.99.154.201"
+      ];
+      domains = [
+        "ad.astahhu.de"
+        "asta2012.local"
+      ];
+    };
   };
+
+  services.resolved = {
+    enable = true;
+    fallbackDns = [ ];
+  };
+
+
 
   # Networking
   networking.firewall.enable = true;
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";

@@ -23,17 +23,13 @@
       autoStart = true;
       privateNetwork = true;
       timeoutStartSec = "5min";
-      hostAddress = "192.168.100.10";
-      localAddress = "192.168.100.12";
       bindMounts."${config.sops.secrets.node-exporter-pass.path}" = {
         hostPath = config.sops.secrets.node-exporter-pass.path;
       };
     };
 
-    nix-tun.services.traefik.services."grafana" = {
-      router.rule = "Host(`${config.astahhu.services.grafana.domain}`)";
+    nix-tun.services.traefik.services."grafana-grafana" = {
       router.tls.enable = false;
-      servers = [ "http://grafana.containers:3000" ];
     };
 
     sops.secrets.node-exporter-pass = {
@@ -44,6 +40,12 @@
       volumes = {
         "/var/lib/grafana" = { };
         "/var/lib/prometheus2" = { };
+      };
+      domains = {
+        grafana = {
+          domain = config.astahhu.services.grafana.domain;
+          port = 3000;
+        };
       };
       config = { ... }: {
         boot.isContainer = true;
@@ -58,7 +60,10 @@
             #};
             #tls_config.insecure_skip_verify = true;
             static_configs = [{
-              targets = [ "192.168.100.13:9100" "nix-nextcloud.ad.astahhu.de:9100" ];
+              targets = [
+                "node-exporter:9100"
+                "nix-nextcloud.ad.astahhu.de:9100"
+              ];
             }];
           }];
         };
