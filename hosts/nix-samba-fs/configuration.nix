@@ -68,7 +68,7 @@
         "Intern Oekoref".browseable = "no";
         "Intern Presseref".browseable = "no";
         "Intern Rechtsberatung".browseable = "no";
-        "Intern Sekreteriat Finanz Buchhaltung".browseable = "no";
+        "Intern Sekretariat Finanz Buchhaltung".browseable = "no";
         "Intern Sozialref".browseable = "no";
         "Intern SP".browseable = "no";
         "Intern Steuern".browseable = "no";
@@ -97,7 +97,7 @@
         "Public Praesidium".browseable = "yes";
         "Public Presseref".browseable = "yes";
         "Public Rechtsberatung".browseable = "yes";
-        "Public Sekreteriat Finanz Buchhaltung".browseable = "yes";
+        "Public Sekretariat Finanz Buchhaltung".browseable = "yes";
         "Public Sozialref".browseable = "yes";
         "Public Teamassistenz".browseable = "yes";
         "Public Vorstand".browseable = "yes";
