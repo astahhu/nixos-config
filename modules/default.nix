@@ -18,7 +18,6 @@
     ./services/tailscale.nix
     ./services/wordpress.nix
     ./services/samba
-    ./services/grafana.nix
     ./development/vm.nix
     ./stylix.nix
   ];
