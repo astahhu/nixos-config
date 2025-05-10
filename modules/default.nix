@@ -17,7 +17,6 @@
     ./desktop/programs.nix
     ./services/tailscale.nix
     ./services/wordpress.nix
-    ./services/traefik.nix
     ./services/samba
     ./services/grafana.nix
     ./development/vm.nix

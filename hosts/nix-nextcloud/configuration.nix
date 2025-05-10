@@ -64,8 +64,6 @@
   };
 
   sops.secrets.dockerproxy_env = { };
-  astahhu.common.enable-node-exporter = true;
-
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -80,6 +78,7 @@
         server_name = "collabora.astahhu.de";
         extra_params = "--o:ssl.enable=true --o:remote_font_config.url=https://cloud.astahhu.de/apps/richdocuments/settings/fonts.json";
       };
+      extraOptions = [ "--dns=134.99.154.200" "--dns=134.99.154.202" ];
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.collabora.entrypoints" = "websecure";
@@ -100,13 +99,15 @@
   };
 
   # List services that you want to enable:
-  nix-tun = {
-    services.traefik = {
+  nix-tun.services = {
+    prometheus.node-exporter = true;
+    traefik = {
       enable = true;
+      enable_prometheus = true;
       enable_docker = true;
       letsencryptMail = "it@asta.hhu.de";
     };
-    services.containers.nextcloud = {
+    containers.nextcloud = {
       enable = true;
       hostname = "cloud.astahhu.de";
       extraTrustedProxies = [ "134.99.154.202" ];

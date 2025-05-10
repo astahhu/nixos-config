@@ -139,7 +139,7 @@ in
               "traefik.enable" = "true";
               "traefik.http.routers.wp-${name}.entrypoints" = "websecure";
               "traefik.http.routers.wp-${name}.rule" = "Host(`${value.hostname}`) || Host(`www.${value.hostname}`)";
-              #"traefik.http.routers.wp-${name}.tls" = "false";
+              "traefik.http.services.wp-${name}.loadbalancer.healthCheck.path" = "/";
               "traefik.http.routers.wp-${name}.priority" = "1";
               #"traefik.http.routers.wp-${name}.tls.certresolver" = "letsencrypt";
               "traefik.http.services.wp-${name}.loadbalancer.server.port" = "80";

@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ inputs, pkgs, config, ... }: {
   astahhu.common = {
     is_server = true;
     is_qemuvm = true;
@@ -11,6 +11,7 @@
 
   # Change for each System
   networking.hostName = "nix-webserver";
+  networking.domain = "ad.astahhu.de";
   networking.useDHCP = false;
 
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
@@ -65,6 +66,7 @@
     enable = true;
     letsencryptMail = "it@asta.hhu.de";
     enable_docker = true;
+    enable_prometheus = true;
   };
 
   services.traefik.staticConfigOptions.entryPoints.websecure = {
@@ -82,13 +84,16 @@
     };
   };
 
-  astahhu.services.grafana = {
+  nix-tun.services.grafana = {
     enable = true;
     domain = "grafana.astahhu.de";
-    prometheus.domain = "prometheus.astahhu.de";
+    prometheus = {
+      nixosConfigs = inputs.self.nixosConfigurations;
+      domain = "prometheus.astahhu.de";
+    };
   };
 
-  astahhu.common.enable-node-exporter = true;
+  nix-tun.services.prometheus.node-exporter = true;
 
   astahhu.wordpress = {
     enable = true;
