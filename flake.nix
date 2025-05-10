@@ -166,7 +166,7 @@
               };
 
               nix-asta2012-dc = {
-                hostname = "nix-asta2012-dc.ad.astahhu.de";
+                hostname = "nix-asta2012-dc.asta2012.local";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc;
                   user = "root";
@@ -176,7 +176,7 @@
               };
 
               nix-asta2012dc1 = {
-                hostname = "nix-asta2012dc1.ad.astahhu.de";
+                hostname = "nix-asta2012dc1.asta2012.local";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc-01;
                   user = "root";
