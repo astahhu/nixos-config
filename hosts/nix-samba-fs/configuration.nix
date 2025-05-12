@@ -21,7 +21,7 @@
     format = "binary";
   };
 
-  #sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
+  sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
 
   astahhu.services.samba = {
     workgroup = "AD.ASTAHHU";

@@ -131,6 +131,8 @@
     format = "binary";
   };
 
+  sops.defaultSopsFile = ../../secrets/nix-samba-dc.yaml;
+
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 

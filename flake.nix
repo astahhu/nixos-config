@@ -165,25 +165,25 @@
                 };
               };
 
-              nix-asta2012-dc = {
-                hostname = "134.99.154.226";
-                profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc;
-                  user = "root";
-                  confirmTimeout = 180;
-                  activationTimeout = 600;
-                };
-              };
+              #nix-asta2012-dc = {
+              #  hostname = "134.99.154.226";
+              #  profiles.system = {
+              #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc;
+              #    user = "root";
+              #    confirmTimeout = 180;
+              #    activationTimeout = 600;
+              #  };
+              #};
 
-              nix-asta2012dc1 = {
-                hostname = "134.99.154.228";
-                profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc-01;
-                  user = "root";
-                  confirmTimeout = 180;
-                  activationTimeout = 600;
-                };
-              };
+              #nix-asta2012dc1 = {
+              #  hostname = "134.99.154.228";
+              #  profiles.system = {
+              #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc-01;
+              #    user = "root";
+              #    confirmTimeout = 180;
+              #    activationTimeout = 600;
+              #  };
+              #};
 
               nix-samba-dc = {
                 hostname = "nix-samba-dc.ad.astahhu.de";

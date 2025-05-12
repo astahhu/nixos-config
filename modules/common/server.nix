@@ -2,10 +2,20 @@
   config = lib.mkIf config.astahhu.common.is_server
     {
 
-
       nix-tun.storage.persist = lib.mkIf config.astahhu.common.uses_btrfs {
         enable = true;
         is_server = true;
+      };
+
+      # Enable prometheus node-exporter metrics for the servers.
+      # Will be reachable node-exporter.`${config.fqdnOrHostname}` on port 9100
+      nix-tun.services = {
+        traefik = {
+          enable = true;
+          enable_prometheus = true;
+          letsencryptMail = "it@asta.hhu.de";
+        };
+        prometheus.node-exporter = true;
       };
 
       services.openssh.enable = true;

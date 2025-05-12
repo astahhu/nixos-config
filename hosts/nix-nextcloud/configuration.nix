@@ -100,12 +100,8 @@
 
   # List services that you want to enable:
   nix-tun.services = {
-    prometheus.node-exporter = true;
     traefik = {
-      enable = true;
-      enable_prometheus = true;
       enable_docker = true;
-      letsencryptMail = "it@asta.hhu.de";
     };
     containers.nextcloud = {
       enable = true;

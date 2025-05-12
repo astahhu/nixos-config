@@ -63,10 +63,7 @@
 
 
   nix-tun.services.traefik = {
-    enable = true;
-    letsencryptMail = "it@asta.hhu.de";
     enable_docker = true;
-    enable_prometheus = true;
   };
 
   services.traefik.staticConfigOptions.entryPoints.websecure = {
@@ -92,8 +89,6 @@
       domain = "prometheus.astahhu.de";
     };
   };
-
-  nix-tun.services.prometheus.node-exporter = true;
 
   astahhu.wordpress = {
     enable = true;
