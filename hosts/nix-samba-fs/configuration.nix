@@ -110,19 +110,45 @@
   networking.firewall.enable = true;
 
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  networking.hostName = "nix-samba-fs";
-  networking.domain = "ad.astahhu.de";
+  # Change for each System
+  networking = {
+    useDHCP = false;
+    hostName = "nix-samba-dc";
+    domain = "ad.astahhu.de";
+    hosts = lib.mkForce {
+      "127.0.0.1" = [ "localhost" ];
+      "134.99.154.205" = [ "nix-samba-fs" "nix-samba-fs.ad.astahhu.de" ];
+    };
+  };
 
-  environment.etc = {
-    "resolv.conf".text = lib.mkForce ''
-      nameserver 134.99.154.200
-      nameserver 134.99.154.201
-      search ad.astahhu.de
-    '';
-    hosts.text = lib.mkForce ''
-      127.0.0.1 localhost
-      134.99.154.205 nix-samba-fs.ad.astahhu.de nix-samba-fs
-    '';
+  services.resolved = {
+    enable = true;
+    fallbackDns = [ ];
+  };
+
+  systemd.network = {
+    enable = true;
+    networks."astahhu" = {
+      name = "ens18";
+      gateway = [
+        "134.99.154.1"
+      ];
+      dns = [
+        "134.99.154.200"
+        "134.99.154.201"
+      ];
+      address = [
+        "134.99.154.205/24"
+      ];
+      ntp = [
+        "134.99.128.200"
+        "134.99.154.201"
+      ];
+      domains = [
+        "ad.astahhu.de"
+        "asta2012.local"
+      ];
+    };
   };
 
   time.timeZone = "Europe/Berlin";

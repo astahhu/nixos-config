@@ -62,30 +62,38 @@
   # Change for each System
   networking =
     {
-
-      firewall = {
-        enable = true;
-        allowedUDPPorts = [ 53 ];
-      };
-      networkmanager.enable = true; # Easiest to use and most distros use this by default.
-      defaultGateway = { address = "134.99.154.1"; interface = "eth0"; };
-
       useDHCP = false;
       hostName = "nix-samba-dc-01";
       domain = "ad.astahhu.de";
-      interfaces = {
-        eth0 = {
-          ipv4 = {
-            "addresses" = [
-              {
-                address = "134.99.154.200";
-                prefixLength = 24;
-              }
-            ];
-          };
-        };
+      hosts = lib.mkForce {
+        "127.0.0.1" = [ "localhost" ];
+        "134.99.154.200" = [ "nix-samba-dc-01" "nix-samba-dc-01.ad.astahhu.de" ];
       };
     };
+
+  systemd.network = {
+    enable = true;
+    networks."astahhu" = {
+      name = "eth0";
+      gateway = [
+        "134.99.154.1"
+      ];
+      dns = [
+        "127.0.0.1"
+      ];
+      address = [
+        "134.99.154.200/24"
+      ];
+      ntp = [
+        "134.99.128.80"
+        "134.99.154.79"
+      ];
+      domains = [
+        "ad.astahhu.de"
+        "asta2012.local"
+      ];
+    };
+  };
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
   # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
 

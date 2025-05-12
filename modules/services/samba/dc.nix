@@ -300,33 +300,23 @@
             path = "/var/lib/samba/sysvol/${cfg.domain}/scripts";
             "read only" = if cfg.dc.primary then "no" else "yes";
           };
-        }// (lib.mergeAttrsList
-         (lib.attrsets.mapAttrsToList
-           (name: value:
-             {
-               "${name}" = {
-                 "msdfs root" = "yes";
-                 "msdfs proxy" = "${lib.strings.toLower config.astahhu.services.samba.hostname}.${config.astahhu.services.samba.domain}/${name}-dfs";
-                 "browseable" = "yes";
-               };
-               "${name}-dfs" = {
-                 "path" = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}-dfs".path;
-                 "msdfs root" = "yes";
-                 "browseable" = "no";
-               };
-             })
-           config.astahhu.services.samba.dc.domain-dfs));
+        } // (lib.mergeAttrsList
+          (lib.attrsets.mapAttrsToList
+            (name: value:
+              {
+                "${name}" = {
+                  "msdfs root" = "yes";
+                  "msdfs proxy" = "${lib.strings.toLower config.astahhu.services.samba.hostname}.${config.astahhu.services.samba.domain}/${name}-dfs";
+                  "browseable" = "yes";
+                };
+                "${name}-dfs" = {
+                  "path" = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}-dfs".path;
+                  "msdfs root" = "yes";
+                  "browseable" = "no";
+                };
+              })
+            config.astahhu.services.samba.dc.domain-dfs));
       };
-
-      environment.etc."resolv.conf".text = ''
-        search ${cfg.domain}
-        nameserver 127.0.0.1
-      '';
-
-      environment.etc."hosts".text = lib.mkForce ''
-        127.0.0.1 localhost
-        ${(lib.elemAt config.networking.interfaces.eth0.ipv4.addresses 0).address} ${cfg.hostname}.${cfg.domain} ${cfg.hostname}
-      '';
 
       networking = {
         resolvconf.enable = false;
