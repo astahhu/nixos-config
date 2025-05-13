@@ -57,8 +57,6 @@
     format = "binary";
   };
 
-  sops.defaultSopsKey = ../../secrets/nix-samba-dc.yaml;
-
   # Change for each System
   networking =
     {
