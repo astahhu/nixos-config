@@ -11,11 +11,11 @@
       # Will be reachable node-exporter.`${config.fqdnOrHostname}` on port 9100
       nix-tun.services = {
         traefik = {
-          enable = true;
-          enable_prometheus = true;
-          letsencryptMail = "it@asta.hhu.de";
+          enable = lib.mkDefault true;
+          enable_prometheus = lib.mkDefault true;
+          letsencryptMail = lib.mkDefault "it@asta.hhu.de";
         };
-        prometheus.node-exporter = true;
+        prometheus.node-exporter = lib.mkDefault true;
       };
 
       services.openssh.enable = true;

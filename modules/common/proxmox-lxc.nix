@@ -10,5 +10,16 @@
       };
     };
 
+    proxmox-lxc.enable = true;
+    proxmox-lxc.manageHostName = false;
+
+    nix-tun.services = {
+      traefik = {
+        enable = false;
+        enable_prometheus = false;
+      };
+      prometheus.node-exporter = false;
+    };
+
   };
 }

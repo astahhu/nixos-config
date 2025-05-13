@@ -6,9 +6,6 @@
 , modulesPath
 , ...
 }: {
-  imports = [
-    (modulesPath + "/virtualisation/proxmox-lxc.nix")
-  ];
 
   # Change for each System
   astahhu.common.is_lxc = true;
@@ -35,27 +32,6 @@
   systemd.network = {
     enable = true;
     networks = {
-      "astahhu" = {
-        name = "eth0";
-        gateway = [
-          "134.99.154.1"
-        ];
-        dns = [
-          "134.99.154.200"
-          "134.99.154.201"
-        ];
-        address = [
-          "134.99.154.242/24"
-        ];
-        ntp = [
-          "134.99.128.80"
-          "134.99.154.79"
-        ];
-        domains = [
-          "ad.astahhu.de"
-          "asta2012.local"
-        ];
-      };
       # "wg0" is the network interface name. You can name the interface arbitrarily.
       wg0 = {
         matchConfig.Name = "wg0";
