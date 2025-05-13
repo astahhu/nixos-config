@@ -18,11 +18,30 @@
 
   networking = {
     hostName = "nix-wireguard";
+    interfaces.eth0.ipv4 = {
+      addresses = [
+        {
+          address = "134.99.154.242";
+          prefixLength = 24;
+        }
+      ];
+    };
+    nat = {
+      enable = true;
+      externalInterface = "eth0";
+      internalInterfaces = [ "wg0" ];
+      internalIPs = [
+        "10.105.42.1/42"
+      ];
+    };
     firewall = {
       allowedUDPPorts = [ 51820 ];
     };
     domain = "ad.astahhu.de";
+    nameservers = [ "134.99.154.200" "134.99.154.201" ];
+    defaultGateway = { address = "134.99.154.1"; interface = "eth0"; };
   };
+
 
   services.resolved = {
     enable = true;
