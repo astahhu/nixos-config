@@ -95,7 +95,7 @@
     };
   };
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
-  # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
+  sops.defaultSopsFile = ../../secrets/nix-samba-dc.yaml;
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
