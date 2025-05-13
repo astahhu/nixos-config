@@ -69,8 +69,14 @@
       };
     };
 
+  services.resolved = {
+    enable = true;
+    fallbackDns = [ ];
+  };
+
   systemd.network = {
     enable = true;
+    wait-online.enable = false;
     networks."astahhu" = {
       name = "eth0";
       gateway = [
