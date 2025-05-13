@@ -8,7 +8,7 @@
     (modulesPath + "/virtualisation/proxmox-lxc.nix")
   ];
 
-  proxmox-lxc.enable = lib.mkDefault false;
+  proxmoxLXC.enable = lib.mkDefault false;
 
   options.astahhu.common = {
     is_server = lib.mkEnableOption "Enables default server settings";
