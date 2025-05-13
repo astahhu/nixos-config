@@ -113,7 +113,7 @@
   # Change for each System
   networking = {
     useDHCP = false;
-    hostName = "nix-samba-dc";
+    hostName = "nix-samba-fs";
     domain = "ad.astahhu.de";
     hosts = lib.mkForce {
       "127.0.0.1" = [ "localhost" ];
