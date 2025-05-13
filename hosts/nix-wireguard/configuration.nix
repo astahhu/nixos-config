@@ -31,7 +31,7 @@
       externalInterface = "eth0";
       internalInterfaces = [ "wg0" ];
       internalIPs = [
-        "10.105.42.1/42"
+        "10.105.42.1/24"
       ];
     };
     firewall = {
