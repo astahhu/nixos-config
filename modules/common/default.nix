@@ -26,10 +26,11 @@
 
   config = lib.mkMerge [
     {
-
-      extraConfig = ''
-        Domains = ad.astahhu.de asta2012.local
-      '';
+      services.resolved = {
+        extraConfig = ''
+          Domains = ad.astahhu.de asta2012.local
+        '';
+      };
 
       proxmoxLXC.enable = lib.mkDefault false;
       astahhu = {
