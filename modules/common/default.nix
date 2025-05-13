@@ -8,7 +8,6 @@
     (modulesPath + "/virtualisation/proxmox-lxc.nix")
   ];
 
-  proxmoxLXC.enable = lib.mkDefault false;
 
   options.astahhu.common = {
     is_server = lib.mkEnableOption "Enables default server settings";
@@ -27,6 +26,8 @@
 
   config = lib.mkMerge [
     {
+
+      proxmoxLXC.enable = lib.mkDefault false;
       astahhu = {
         cli.better-tools.enable = true;
         common.uses_btrfs = lib.mkDefault config.astahhu.common.disko.enable;

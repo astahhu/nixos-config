@@ -11,7 +11,7 @@
     };
 
     proxmoxLXC.enable = true;
-    proxmoxLXC.manageHostName = false;
+    proxmoxLXC.manageHostName = true;
 
     nix-tun.services = {
       traefik = {
