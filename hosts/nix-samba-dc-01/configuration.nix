@@ -76,9 +76,8 @@
 
   systemd.network = {
     enable = true;
-    wait-online.enable = false;
     networks."astahhu" = {
-      name = "eth0";
+      name = "ens18";
       gateway = [
         "134.99.154.1"
       ];

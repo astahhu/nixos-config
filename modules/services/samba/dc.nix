@@ -160,7 +160,7 @@
 
             interfaces-config = {
               interfaces = [
-                "eth0"
+                "ens18"
               ];
             };
 
