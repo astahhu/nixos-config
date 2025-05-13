@@ -27,6 +27,10 @@
   config = lib.mkMerge [
     {
 
+      extraConfig = ''
+        Domains = ad.astahhu.de asta2012.local
+      '';
+
       proxmoxLXC.enable = lib.mkDefault false;
       astahhu = {
         cli.better-tools.enable = true;
