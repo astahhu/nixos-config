@@ -58,14 +58,6 @@
     format = "binary";
   };
 
-  nix-tun.services = {
-    traefik = {
-      enable = false;
-      enable_prometheus = false;
-    };
-    prometheus.node-exporter = false;
-  };
-
   # Change for each System
   networking =
     {

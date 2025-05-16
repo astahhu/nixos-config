@@ -104,6 +104,11 @@
     };
   };
 
+  astahhu.services.vaultwarden = {
+    enable = true;
+    domain = "vaultwarden.astahhu.de";
+  };
+
   astahhu.wordpress = {
     enable = true;
     sites = {

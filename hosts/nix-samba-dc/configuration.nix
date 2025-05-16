@@ -21,15 +21,6 @@
     };
   };
 
-  nix-tun.services = {
-    traefik = {
-      enable = false;
-      enable_prometheus = false;
-    };
-    prometheus.node-exporter = false;
-  };
-
-
   systemd.services.sync-sysvol = {
     path = [
       pkgs.openssh
