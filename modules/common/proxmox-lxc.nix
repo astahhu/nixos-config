@@ -13,13 +13,5 @@
     proxmoxLXC.enable = true;
     proxmoxLXC.manageHostName = true;
 
-    nix-tun.services = {
-      traefik = {
-        enable = false;
-        enable_prometheus = false;
-      };
-      prometheus.node-exporter = false;
-    };
-
   };
 }
