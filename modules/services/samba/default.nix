@@ -12,6 +12,11 @@
       description = "The netbios name of the host, defaults to hostname, can not be longer than 15 characters";
       defaultText = "lib.strings.toUpper config.networking.hostName";
     };
+    server_address = lib.mkOption {
+      type = lib.types.str;
+      description = "The ip addresses under which this server is reachable";
+      default = "";
+    };
     package = lib.mkPackageOption pkgs "samba4Full" { };
     domain = lib.mkOption {
       type = lib.types.str;
@@ -141,6 +146,8 @@
         "tls keyfile" = "tls/key.pem";
         "tls certfile" = "tls/cert.pem";
         "tls cafile" = if cfg.acme.enable then "" else "tls/ca.pem";
+        "bind interfaces only" = "yes";
+        "interfaces" = "lo ens18 eth0 134.99.154.0/24";
       };
     };
 

@@ -21,6 +21,14 @@
     };
   };
 
+  nix-tun.services = {
+    traefik = {
+      enable = false;
+      enable_prometheus = false;
+    };
+    prometheus.node-exporter = false;
+  };
+
 
   systemd.services.sync-sysvol = {
     path = [
@@ -105,6 +113,7 @@
   astahhu.services.samba = {
     enable = true;
     workgroup = "AD.ASTAHHU";
+    server_address = "134.99.154.201";
     acme = {
       enable = true;
       email = "it@asta.hhu.de";

@@ -18,6 +18,7 @@
   astahhu.services.samba = {
     enable = true;
     workgroup = "AD.ASTAHHU";
+    server_address = "134.99.154.200";
     acme = {
       enable = true;
       email = "it@asta.hhu.de";
@@ -55,6 +56,14 @@
   sops.secrets.cloudflare-dns = {
     sopsFile = ../../secrets/nix-samba-dc/cloudflare-dns;
     format = "binary";
+  };
+
+  nix-tun.services = {
+    traefik = {
+      enable = false;
+      enable_prometheus = false;
+    };
+    prometheus.node-exporter = false;
   };
 
   # Change for each System

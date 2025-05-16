@@ -83,6 +83,20 @@
 
   nix-tun.services.grafana = {
     enable = true;
+    oauth = {
+      enabled = true;
+      name = "AStA Intern";
+      allow_sign_up = true;
+      client_id = "grafana";
+      scopes = "openid email profile offline_access roles";
+      email_attribute_path = "email";
+      login_attribute_path = "username";
+      name_attribute_path = "full_name";
+      auth_url = "https://keycloak.astahhu.de/realms/astaintern/protocol/openid-connect/auth";
+      token_url = "https://keycloak.astahhu.de/realms/astaintern/protocol/openid-connect/token";
+      api_url = "https://keycloak.astahhu.de/realms/astaintern/protocol/openid-connect/userinfo";
+      role_attribute_path = "contains(roles[*], 'Admin') && 'Admin' || contains(roles[*], 'Editor') && 'Editor' || 'Viewer'";
+    };
     domain = "grafana.astahhu.de";
     prometheus = {
       nixosConfigs = inputs.self.nixosConfigurations;
