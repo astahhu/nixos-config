@@ -37,6 +37,7 @@
       ];
     };
     firewall = {
+      allowedTCPPorts = [ 8080 ];
       allowedUDPPorts = [ 51820 ];
     };
     domain = "ad.astahhu.de";
@@ -225,6 +226,8 @@
       };
     };
   };
+
+
 
   users.users.headscale.uid = 666;
   services.headscale = {
