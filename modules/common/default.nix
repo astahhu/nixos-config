@@ -27,9 +27,10 @@
   config = lib.mkMerge [
     {
       services.resolved = {
-        extraConfig = ''
-          Domains = ad.astahhu.de asta2012.local
-        '';
+        fallbackDns = [ ];
+        domains = [
+          "ad.astahhu.de" "asta2012.local"
+        ];
       };
 
       proxmoxLXC.enable = lib.mkDefault false;

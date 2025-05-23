@@ -67,8 +67,10 @@
           };
           secrets = {
             ldap = config.sops.secrets.vaultwarden-ldap-pass.path;
-            client_path_id = config.sops.secrets.vaultwarden-client-id.path;
-            client_path_secret = config.sops.secrets.vaultwarden-client-secret.path;
+            bitwarden = {
+              client_path_id = config.sops.secrets.vaultwarden-client-id.path;
+              client_path_secret = config.sops.secrets.vaultwarden-client-secret.path;
+            };
           };
         };
         networking.firewall.allowedTCPPorts = [ 8000 ];
