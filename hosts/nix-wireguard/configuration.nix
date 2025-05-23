@@ -12,10 +12,12 @@
 
   # Uncomment if you need Secrets for this Hosts, AFTER the first install
   sops.defaultSopsFile = ../../secrets/nix-wireguard.yaml;
+  sops.secrets.headscale-oauth-client-secret = {
+    owner = "headscale";
+  };
   sops.secrets.wireguard_private = {
     owner = "systemd-network";
   };
-
   networking = {
     hostName = "nix-wireguard";
     interfaces.eth0.ipv4 = {
@@ -223,6 +225,32 @@
       };
     };
   };
+
+  users.users.headscale.uid = 666;
+  services.headscale = {
+    enable = true;
+    address = "0.0.0.0";
+    port = 8080;
+    settings = {
+      server_url = "https://vpn.astahhu.de";
+      dns = {
+        magic_dns = true;
+        base_domain = "astahhu";
+      };
+      oidc = {
+        issuer = "https://keycloak.astahhu.de/realms/astaintern";
+        client_secret_path = config.sops.secrets.headscale-oauth-client-secret.path;
+        client_id = "headscale";
+        scope = [
+          "openid"
+          "profile"
+          "email"
+          "offline_access"
+        ];
+      };
+    };
+  };
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
