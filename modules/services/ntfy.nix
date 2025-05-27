@@ -35,6 +35,7 @@
         services.ntfy-sh = {
           enable = true;
           settings = {
+            behind-proxy = true;
             base-url = "https://${config.astahhu.services.ntfy.domain}";
             listen-http = ":8080";
             auth-default-access = "deny-all";
