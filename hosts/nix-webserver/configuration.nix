@@ -113,6 +113,8 @@
       settings = {
         ntfyBAuthUser = "grafana";
         ntfyBAuthPass = config.sops.secrets.grafana-ntfy-pass.path;
+        bauthUser = "grafana";
+        bauthPass = config.sops.secrets.grafana-ntfy-pass.path;
         ntfyUrl = "https://ntfy.astahhu.de";
       };
     };
