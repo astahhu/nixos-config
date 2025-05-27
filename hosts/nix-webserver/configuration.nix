@@ -120,6 +120,11 @@
     };
   };
 
+  astahhu.services.ntfy = {
+    enbale = true;
+    domain = "ntfy.astahhu.de";
+  };
+
   astahhu.services.vaultwarden = {
     enable = true;
     domain = "vaultwarden.astahhu.de";

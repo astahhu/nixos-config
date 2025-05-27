@@ -155,15 +155,15 @@
             };
 
             deploy.nodes = {
-              nix-samba-dc-01 = {
-                hostname = "nix-samba-dc-01.ad.astahhu.de";
-                profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc-01;
-                  user = "root";
-                  confirmTimeout = 180;
-                  activationTimeout = 600;
-                };
-              };
+              #nix-samba-dc-01 = {
+              #  hostname = "nix-samba-dc-01.ad.astahhu.de";
+              #  profiles.system = {
+              #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc-01;
+              #    user = "root";
+              #    confirmTimeout = 180;
+              #    activationTimeout = 600;
+              #  };
+              #};
 
               #nix-asta2012-dc = {
               #  hostname = "134.99.154.226";
@@ -185,15 +185,15 @@
               #  };
               #};
 
-              nix-samba-dc = {
-                hostname = "nix-samba-dc.ad.astahhu.de";
-                profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc;
-                  user = "root";
-                  confirmTimeout = 180;
-                  activationTimeout = 600;
-                };
-              };
+              #nix-samba-dc = {
+              #  hostname = "nix-samba-dc.ad.astahhu.de";
+              #  profiles.system = {
+              #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc;
+              #    user = "root";
+              #    confirmTimeout = 180;
+              #    activationTimeout = 600;
+              #  };
+              #};
 
 
               nix-samba-fs = {
