@@ -13,7 +13,7 @@
 
     sops.secrets.grafana-ntfy-pass = { };
 
-    containers.nfty = {
+    containers.ntfy = {
       bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}" = {
         hostPath = config.sops.secrets.grafana-ntfy-pass.path;
       };
