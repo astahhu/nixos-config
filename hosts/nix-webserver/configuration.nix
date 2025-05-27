@@ -104,10 +104,10 @@
     };
   };
 
-  sops.secrets.grafana-ntfy-pass = {};
+  sops.secrets.grafana-ntfy-pass = { };
   containers.grafana.bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}".mountPoint = config.sops.secrets.grafana-ntfy-pass.path;
 
-  nix-tun.utils.containers.grafana.config = { ... } : {
+  nix-tun.utils.containers.grafana.config = { ... }: {
     services.grafana-to-ntfy = {
       enable = true;
       settings = {
@@ -120,6 +120,7 @@
     };
   };
 
+  nix-tun.services.traefik.services.ntfy-ntfy.router.tls.enable = false;
   astahhu.services.ntfy = {
     enable = true;
     domain = "ntfy.astahhu.de";
