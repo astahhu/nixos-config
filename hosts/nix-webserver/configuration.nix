@@ -104,10 +104,15 @@
     };
   };
 
+  sops.secrets.grafana-ntfy-pass = {};
+  containers.grafana.bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}".mountPoint = config.sops.secrets.grafana-ntfy-pass.path;
+
   nix-tun.utils.containers.grafana.config = { ... } : {
     services.grafana-to-ntfy = {
       enable = true;
       settings = {
+        ntfyBAuthUser = "grafana";
+        ntfyBAuthPass = config.sops.secrets.grafana-ntfy-pass.path;
         ntfyUrl = "https://ntfy.sh/astahhu";
       };
     };
