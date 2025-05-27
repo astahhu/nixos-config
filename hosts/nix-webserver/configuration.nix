@@ -104,6 +104,15 @@
     };
   };
 
+  nix-tun.utils.container.grafana.config = { ... } : {
+    services.grafana-to-ntfy = {
+      enable = true;
+      settings = {
+        ntfyUrl = "https://ntfy.sh/astahhu";
+      };
+    };
+  };
+
   astahhu.services.vaultwarden = {
     enable = true;
     domain = "vaultwarden.astahhu.de";
