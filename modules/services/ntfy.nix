@@ -31,6 +31,7 @@
       };
       config = { ... }: {
         boot.isContainer = true;
+        networking.firewall.allowedTCPPorts = [ 8000 ];
 
         services.ntfy-sh = {
           enable = true;
