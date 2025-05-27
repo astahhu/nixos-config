@@ -104,7 +104,7 @@
     };
   };
 
-  nix-tun.utils.container.grafana.config = { ... } : {
+  nix-tun.utils.containers.grafana.config = { ... } : {
     services.grafana-to-ntfy = {
       enable = true;
       settings = {
