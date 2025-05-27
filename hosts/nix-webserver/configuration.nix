@@ -121,7 +121,7 @@
   };
 
   astahhu.services.ntfy = {
-    enbale = true;
+    enable = true;
     domain = "ntfy.astahhu.de";
   };
 
