@@ -238,7 +238,7 @@
       server_url = "https://vpn.astahhu.de";
       dns = {
         magic_dns = true;
-        base_domain = "astahhu.de";
+        base_domain = "ad.astahhu.de";
       };
       oidc = {
         issuer = "https://keycloak.astahhu.de/realms/astaintern";
