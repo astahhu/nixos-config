@@ -19,6 +19,7 @@
     ./services/wordpress.nix
     ./services/samba
     ./services/vaultwarden.nix
+    ./services/ntfy.nix
     ./development/vm.nix
     ./stylix.nix
   ];
