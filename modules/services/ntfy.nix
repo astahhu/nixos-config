@@ -32,7 +32,7 @@
       config = { ... }: {
         boot.isContainer = true;
 
-        services.ntfy-sh = {
+        services.ntfy = {
           enable = true;
           settings = {
             base-url = "https://${config.astahhu.services.ntfy.domain}";
