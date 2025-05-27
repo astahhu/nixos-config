@@ -39,7 +39,7 @@
             behind-proxy = true;
             base-url = "https://${config.astahhu.services.ntfy.domain}";
             listen-http = ":8080";
-            auth-default-access = "deny-all";
+            #auth-default-access = "deny-all";
             ntfyBAuthUser = "grafana";
             ntfyBAuthPass = config.sops.secrets.grafana-ntfy-pass.path;
           };
