@@ -9,11 +9,8 @@
 
   config = lib.mkIf config.astahhu.desktop.gnome.enable {
     services = {
-      xserver = {
-        enable = true;
-        desktopManager.gnome.enable = true;
-        displayManager.gdm.enable = true;
-      };
+      desktopManager.gnome.enable = true;
+      displayManager.gdm.enable = true;
     };
     services.pulseaudio.enable = false;
 
