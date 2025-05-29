@@ -291,9 +291,12 @@
       ephemeral = true;
       baseURL = "vpn.astahhu.de";
     };
+    extraUpFlags = [
+      "--advertise-tags=\"router\""
+      "--advertise-routes=\"134.99.154.0/16,10.105.41.0/24\""
+    ];
     extraSetFlags = [
       "--advertise-routes=\"134.99.154.0/16,10.105.41.0/24\""
-      "--advertise-tags=\"router\""
     ];
   };
 
