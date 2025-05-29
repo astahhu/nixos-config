@@ -238,9 +238,11 @@
     settings = {
       server_url = "https://vpn.astahhu.de";
       policy.path = builtins.toFile "policy.json" (builtins.toJSON {
+        "acls" = [ ];
+        "groups" = { };
+        "hosts" = { };
         "tagOwners" = {
           "tag:router" = [
-            "group:server"
           ];
         };
         "autoApprovers" = {

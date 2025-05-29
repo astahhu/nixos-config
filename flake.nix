@@ -223,6 +223,8 @@
                   profiles.system = {
                     path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-nextcloud;
                     user = "root";
+                    # Nextcloud should never rollback
+                    autoRollback = false;
                     confirmTimeout = 180;
                     activationTimeout = 600;
                   };
