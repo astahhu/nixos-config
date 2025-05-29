@@ -288,7 +288,6 @@
     interfaceName = "userspace-networking";
     authKeyParameters = {
       preauthorized = true;
-      ephemeral = true;
     };
     extraUpFlags = [
       "--login-server=https://vpn.astahhu.de"
