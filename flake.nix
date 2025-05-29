@@ -154,85 +154,89 @@
               };
             };
 
-            deploy.nodes = {
-              #nix-samba-dc-01 = {
-              #  hostname = "nix-samba-dc-01.ad.astahhu.de";
-              #  profiles.system = {
-              #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc-01;
-              #    user = "root";
-              #    confirmTimeout = 180;
-              #    activationTimeout = 600;
-              #  };
-              #};
-
-              #nix-asta2012-dc = {
-              #  hostname = "134.99.154.226";
-              #  profiles.system = {
-              #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc;
-              #    user = "root";
-              #    confirmTimeout = 180;
-              #    activationTimeout = 600;
-              #  };
-              #};
-
-              #nix-asta2012dc1 = {
-              #  hostname = "134.99.154.228";
-              #  profiles.system = {
-              #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc-01;
-              #    user = "root";
-              #    confirmTimeout = 180;
-              #    activationTimeout = 600;
-              #  };
-              #};
-
-              #nix-samba-dc = {
-              #  hostname = "nix-samba-dc.ad.astahhu.de";
-              #  profiles.system = {
-              #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc;
-              #    user = "root";
-              #    confirmTimeout = 180;
-              #    activationTimeout = 600;
-              #  };
-              #};
-
-
-              #nix-samba-fs = {
-              #  hostname = "nix-samba-fs.ad.astahhu.de";
-              #  profiles.system = {
-              #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-fs;
-              #    user = "root";
-              #    confirmTimeout = 180;
-              #    activationTimeout = 600;
-              #  };
-              #};
-
-              nix-webserver = {
-                hostname = "134.99.154.51";
-                profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-webserver;
-                  user = "root";
-                  confirmTimeout = 180;
-                  activationTimeout = 600;
+            deploy = {
+              profilesOrder = [ "samba" "system" ];
+              nodes = {
+                nix-samba-dc-01 = {
+                  hostname = "nix-samba-dc-01.ad.astahhu.de";
+                  profiles.samba = {
+                    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc-01;
+                    user = "root";
+                    confirmTimeout = 300;
+                    activationTimeout = 600;
+                  };
                 };
-              };
 
-              nix-nextcloud = {
-                hostname = "nix-nextcloud.ad.astahhu.de";
-                profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-nextcloud;
-                  user = "root";
-                  confirmTimeout = 180;
-                  activationTimeout = 600;
+                #nix-asta2012-dc = {
+                #  hostname = "134.99.154.226";
+                #  profiles.system = {
+                #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc;
+                #    user = "root";
+                #    confirmTimeout = 180;
+                #    activationTimeout = 600;
+                #  };
+                #};
+
+                #nix-asta2012dc1 = {
+                #  hostname = "134.99.154.228";
+                #  profiles.system = {
+                #    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc-01;
+                #    user = "root";
+                #    confirmTimeout = 180;
+                #    activationTimeout = 600;
+                #  };
+                #};
+
+                nix-samba-dc = {
+                  hostname = "nix-samba-dc.ad.astahhu.de";
+                  profiles.samba = {
+                    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc;
+                    user = "root";
+                    confirmTimeout = 300;
+                    activationTimeout = 600;
+                  };
                 };
-              };
 
-              nix-wireguard = {
-                hostname = "134.99.154.242";
-                profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-wireguard;
-                  user = "root";
-                  confirmTimeout = 180;
-                  activationTimeout = 600;
+
+                nix-samba-fs = {
+                  hostname = "nix-samba-fs.ad.astahhu.de";
+                  profiles.samba = {
+                    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-fs;
+                    user = "root";
+                    confirmTimeout = 300;
+                    activationTimeout = 600;
+                  };
+                };
+
+                nix-webserver = {
+                  hostname = "134.99.154.51";
+                  profiles.system = {
+                    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-webserver;
+                    user = "root";
+                    confirmTimeout = 180;
+                    activationTimeout = 600;
+                  };
+                };
+
+                nix-nextcloud = {
+                  hostname = "nix-nextcloud.ad.astahhu.de";
+                  profiles.system = {
+                    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-nextcloud;
+                    user = "root";
+                    confirmTimeout = 180;
+                    activationTimeout = 600;
+                  };
+                };
+
+                nix-wireguard = {
+                  hostname = "134.99.154.242";
+                  profiles.system = {
+                    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-wireguard;
+                    user = "root";
+                    confirmTimeout = 180;
+                    autoRollback = false;
+                    activationTimeout = 600;
+                  };
                 };
               };
             };
