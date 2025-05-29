@@ -237,21 +237,21 @@
     port = 8080;
     settings = {
       server_url = "https://vpn.astahhu.de";
-      policy.path = builtins.toFile "policy.json" (builtins.toJSON {
-        "acls" = [ ];
-        "groups" = { };
-        "hosts" = { };
-        "tagOwners" = {
-          "tag:router" = [
-          ];
-        };
-        "autoApprovers" = {
-          "routes" = {
-            "134.99.0.0/16" = [ "tag:router" ];
-            "10.105.41.0/24" = [ "tag:router" ];
-          };
-        };
-      });
+      #policy.path = builtins.toFile "policy.json" (builtins.toJSON {
+      #  "acls" = [ ];
+      #  "groups" = { };
+      #  "hosts" = { };
+      #  "tagOwners" = {
+      #    "tag:router" = [
+      #    ];
+      #  };
+      #  "autoApprovers" = {
+      #    "routes" = {
+      #      "134.99.0.0/16" = [ "tag:router" ];
+      #      "10.105.41.0/24" = [ "tag:router" ];
+      #    };
+      #  };
+      #});
       dns = {
         magic_dns = true;
         nameservers.global = [
