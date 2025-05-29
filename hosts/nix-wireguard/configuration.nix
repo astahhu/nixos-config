@@ -276,6 +276,8 @@
     };
   };
 
+  systemd.services.tailscaled.requires = [ "headscale" ];
+
   services.tailscale = {
     enable = true;
     disableTaildrop = true;
