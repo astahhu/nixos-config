@@ -15,6 +15,7 @@
   sops.secrets.headscale-oauth-client-secret = {
     owner = "headscale";
   };
+  sops.secrets.tailscale-api-key = { };
   sops.secrets.wireguard_private = {
     owner = "systemd-network";
   };
@@ -236,8 +237,29 @@
     port = 8080;
     settings = {
       server_url = "https://vpn.astahhu.de";
+      policy.path = builtins.toFile "policy.json" (builtins.toJSON {
+        "tagOwners" = {
+          "tag:router" = [
+            "group:server"
+          ];
+        };
+        "autoApprovers" = {
+          "routes" = {
+            "134.99.0.0/16" = [ "tag:router" ];
+            "10.105.41.0/24" = [ "tag:router" ];
+          };
+        };
+      });
       dns = {
         magic_dns = true;
+        nameservers.global = [
+          "134.99.154.200"
+          "134.99.154.201"
+        ];
+        search_domains = [
+          "ad.astahhu.de"
+          "asta2012.local"
+        ];
         base_domain = "ad.astahhu.de";
       };
       oidc = {
@@ -252,6 +274,22 @@
         ];
       };
     };
+  };
+
+  services.tailscale = {
+    enable = true;
+    disableTaildrop = true;
+    useRoutingFeatures = "both";
+    authKeyFile = config.sops.secrets.tailscale-api-key.path;
+    authKeyParameters = {
+      preauthorized = true;
+      ephemeral = true;
+      baseURL = "vpn.astahhu.de";
+    };
+    extraSetFlags = [
+      "--advertise-routes=\"134.99.154.0/16,10.105.41.0/24\""
+      "--advertise-tags=\"router\""
+    ];
   };
 
 
