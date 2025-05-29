@@ -281,6 +281,7 @@
     disableTaildrop = true;
     useRoutingFeatures = "both";
     authKeyFile = config.sops.secrets.tailscale-api-key.path;
+    interfaceName = "userspace-networking";
     authKeyParameters = {
       preauthorized = true;
       ephemeral = true;
