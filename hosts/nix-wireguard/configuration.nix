@@ -276,7 +276,7 @@
     };
   };
 
-  systemd.services.tailscaled.requires = [ "headscale" ];
+  systemd.services.tailscaled.requires = [ "headscale.service" ];
 
   services.tailscale = {
     enable = true;
