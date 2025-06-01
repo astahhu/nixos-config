@@ -254,15 +254,21 @@
       #});
       dns = {
         magic_dns = true;
-        nameservers.global = [
-          "134.99.154.200"
-          "134.99.154.201"
-        ];
+        nameservers.split = {
+          "ad.astahhu.de" = [
+            "134.99.154.200"
+            "134.99.154.201"
+          ];
+          "asta2012.local" = [
+             134.99.154.226
+             134.99.154.228
+           ];
+        };
         search_domains = [
           "ad.astahhu.de"
           "asta2012.local"
         ];
-        base_domain = "ad.astahhu.de";
+        base_domain = "tailnet.astahhu.de";
       };
       oidc = {
         issuer = "https://keycloak.astahhu.de/realms/astaintern";
