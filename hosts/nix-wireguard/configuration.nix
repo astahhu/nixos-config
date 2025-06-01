@@ -346,8 +346,8 @@
         client_id = "headscale";
         client_secret_path = config.sops.secrets.headplane_oidc_client_secret.path;
         # client_secret = "your_oidc_client_secret";  # Alternative to client_secret_path
-        disable_api_key_login = true;
         token_endpoint_auth_method = "client_secret_post";
+        disable_api_key_login = true;
         headscale_api_key_path = config.sops.secrets.headplane_headscale_api_key.path;
         # headscale_api_key = "your_headscale_api_key";  # Alternative to headscale_api_key_path
         redirect_uri = "https://vpn.astahhu.de/admin/oidc/callback";
