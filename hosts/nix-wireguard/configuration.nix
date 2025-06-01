@@ -288,7 +288,7 @@
 
   services.tailscale = {
     enable = true;
-    disableTaildrop = true;
+    disableTaildrop = false;
     useRoutingFeatures = "both";
     authKeyFile = config.sops.secrets.tailscale-api-key.path;
     interfaceName = "userspace-networking";
@@ -303,6 +303,56 @@
     extraSetFlags = [
       "--advertise-routes=134.99.154.0/24,10.105.41.0/24"
     ];
+  };
+
+  services.headplane = {
+    enable = true;
+
+    # Configure the standalone Headplane Agent
+    agent = {
+      enable = true;  # Set to true if you want to run the agent (not ready yet as of writing this doc)
+    };
+
+    # Configure the Headplane server application
+    settings = {
+      server = {
+        host = "0.0.0.0";
+        port = 3000;
+        cookie_secret_path = config.sops.secrets.headplane_cookie_secret.path;
+        cookie_secure = true;
+
+        agent = {
+         enabled = true;
+          authkey_path = config.sops.secrets.headplane_server_agent_authkey.path;
+          ttl = 180000; # milliseconds
+          cache_path = "/var/lib/headplane/agent_cache.json";
+        };
+      };
+
+      proc.enabled = true;
+
+      headscale = {
+        url = "https://vpn.astahhu.de";
+        config_path = "headscaleConfig";  # Use the generated config file
+        config_strict = true;
+        # tls_cert = "your-tls-cert";  # Alternative to tls_cert_path
+        tls_cert_path = config.sops.secrets.headplane_tls_cert.path;
+        # tls_key = "your-tls-key";  # Alternative to tls_key_path
+        tls_key_path = config.sops.secrets.headplane_tls_key.path;
+      };
+
+      oidc = {
+        issuer = "https://keycloak.astahhu.de/realms/astaintern";
+        client_id = "headscale";
+        client_secret_path = config.sops.secrets.headplane_oidc_client_secret.path;
+        # client_secret = "your_oidc_client_secret";  # Alternative to client_secret_path
+        disable_api_key_login = true;
+        token_endpoint_auth_method = "client_secret_post";
+        headscale_api_key_path = config.sops.secrets.headplane_headscale_api_key.path;
+        # headscale_api_key = "your_headscale_api_key";  # Alternative to headscale_api_key_path
+        redirect_uri = "https://vpn.astahhu.de/admin/oidc/callback";
+      };
+    };
   };
 
 
