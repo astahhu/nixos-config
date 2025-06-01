@@ -301,7 +301,6 @@
       "--advertise-routes=134.99.154.0/24,10.105.41.0/24"
     ];
     extraSetFlags = [
-      "--login-server=https://vpn.astahhu.de"
       "--advertise-routes=134.99.154.0/24,10.105.41.0/24"
     ];
   };
