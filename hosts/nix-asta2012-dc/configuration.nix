@@ -82,7 +82,7 @@
       };
     };
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
-  # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
+  sops.defaultSopsFile = ../../secrets/nix-asta2012-dc.yaml;
 
   services.samba.settings.global = {
     "additional dns hostnames" = "asta2012";

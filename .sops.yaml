@@ -6,6 +6,8 @@ keys:
   - &sotiris-backup-yubikey  98FD09AC654B27772A03E6C7C0DC5C74462B385B
   - &sotiris-c-yubikey       93E75346EC76A38F684EFA248125744461D04398
   ## Hosts
+  - &nix-asta2012-dc d0e5fcf0861474ca0da4b5cc5538a1ba2f123b83
+  - &nix-asta2012-dc-01 5e597c24169388784ef183a09d72b03aceee3c54
   - &nix-authentik 28528b7b6322273d9c4178da8c125eb8d6231af2
   - &nix-nextcloud 6929705d3549cc8d112ad656ec4fabf6aaefe763
   - &nix-wordpress ae6f1f5c96be2434407369059eb3799f71bc7edf
@@ -32,6 +34,16 @@ creation_rules:
         - *sotiris-backup-yubikey
         - *sotiris-c-yubikey
         - *nix-samba-fs
+  - path_regex: secrets/nix-asta2012-dc*
+    key_groups:
+      - pgp:
+        - *florian-yubikey
+        - *florian_other_yubikey
+        - *sotiris-primary-yubikey
+        - *sotiris-backup-yubikey
+        - *sotiris-c-yubikey
+        - *nix-asta2012-dc
+        - *nix-asta2012-dc-01
   - path_regex: secrets/nix-samba-dc*
     key_groups:
       - pgp:
