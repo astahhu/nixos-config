@@ -199,7 +199,7 @@
             AllowedIPs = [ "10.105.42.24/32" ];
           }
           {
-            # 25
+            # EWLaptop
             PublicKey = "UPVDVIBvxODZLA/RTHt5sWRXBW9vdP8aXoHHR4LH6w4=";
             AllowedIPs = [ "10.105.42.25/32" ];
           }
@@ -222,6 +222,11 @@
             # sotiristablet
             PublicKey = "Pwp6d3ZznOss6Rz6JLly6deJymh7NDT9N0a9B0YJKRU=";
             AllowedIPs = [ "10.105.42.29/32" ];
+          }
+          {
+            # laptopbuchhaltung
+            PublicKey = "fa6da+9Go5dy6BWU6+0lyT3Gk2iQCBIhDgU/xs1CSxM=";
+            AllowedIPs = [ "10.105.42.30/32" ];
           }
         ];
       };
