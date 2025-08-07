@@ -167,6 +167,21 @@
       itref = {
         hostname = "it.astahhu.de";
       };
+      fsmoja = {
+        hostname = "fsmoja.astahhu.de";
+      };
+      fsbiochemie = {
+        hostname = "fsbiochemie.astahhu.de";
+      };
+      fsmekuwi = {
+        hostname = "fsmekuwi.astahhu.de";
+      };
+      fsgeschichte = {
+        hostname = "fsgeschichte.astahhu.de";
+      };
+      fspowi = {
+        hostname = "fspowi.astahhu.de";
+      };
     };
   };
 
