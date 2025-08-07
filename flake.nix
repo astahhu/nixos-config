@@ -24,6 +24,10 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     nix-topology.url = "github:oddlama/nix-topology";
+    headplane = {
+          url = "github:tale/headplane";
+          inputs.nixpkgs.follows = "nixpkgs";
+        };
   };
 
   outputs =
