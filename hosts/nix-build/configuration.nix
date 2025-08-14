@@ -38,6 +38,8 @@
     };
   };
 
+  services.resolved.fallbackDns = [ "134.99.154.200" "134.99.154.201" ];
+
   sops.defaultSopsFile = ../../secrets/nix-build.yaml;
   sops.secrets.github-token = { };
 
