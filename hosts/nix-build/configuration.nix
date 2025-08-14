@@ -16,7 +16,7 @@
   systemd.network = {
     enable = true;
     networks."astahhu" = {
-      name = "ens18";
+      name = "eth0";
       gateway = [
         "134.99.154.1"
       ];
