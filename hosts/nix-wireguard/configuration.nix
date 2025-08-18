@@ -259,15 +259,21 @@
       #});
       dns = {
         magic_dns = true;
-        nameservers.split = {
-          "ad.astahhu.de" = [
+        nameservers = {
+          global = [
             "134.99.154.200"
             "134.99.154.201"
           ];
-          "asta2012.local" = [
-             "134.99.154.226"
-             "134.99.154.228"
-           ];
+          split = {
+            "ad.astahhu.de" = [
+              "134.99.154.200"
+              "134.99.154.201"
+            ];
+            "asta2012.local" = [
+              "134.99.154.226"
+              "134.99.154.228"
+            ];
+          };
         };
         search_domains = [
           "ad.astahhu.de"
