@@ -105,7 +105,7 @@
             "traefik.http.routers.whiteboard.tls" = "true";
             "traefik.http.routers.whiteboard.tls.certresolver" = "letsencrypt";
             "traefik.http.services.whiteboard.loadbalancer.server.port" = "3002";
-            "traefik.http.services.whiteboard.loadbalancer.server.scheme" = "https";
+            "traefik.http.services.whiteboard.loadbalancer.server.scheme" = "http";
             "traefik.http.middlewares.strip-whiteboard.stripprefix.prefixes" = "/whiteboard";
             "traefik.http.routers.whiteboard.middlewares" = "strip-whiteboard";
           };
