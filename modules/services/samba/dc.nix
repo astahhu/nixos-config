@@ -96,6 +96,8 @@
 
       users.groups.kea = { };
 
+      security.acme.certs.samba.extraDomains = [ cfg.domain ];
+
       nix-tun.storage.persist.subvolumes = (lib.attrsets.mapAttrs'
         (name: value: {
           name = "samba-shares/${name}-dfs";

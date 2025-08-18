@@ -10,7 +10,35 @@
   networking = {
     hostName = lib.mkForce "nix-build";
     domain = "ad.astahhu.de";
+    useDHCP = false;
   };
+
+  systemd.network = {
+    enable = true;
+    networks."astahhu" = {
+      name = "eth0";
+      gateway = [
+        "134.99.154.1"
+      ];
+      dns = [
+        "134.99.154.200"
+        "134.99.154.201"
+      ];
+      address = [
+        "134.99.154.210/24"
+      ];
+      ntp = [
+        "134.99.154.200"
+        "134.99.154.201"
+      ];
+      domains = [
+        "ad.astahhu.de"
+        "asta2012.local"
+      ];
+    };
+  };
+
+  services.resolved.fallbackDns = [ "134.99.154.200" "134.99.154.201" ];
 
   sops.defaultSopsFile = ../../secrets/nix-build.yaml;
   sops.secrets.github-token = { };
