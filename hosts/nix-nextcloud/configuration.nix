@@ -90,6 +90,25 @@
         "traefik.http.services.collabora.loadbalancer.serversTransport" = "collabora@file";
       };
     };
+    "whiteboard" = {
+          image = "ghcr.io/nextcloud-releases/whiteboard:stable";
+          environment = {
+            NEXTCLOUD_URL = "https://cloud.astahhu.de";
+          };
+          environmentFiles = [ config.sops.secrets.whiteboard_jwt.path ];
+          extraOptions = [ "--dns=134.99.154.200" "--dns=134.99.154.202" ];
+          labels = {
+            "traefik.enable" = "true";
+            "traefik.http.routers.whiteboard.entrypoints" = "websecure";
+            "traefik.http.routers.whiteboard.rule" = "Host(`cloud.astahhu.de`) && PathPrefix(`/whiteboard`)";
+            "traefik.http.routers.whiteboard.tls" = "true";
+            "traefik.http.routers.whiteboard.tls.certresolver" = "letsencrypt";
+            "traefik.http.services.whiteboard.loadbalancer.server.port" = "3002";
+            "traefik.http.services.whiteboard.loadbalancer.server.scheme" = "https";
+            "traefik.http.middlewares.strip-whiteboard.stripprefix.prefixes" = "/whiteboard";
+            "traefik.http.routers.whiteboard.middlewares" = "strip-whiteboard";
+          };
+        };
   };
 
   services.traefik.dynamicConfigOptions.http.serversTransports.collabora.insecureSkipVerify = true;
