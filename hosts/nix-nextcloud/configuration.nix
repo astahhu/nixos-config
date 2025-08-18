@@ -64,6 +64,7 @@
   };
 
   sops.secrets.dockerproxy_env = { };
+  sops.secrets.whiteboard_jwt = { };
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
