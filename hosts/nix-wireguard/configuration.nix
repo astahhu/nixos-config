@@ -259,11 +259,8 @@
       #});
       dns = {
         magic_dns = true;
+        override_local_dns = false;
         nameservers = {
-          global = [
-            "134.99.154.200"
-            "134.99.154.201"
-          ];
           split = {
             "ad.astahhu.de" = [
               "134.99.154.200"
