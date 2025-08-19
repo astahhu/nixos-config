@@ -105,7 +105,7 @@
         '';
 
         requires = lib.mkIf cfg.acme.enable [
-          "acme-finished-samba.target"
+          "acme-samba.service"
         ];
 
         before = [

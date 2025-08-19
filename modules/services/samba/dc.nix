@@ -96,7 +96,7 @@
 
       users.groups.kea = { };
 
-      security.acme.certs.samba.extraDomains = [ cfg.domain ];
+      security.acme.certs.samba.extraDomainNames = [ cfg.domain ];
 
       nix-tun.storage.persist.subvolumes = (lib.attrsets.mapAttrs'
         (name: value: {
@@ -259,7 +259,7 @@
         '';
 
         requires = lib.mkIf cfg.acme.enable [
-          "acme-finished-samba.target"
+          "acme-samba.service"
         ];
 
         requiredBy = [
@@ -293,6 +293,7 @@
             "ad dc functional level" = "2016";
             "server services" = "s3fs, rpc, nbt, wrepl, ldap, cldap, kdc, drepl, winbindd, ntp_signd, kcc, dnsupdate";
             "idmap_ldb:use rfc2307" = "yes";
+            "additional dns hostnames" = cfg.domain;
             "nsupdate command" = "${pkgs.dnsutils}/bin/nsupdate -g";
           };
           sysvol = {
