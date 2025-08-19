@@ -259,18 +259,12 @@
       #});
       dns = {
         magic_dns = true;
-        override_local_dns = false;
+        override_local_dns = true;
         nameservers = {
-          split = {
-            "ad.astahhu.de" = [
-              "134.99.154.200"
-              "134.99.154.201"
-            ];
-            "asta2012.local" = [
-              "134.99.154.226"
-              "134.99.154.228"
-            ];
-          };
+          global = [
+            "134.99.154.200"
+            "134.99.154.201"
+          ];
         };
         search_domains = [
           "ad.astahhu.de"
