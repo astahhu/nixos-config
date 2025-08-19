@@ -140,7 +140,8 @@
       };
 
       services.samba.settings.global = {
-        "netbios name" = cfg.hostname;
+        "dns hostname" = "${lib.strings.toLower cfg.hostname}.${cfg.domain}";
+        "disable netbios" = "yes";
         "realm" = lib.strings.toUpper cfg.domain;
         "workgroup" = cfg.workgroup;
         "tls keyfile" = "tls/key.pem";

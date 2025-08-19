@@ -35,6 +35,10 @@
           description = "External routers/gateways for the ip range";
           type = lib.types.listOf lib.types.str;
         };
+        static-routes = lib.mkOption {
+          description = "Static routes for DHCP";
+          type = lib.types.attrsOf lib.types.str;
+        };
         subnet = lib.mkOption {
           description = "Subnet of the DHCP in the Format a.b.c.d/x";
           type = lib.types.str;
