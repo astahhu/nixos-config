@@ -117,17 +117,17 @@
         enable = true;
         settings = {
           libdefaults = {
-            default_realm = lib.strings.toUpper cfg.domain;
+            default_realm = cfg.domain;
             dns_lookup_realm = false;
             dns_lookup_kdc = true;
           };
           realms = {
-            "${lib.strings.toUpper cfg.domain}" = {
+            cfg.domain = {
               "default_domain" = cfg.domain;
             };
           };
           "domain_realm" = {
-            "${cfg.hostname}" = lib.strings.toUpper cfg.domain;
+            ".${cfg.domain}" = cfg.domain;
           };
         };
       };
@@ -142,6 +142,9 @@
       services.samba.settings.global = {
         "dns hostname" = "${lib.strings.toLower cfg.hostname}.${cfg.domain}";
         "disable netbios" = "yes";
+        "smb ports" = 445;
+        "log level" = 0;
+        "name resolve order" = "host";
         "realm" = lib.strings.toUpper cfg.domain;
         "workgroup" = cfg.workgroup;
         "tls keyfile" = "tls/key.pem";

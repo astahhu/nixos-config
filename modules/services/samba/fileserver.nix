@@ -111,11 +111,12 @@
               {
                 "allow trusted domains" = "yes";
                 "security" = "ads";
-                "log level" = "0";
                 "guest ok" = false;
-                "winbind refresh tickets" = true;
-                "restrict anonymous" = 0;
+                "restrict anonymous" = 2;
                 "template shell" = "${pkgs.fish}/bin/fish";
+                "winbind refresh tickets" = true;
+                "winbind scan trusted domains" = true;
+                "winbind offline logon" = true;
                 "idmap config * : range" = "100000 - 199999";
                 "idmap config AD.ASTAHHU : backend" = "rid";
                 "idmap config AD.ASTAHHU : range" = "1000000 - 1999999";
