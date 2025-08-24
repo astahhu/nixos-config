@@ -5,11 +5,8 @@
 
   astahhu.common = {
     is_server = true;
-    is_qemuvm = true;
-    disko = {
-      enable = true;
-      device = "/dev/sda";
-    };
+    uses_btrfs = true;
+    is_lxc = true;
   };
 
   systemd.timers.sync-sysvol = {
@@ -70,7 +67,7 @@
 
   services.resolved = {
     enable = true;
-    fallbackDns = [ ];
+    fallbackDns = [ "127.0.0.1" ];
   };
 
   systemd.network = {

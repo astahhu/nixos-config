@@ -1,9 +1,9 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOs/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOs/nixpkgs";
     calendar-join.url = "github:astahhu/calendar-join";
     home-manager.url = "github:nix-community/home-manager";
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:danth/stylix?ref=refs/pull/1860/head";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -76,6 +76,7 @@
                   ./hosts/nix-samba-dc/configuration.nix
                   ./modules
                   ./users/admin-users.nix
+                  inputs.nixos-generators.nixosModules.all-formats
                 ];
                 specialArgs = { inherit inputs; };
               };
@@ -86,6 +87,7 @@
                   ./hosts/nix-samba-dc-01/configuration.nix
                   ./modules
                   ./users/admin-users.nix
+                  inputs.nixos-generators.nixosModules.all-formats
                 ];
                 specialArgs = { inherit inputs; };
               };

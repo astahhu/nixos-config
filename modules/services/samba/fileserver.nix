@@ -73,22 +73,6 @@
       '';
 
       security.pam.krb5.enable = false;
-      security.krb5 = {
-        enable = true;
-        package = pkgs.heimdal;
-        settings = {
-          libdefaults = {
-            default_realm = "AD.ASTAHHU.DE";
-            dns_lookup_realm = false;
-            dns_lookup_kdc = true;
-          };
-          realms = {
-            "AD.ASTAHHU.DE" = {
-              "default_domain" = "ad.astahhu.de";
-            };
-          };
-        };
-      };
 
       networking.firewall.allowedTCPPorts = [
         445

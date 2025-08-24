@@ -122,9 +122,9 @@
             dns_lookup_kdc = true;
           };
           realms = {
-            cfg.domain = {
-              "default_domain" = cfg.domain;
-            };
+            cfg.domain = [
+              "default_domain = ${cfg.domain}"
+            ];
           };
           "domain_realm" = {
             ".${cfg.domain}" = cfg.domain;
