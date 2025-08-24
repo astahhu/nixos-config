@@ -56,6 +56,7 @@
                   ./hosts/nix-nextcloud/configuration.nix
                   ./modules
                   ./users/admin-users.nix
+                  inputs.nixos-generators.nixosModules.all-formats
                 ];
                 specialArgs = { inherit inputs; };
               };

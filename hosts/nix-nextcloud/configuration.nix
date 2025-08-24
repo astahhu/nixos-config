@@ -13,11 +13,8 @@
   ];
   astahhu.common = {
     is_server = true;
-    is_qemuvm = true;
-    disko = {
-      enable = true;
-      device = "/dev/sda";
-    };
+    is_lxc = true;
+    uses_btrfs = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -29,7 +26,7 @@
   systemd.network = {
     enable = true;
     networks."astahhu" = {
-      name = "ens18";
+      name = "eth0";
       gateway = [
         "134.99.154.1"
       ];
@@ -79,7 +76,7 @@
         server_name = "collabora.astahhu.de";
         extra_params = "--o:ssl.enable=true --o:remote_font_config.url=https://cloud.astahhu.de/apps/richdocuments/settings/fonts.json";
       };
-      extraOptions = [ "--dns=134.99.154.200" "--dns=134.99.154.202" ];
+      extraOptions = [ "--dns=134.99.154.200" "--dns=134.99.154.201" ];
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.collabora.entrypoints" = "websecure";
@@ -92,24 +89,24 @@
       };
     };
     "whiteboard" = {
-          image = "ghcr.io/nextcloud-releases/whiteboard:stable";
-          environment = {
-            NEXTCLOUD_URL = "https://cloud.astahhu.de";
-          };
-          environmentFiles = [ config.sops.secrets.whiteboard_jwt.path ];
-          extraOptions = [ "--dns=134.99.154.200" "--dns=134.99.154.202" ];
-          labels = {
-            "traefik.enable" = "true";
-            "traefik.http.routers.whiteboard.entrypoints" = "websecure";
-            "traefik.http.routers.whiteboard.rule" = "Host(`cloud.astahhu.de`) && PathPrefix(`/whiteboard`)";
-            "traefik.http.routers.whiteboard.tls" = "true";
-            "traefik.http.routers.whiteboard.tls.certresolver" = "letsencrypt";
-            "traefik.http.services.whiteboard.loadbalancer.server.port" = "3002";
-            "traefik.http.services.whiteboard.loadbalancer.server.scheme" = "http";
-            "traefik.http.middlewares.strip-whiteboard.stripprefix.prefixes" = "/whiteboard";
-            "traefik.http.routers.whiteboard.middlewares" = "strip-whiteboard";
-          };
-        };
+      image = "ghcr.io/nextcloud-releases/whiteboard:stable";
+      environment = {
+        NEXTCLOUD_URL = "https://cloud.astahhu.de";
+      };
+      environmentFiles = [ config.sops.secrets.whiteboard_jwt.path ];
+      extraOptions = [ "--dns=134.99.154.200" "--dns=134.99.154.201" ];
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.whiteboard.entrypoints" = "websecure";
+        "traefik.http.routers.whiteboard.rule" = "Host(`cloud.astahhu.de`) && PathPrefix(`/whiteboard`)";
+        "traefik.http.routers.whiteboard.tls" = "true";
+        "traefik.http.routers.whiteboard.tls.certresolver" = "letsencrypt";
+        "traefik.http.services.whiteboard.loadbalancer.server.port" = "3002";
+        "traefik.http.services.whiteboard.loadbalancer.server.scheme" = "http";
+        "traefik.http.middlewares.strip-whiteboard.stripprefix.prefixes" = "/whiteboard";
+        "traefik.http.routers.whiteboard.middlewares" = "strip-whiteboard";
+      };
+    };
   };
 
   services.traefik.dynamicConfigOptions.http.serversTransports.collabora.insecureSkipVerify = true;
@@ -145,7 +142,7 @@
     ];
 
     services.nextcloud.settings.default_phone_region = "DE";
-    services.nextcloud.maxUploadSize = "3G";
+    services.nextcloud.maxUploadSize = "8G";
 
     users.users.nextcloud.extraGroups = [ "docker" ];
   };
