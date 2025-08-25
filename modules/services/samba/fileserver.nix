@@ -56,6 +56,8 @@
       systemd.services.samba-smbd.postStop = lib.strings.concatStrings (lib.attrsets.mapAttrsToList (name: _: "${pkgs.mount}/bin/umount \"${config.nix-tun.storage.persist.path}/samba-shares/${name}\"\n") cfg.fs.shares);
       services.nscd.enable = false;
       system.nssModules = lib.mkForce [ ];
+      systemd.services.samba-nmbd.environment.LD_LIBRARY_PATH = lib.mkForce "${cfg.package}/lib";
+      systemd.services.samba-smbd.environment.LD_LIBRARY_PATH = lib.mkForce "${cfg.package}/lib";
       security.pam.services.samba.text = ''
         account required ${cfg.package}/lib/security/pam_winbind.so
       
@@ -75,7 +77,13 @@
       security.pam.krb5.enable = false;
 
       networking.firewall.allowedTCPPorts = [
+        135
+        139
         445
+      ];
+      networking.firewall.allowedUDPPorts = [
+        137
+        138
       ];
       networking.firewall.allowedTCPPortRanges = [
         { from = 49152; to = 65535; }
@@ -85,8 +93,8 @@
         enable = true;
         package = cfg.package;
         openFirewall = true;
-        nsswins = true;
-        nmbd.enable = false;
+        nsswins = false;
+        nmbd.enable = true;
 
 
         settings =
