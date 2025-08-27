@@ -56,7 +56,6 @@
                   ./hosts/nix-nextcloud/configuration.nix
                   ./modules
                   ./users/admin-users.nix
-                  inputs.nixos-generators.nixosModules.all-formats
                 ];
                 specialArgs = { inherit inputs; };
               };
@@ -77,7 +76,6 @@
                   ./hosts/nix-samba-dc/configuration.nix
                   ./modules
                   ./users/admin-users.nix
-                  inputs.nixos-generators.nixosModules.all-formats
                 ];
                 specialArgs = { inherit inputs; };
               };
@@ -88,7 +86,6 @@
                   ./hosts/nix-samba-dc-01/configuration.nix
                   ./modules
                   ./users/admin-users.nix
-                  inputs.nixos-generators.nixosModules.all-formats
                 ];
                 specialArgs = { inherit inputs; };
               };
@@ -109,7 +106,6 @@
                   ./hosts/nix-wireguard/configuration.nix
                   ./modules
                   ./users/admin-users.nix
-                  inputs.nixos-generators.nixosModules.all-formats
                 ];
                 specialArgs = { inherit inputs; };
               };
@@ -120,7 +116,6 @@
                   ./hosts/nix-build/configuration.nix
                   ./modules
                   ./users/admin-users.nix
-                  inputs.nixos-generators.nixosModules.all-formats
                 ];
                 specialArgs = { inherit inputs; };
               };
@@ -131,7 +126,6 @@
                   ./hosts/nix-asta2012-dc/configuration.nix
                   ./modules
                   ./users/admin-users.nix
-                  inputs.nixos-generators.nixosModules.all-formats
                 ];
                 specialArgs = { inherit inputs; };
               };
@@ -142,7 +136,6 @@
                   ./hosts/nix-asta2012-dc-01/configuration.nix
                   ./modules
                   ./users/admin-users.nix
-                  inputs.nixos-generators.nixosModules.all-formats
                 ];
                 specialArgs = { inherit inputs; };
               };

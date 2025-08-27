@@ -6,6 +6,7 @@
     inputs.disko.nixosModules.default
     inputs.nix-tun.nixosModules.nix-tun
     inputs.home-manager.nixosModules.home-manager
+    inputs.nixos-generators.nixosModules.all-formats
     inputs.sops-nix.nixosModules.sops
     inputs.nix-topology.nixosModules.default
     ./services/calendar-join.nix
