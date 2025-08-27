@@ -1,11 +1,8 @@
 { inputs, pkgs, config, ... }: {
   astahhu.common = {
     is_server = true;
-    is_qemuvm = true;
-    disko = {
-      enable = true;
-      device = "/dev/sda";
-    };
+    is_lxc = true;
+    uses_btrfs = true;
   };
 
 
@@ -20,7 +17,7 @@
   systemd.network = {
     enable = true;
     networks."astahhu" = {
-      name = "ens18";
+      name = "eth0";
       gateway = [
         "134.99.154.1"
       ];
@@ -136,6 +133,9 @@
     sites = {
       astahhu = {
         hostname = "astahhu.de";
+      };
+      astahhu-neu = {
+        hostname = "neu.astahhu.de";
       };
       fsref = {
         hostname = "fsref.astahhu.de";
