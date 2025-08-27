@@ -125,6 +125,10 @@
             "${lib.strings.toUpper cfg.domain}" = {
               "default_domain" = cfg.domain;
             };
+
+            "${cfg.workgroup}" = {
+              "default_domain" = cfg.domain;
+            };
           };
           "domain_realm" = {
             "${cfg.hostname}" = lib.strings.toUpper cfg.domain;
@@ -140,14 +144,16 @@
       };
 
       services.samba.settings.global = {
+        "allow dcerpc auth level connect" = "no";
         "netbios name" = cfg.hostname;
-        "realm" = lib.strings.toUpper cfg.domain;
+        "restrict anonymous" = 2;
+        "log level" = "0";
+        "disable netbios" = "yes";
+        "realm" = cfg.domain;
         "workgroup" = cfg.workgroup;
         "tls keyfile" = "tls/key.pem";
         "tls certfile" = "tls/cert.pem";
         "tls cafile" = if cfg.acme.enable then "" else "tls/ca.pem";
-        "bind interfaces only" = "yes";
-        "interfaces" = "lo ens18 eth0 134.99.154.0/24";
       };
     };
 

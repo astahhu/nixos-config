@@ -20,18 +20,18 @@
       system.nssDatabases.passwd = [ "winbind" ];
       system.nssDatabases.group = [ "winbind" ];
       astahhu.services.samba.enable = true;
-      fileSystems =
-        lib.attrsets.mapAttrs'
-          (name: value: {
-            name = "/persist/samba-shares/${name}";
-            value = {
-              device = "/dev/root_vg/root";
-              options = [ "noauto" "subvol=/persist/samba-shares/${name}" ];
-              depends = [ "/persist" ];
-              fsType = "btrfs";
-            };
-          })
-          cfg.fs.shares;
+      #fileSystems =
+      #  lib.attrsets.mapAttrs'
+      #    (name: value: {
+      #      name = "/persist/samba-shares/${name}";
+      #      value = {
+      #        device = "/dev/root_vg/root";
+      #        options = [ "noauto" "subvol=/persist/samba-shares/${name}" ];
+      #        depends = [ "/persist" ];
+      #        fsType = "btrfs";
+      #      };
+      #    })
+      #    cfg.fs.shares;
 
       nix-tun.storage.persist.subvolumes =
         lib.attrsets.mapAttrs'
@@ -52,8 +52,8 @@
           };
         };
 
-      systemd.services.samba-smbd.preStart = lib.strings.concatStrings (lib.attrsets.mapAttrsToList (name: _: "${pkgs.mount}/bin/mount \"${config.nix-tun.storage.persist.path}/samba-shares/${name}\"\n") cfg.fs.shares);
-      systemd.services.samba-smbd.postStop = lib.strings.concatStrings (lib.attrsets.mapAttrsToList (name: _: "${pkgs.mount}/bin/umount \"${config.nix-tun.storage.persist.path}/samba-shares/${name}\"\n") cfg.fs.shares);
+      #systemd.services.samba-smbd.preStart = lib.strings.concatStrings (lib.attrsets.mapAttrsToList (name: _: "${pkgs.mount}/bin/mount \"${config.nix-tun.storage.persist.path}/samba-shares/${name}\"\n") cfg.fs.shares);
+      #systemd.services.samba-smbd.postStop = lib.strings.concatStrings (lib.attrsets.mapAttrsToList (name: _: "${pkgs.mount}/bin/umount \"${config.nix-tun.storage.persist.path}/samba-shares/${name}\"\n") cfg.fs.shares);
       services.nscd.enable = false;
       system.nssModules = lib.mkForce [ ];
       systemd.services.samba-nmbd.environment.LD_LIBRARY_PATH = lib.mkForce "${cfg.package}/lib";
@@ -94,7 +94,7 @@
         package = cfg.package;
         openFirewall = true;
         nsswins = false;
-        nmbd.enable = true;
+        nmbd.enable = false;
 
 
         settings =
@@ -103,10 +103,10 @@
               {
                 "allow trusted domains" = "yes";
                 "security" = "ads";
-                "log level" = "0";
+                "server services" = "-nbt";
                 "guest ok" = false;
                 "winbind refresh tickets" = true;
-                "restrict anonymous" = 0;
+                "winbind offline logon" = true;
                 "template shell" = "${pkgs.fish}/bin/fish";
                 "idmap config * : range" = "100000 - 199999";
                 "idmap config AD.ASTAHHU : backend" = "rid";

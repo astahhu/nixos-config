@@ -291,7 +291,7 @@
           global = {
             "server role" = "active directory domain controller";
             "ad dc functional level" = "2016";
-            "server services" = "s3fs, rpc, nbt, wrepl, ldap, cldap, kdc, drepl, winbindd, ntp_signd, kcc, dnsupdate";
+            "server services" = "s3fs, rpc, ldap, cldap, kdc, drepl, winbindd, ntp_signd, kcc, dnsupdate";
             "idmap_ldb:use rfc2307" = "yes";
             "additional dns hostnames" = cfg.domain;
             "nsupdate command" = "${pkgs.dnsutils}/bin/nsupdate -g";
