@@ -26,28 +26,47 @@
 
 
   # Change for each System
-  networking =
-    {
-      networkmanager.enable = true; # Easiest to use and most distros use this by default.
-      timeServers = [
-        "134.99.128.80"
-        "134.99.128.79"
-      ];
-      defaultGateway = { address = "134.99.154.1"; interface = "eth0"; };
-      useDHCP = false;
-      hostName = "nix-asta2012dc1";
-      domain = "asta2012.local";
-      interfaces.eth0 = {
-        ipv4 = {
-          "addresses" = [
-            {
-              address = "134.99.154.228";
-              prefixLength = 24;
-            }
-          ];
-        };
-      };
+
+  # Change for each System
+  networking = {
+    useDHCP = false;
+    hostName = "nix-asta2012dc1";
+    domain = "asta2012.local";
+    hosts = lib.mkForce {
+      "127.0.0.1" = [ "localhost" ];
+      "134.99.154.228" = [ "nix-asta2012dc1" "nix-asta2012dc1.ad.astahhu.de" ];
     };
+  };
+
+  services.resolved = {
+    enable = true;
+    fallbackDns = [ "127.0.0.1" ];
+  };
+
+  systemd.network = {
+    enable = true;
+    networks."asta2012" = {
+      name = "eth0";
+      gateway = [
+        "134.99.154.1"
+      ];
+      dns = [
+        "127.0.0.1"
+      ];
+      address = [
+        "134.99.154.228/24"
+      ];
+      ntp = [
+        "134.99.128.80"
+        "134.99.154.79"
+      ];
+      domains = [
+        "ad.astahhu.de"
+        "asta2012.local"
+      ];
+    };
+  };
+
   # Uncomment if you need Secrets for this Hosts, AFTER the first install  
   sops.defaultSopsFile = ../../secrets/nix-asta2012-dc.yaml;
 
