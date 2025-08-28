@@ -79,7 +79,7 @@
                 })
                 value)
             )
-            config.astahhu.services.samba.dc.domain-dfs);
+            cfg.dc.domain-dfs);
 
       security.pam.krb5.enable =
         false;
@@ -96,14 +96,15 @@
 
       users.groups.kea = { };
 
-      security.acme.certs.samba.extraDomainNames = [ cfg.domain ];
-
+      security.acme = lib.mkIf cfg.acme.enable {
+        certs.samba.extraDomainNames = [ cfg.domain ];
+      };
       nix-tun.storage.persist.subvolumes = (lib.attrsets.mapAttrs'
         (name: value: {
           name = "samba-shares/${name}-dfs";
           value.mode = "0555";
         })
-        config.astahhu.services.samba.dc.domain-dfs) // {
+        cfg.dc.domain-dfs) // {
         kea = {
           #bindMountDirectories = true;
           owner = "kea";
@@ -118,7 +119,7 @@
       systemd.services.kea-dhcp4-server.serviceConfig.DynamicUser = lib.mkForce false;
 
       nix-tun.services.prometheus.kea-exporter = true;
-      services.kea = lib.mkIf config.astahhu.services.samba.dc.dhcp.enable {
+      services.kea = lib.mkIf cfg.dc.dhcp.enable {
         # DDNS via DHCP, with kerberos Authentication
         # Following the example at: https://kea.readthedocs.io/en/kea-2.7.5/arm/integrations.html#gss-tsig
         #  dhcp-ddns = {
@@ -319,7 +320,7 @@
                   "browseable" = "no";
                 };
               })
-            config.astahhu.services.samba.dc.domain-dfs));
+            cfg.dc.domain-dfs));
       };
 
       networking = {

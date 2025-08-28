@@ -5,11 +5,8 @@
 
   astahhu.common = {
     is_server = true;
-    is_qemuvm = true;
-    disko = {
-      enable = true;
-      device = "/dev/sda";
-    };
+    is_lxc = true;
+    uses_btrfs = true;
   };
 
   systemd.timers.sync-sysvol = {
@@ -21,7 +18,7 @@
     };
   };
   services.samba.settings.global = {
-    "additional dns hostnames" = "asta2012";
+    "additional dns hostnames" = lib.mkForce "asta2012 asta2012.local";
   };
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG7K8KVbQFb805ZFHBScWi7YmG0hS26m4egNaZELwtMu root@nix-asta2012-dc"

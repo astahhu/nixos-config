@@ -5,11 +5,8 @@
 
   astahhu.common = {
     is_server = true;
-    is_qemuvm = true;
-    disko = {
-      enable = true;
-      device = "/dev/sda";
-    };
+    is_lxc = true;
+    uses_btrfs = true;
   };
 
   systemd.timers.sync-sysvol = {
@@ -85,7 +82,7 @@
   sops.defaultSopsFile = ../../secrets/nix-asta2012-dc.yaml;
 
   services.samba.settings.global = {
-    "additional dns hostnames" = "asta2012";
+    "additional dns hostnames" = lib.mkForce "asta2012 asta2012.local";
   };
 
   astahhu.services.samba = {

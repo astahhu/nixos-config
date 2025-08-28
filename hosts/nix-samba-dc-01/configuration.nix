@@ -4,11 +4,8 @@
 { pkgs, config, lib, ... }: {
   astahhu.common = {
     is_server = true;
-    is_qemuvm = true;
-    disko = {
-      enable = true;
-      device = "/dev/sda";
-    };
+    is_lxc = true;
+    uses_btrfs = true;
   };
 
   users.users.root.openssh.authorizedKeys.keys = [
@@ -78,7 +75,7 @@
   systemd.network = {
     enable = true;
     networks."astahhu" = {
-      name = "ens18";
+      name = "eth0";
       gateway = [
         "134.99.154.1"
       ];
