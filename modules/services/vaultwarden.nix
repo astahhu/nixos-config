@@ -10,7 +10,7 @@
   };
 
   config = lib.mkIf config.astahhu.services.vaultwarden.enable {
-    nix-tun.services.traefik.services.vaultwarden.router.tls = false;
+    nix-tun.services.traefik.services.vaultwarden.router.tls.enable = false;
     sops.secrets.vaultwarden-env = { };
     sops.secrets.vaultwarden-ldap-pass = { };
     sops.secrets.vaultwarden-client-id = { };
