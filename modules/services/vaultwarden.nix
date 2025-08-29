@@ -32,7 +32,7 @@
     };
     nix-tun.utils.containers.vaultwarden = {
       volumes = {
-        "/var/lib/bitwarden-rs" = { };
+        "/var/lib/bitwarden_rs" = { };
       };
       domains = {
         vaultwarden = {
