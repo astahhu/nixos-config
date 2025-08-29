@@ -68,6 +68,9 @@
     enable = true;
     databases = [
       "matrix"
+      "nextcloud"
+      "keycloak"
+      "vaultwarden"
     ];
   };
 
