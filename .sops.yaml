@@ -18,13 +18,17 @@ keys:
   - &nix-samba-dc-01 df414f5dc0babbe639ab91b3bbfa14b808b56972
   - &nix-samba-fs b6e78f63523f66cd29a3f9e4ec7f479f02e439e4
   - &nix-build e1001e8f97a70d863c766ad334b1d990ee9a3226
+  - &nix-postgres 1d4a5ee9d9497dc76130cd0f5d57fefee09727bf
 creation_rules:
-  - path_regex: secrets/it-laptop.yaml
+  - path_regex: secrets/nix-postgresql*
     key_groups:
       - pgp:
-        - *it-laptop
-        - *florian_other_yubikey
         - *florian-yubikey
+        - *florian_other_yubikey
+        - *nix-postgres
+        - *sotiris-primary-yubikey
+        - *sotiris-backup-yubikey
+        - *sotiris-c-yubikey
   - path_regex: secrets/nix-samba-fs*
     key_groups:
       - pgp:

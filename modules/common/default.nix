@@ -1,7 +1,6 @@
 { pkgs, lib, config, modulesPath, ... }: {
 
   imports = [
-    ./qemu-hardwareconfig.nix
     ./users.nix
     ./server.nix
     ./proxmox-lxc.nix
@@ -29,7 +28,8 @@
       services.resolved = {
         fallbackDns = [ ];
         domains = [
-          "ad.astahhu.de" "asta2012.local"
+          "ad.astahhu.de"
+          "asta2012.local"
         ];
       };
 

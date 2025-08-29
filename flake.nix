@@ -60,6 +60,16 @@
                 specialArgs = { inherit inputs; };
               };
 
+              nix-postgresql = inputs.nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  ./hosts/nix-postgresql/configuration.nix
+                  ./modules
+                  ./users/admin-users.nix
+                ];
+                specialArgs = { inherit inputs; };
+              };
+
               nix-samba-fs = inputs.nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
@@ -204,6 +214,15 @@
                   };
                 };
 
+                nix-postgresql = {
+                  hostname = "134.99.154.212";
+                  profiles.system = {
+                    path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-postgresql;
+                    user = "root";
+                    confirmTimeout = 180;
+                    activationTimeout = 600;
+                  };
+                };
                 nix-webserver = {
                   hostname = "134.99.154.51";
                   profiles.system = {

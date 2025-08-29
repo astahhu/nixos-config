@@ -20,6 +20,7 @@
     ./services/wordpress.nix
     ./services/samba
     ./services/vaultwarden.nix
+    ./services/postgres.nix
     ./services/ntfy.nix
     ./development/vm.nix
     ./stylix.nix
