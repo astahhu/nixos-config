@@ -63,6 +63,11 @@
     enable_docker = true;
   };
 
+  astahhu.services.matrix = {
+    enable = true;
+    servername = "astahhu.de";
+  };
+
   services.traefik.staticConfigOptions.entryPoints.websecure = {
     forwardedHeaders.insecure = true; #trustedIPs = [ "134.99.154.48" ];
     proxyProtocol.insecure = true; #trustedIPs = [ "134.99.154.48" ];

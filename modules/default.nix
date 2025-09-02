@@ -17,6 +17,7 @@
     ./desktop/hyprland.nix
     ./desktop/programs.nix
     ./services/tailscale.nix
+    ./services/matrix.nix
     ./services/wordpress.nix
     ./services/samba
     ./services/vaultwarden.nix

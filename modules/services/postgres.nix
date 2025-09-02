@@ -21,7 +21,9 @@
   config = lib.mkIf config.astahhu.services.postgres.enable {
 
     services.postgresql = {
+      package = pkgs.postgresql_17;
       enable = true;
+      initdbArgs = [ "--locale=C" "--encoding=UTF8" ];
       enableTCPIP = true;
       settings = {
         "wal_level" = "replica";
@@ -41,7 +43,10 @@
             ensureClauses.replication = true;
           }
         ]);
-      authentication = "host replication repluser 134.99.154.0/24 md5";
+      authentication = ''
+        host replication repluser 134.99.154.0/24 md5
+        host sameuser all 134.99.154.0/24 md5
+      '';
     };
 
     sops.secrets = lib.mkMerge
