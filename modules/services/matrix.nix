@@ -17,7 +17,7 @@
       cfg = config.astahhu.services.matrix;
     in
     lib.mkIf cfg.enable {
-      sops.secrets.matrix-pass = {
+      sops.secrets.matrix-client-secret = {
         mode = "444";
       };
       sops.secrets.postgresql-matrix-pw = {
@@ -51,6 +51,23 @@
                   passfile = config.sops.templates.matrix-pgpass.path;
                   host = "nix-postgresql.ad.astahhu.de";
                 };
+                oidc_providers = [
+                  {
+                    idp_id = "keycloak";
+                    idp_name = "AStA Intern";
+                    issuer = "https://keycloak.astahhu.de/realms/astaintern";
+                    client_id = "synapse";
+                    client_secret_file = config.sops.secrets.matrix-client-secrets.path;
+                    scopes = [ "openid" "profile" ];
+                    user_mapping_provider = {
+                      config = {
+                        localpart_template = "{{ user.preferred_username }}";
+                        display_name_template = "{{ user.name }}";
+                      };
+                      backchannel_logout_enabled = true;
+                    };
+                  }
+                ];
                 serve_server_wellknown = true;
                 public_baseurl = "https://matrix.${cfg.servername}:443";
                 matrix_authentication_service = {
@@ -122,10 +139,11 @@
             networking.firewall =
               let
                 range = with container.config.services.coturn;
-                  lib.singleton {
-                    from = min-port;
-                    to = max-port;
-                  };
+                  lib.singleton
+                    {
+                      from = min-port;
+                      to = max-port;
+                    };
               in
               {
                 allowedUDPPortRanges = range;
@@ -149,8 +167,8 @@
       containers."matrix" = {
         bindMounts = {
           "secret" = {
-            hostPath = config.sops.secrets.matrix-pass.path;
-            mountPoint = config.sops.secrets.matrix-pass.path;
+            hostPath = config.sops.secrets.matrix-client-secret.path;
+            mountPoint = config.sops.secrets.matrix-client-secret.path;
           };
           "matrix-pgpass" = {
             hostPath = config.sops.templates.matrix-pgpass.path;
