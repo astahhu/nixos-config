@@ -152,13 +152,12 @@
                 allowedTCPPorts = [ 80 443 8008 3478 5349 ];
               };
           };
-
-
       };
 
-      nix-tun.services.traefik.services."{cfg.servername}" = {
+      nix-tun.services.traefik.services."${cfg.servername}" = {
         router = {
-          rule = "Host(`matrix.${cfg.servername}`) || (Host(`${cfg.servername}`) && (Path(`/_matrix/{name:.*}`) || Path(`/_synapse/{name:.*}`) || Path(`/.well-known/matrix/server`) || Path(`/.well-known/matrix/client`)))";
+          rule = "Host(`matrix.${cfg.servername}`) || (Host(`${cfg.servername}`) && (PathPrefix(`/_matrix`) || PathPrefix(`/_synapse`) || Path(`/.well-known/matrix/server`) || Path(`/.well-known/matrix/client`)))";
+          extraConfig.priority = 10000;
           tls.enable = false;
         };
         servers = [ "http://${config.containers.matrix.config.networking.hostName}:8008" ];
@@ -174,9 +173,7 @@
             hostPath = config.sops.templates.matrix-pgpass.path;
             mountPoint = config.sops.templates.matrix-pgpass.path;
           };
-
         };
-
       };
     };
 }
