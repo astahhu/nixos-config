@@ -10,6 +10,11 @@
       };
     };
 
+
+    systemd.extraConfig = ''
+      LimitNOFILE=8192:524288
+    '';
+
     proxmoxLXC.enable = true;
     proxmoxLXC.manageHostName = true;
 
