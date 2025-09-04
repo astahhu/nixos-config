@@ -70,11 +70,6 @@
                 ];
                 serve_server_wellknown = true;
                 public_baseurl = "https://matrix.${cfg.servername}:443";
-                matrix_authentication_service = {
-                  enabled = true;
-                  secret_path = "someverysecuresecret";
-                  endpoint = "http://localhost:8080";
-                };
                 #enable_registration = true;
                 #enable_registration_without_verification = true;
                 turn_uris = [ "turn:${realm}:3478?transport=udp" "turn:${realm}:3478?transport=tcp" ];
