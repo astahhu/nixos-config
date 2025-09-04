@@ -157,7 +157,6 @@
       nix-tun.services.traefik.services."${cfg.servername}" = {
         router = {
           rule = "Host(`matrix.${cfg.servername}`) || (Host(`${cfg.servername}`) && (PathPrefix(`/_matrix`) || PathPrefix(`/_synapse`) || Path(`/.well-known/matrix/server`) || Path(`/.well-known/matrix/client`)))";
-          extraConfig.priority = 10000;
           tls.enable = false;
         };
         servers = [ "http://${config.containers.matrix.config.networking.hostName}:8008" ];
