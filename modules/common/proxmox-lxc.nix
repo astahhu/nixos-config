@@ -12,7 +12,7 @@
 
 
     systemd.settings.Manager = {
-      LimitNOFILE = "8192:524288";
+      DefaultLimitNOFILE = "8192:524288";
     };
 
     proxmoxLXC.enable = true;
