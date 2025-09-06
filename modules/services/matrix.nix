@@ -57,6 +57,7 @@
                     idp_name = "AStA Intern";
                     issuer = "https://keycloak.astahhu.de/realms/astaintern";
                     client_id = "synapse";
+		    client_auth_method = "client_secret_post";
                     client_secret_file = config.sops.secrets.matrix-client-secret.path;
                     scopes = [ "openid" "profile" ];
                     user_mapping_provider = {
