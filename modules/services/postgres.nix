@@ -67,6 +67,6 @@
         (config.astahhu.services.postgres.databases ++ [ "repluser" ])));
 
 
-    networking.firewall.allowedTCPPorts = [ 8000 ];
+    networking.firewall.allowedTCPPorts = [ 5432 ];
   };
 }
