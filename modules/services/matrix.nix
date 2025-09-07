@@ -70,7 +70,7 @@
                   }
                 ];
                 serve_server_wellknown = true;
-                public_baseurl = "https://matrix.${cfg.servername}:443";
+                public_baseurl = "https://matrix.${cfg.servername}";
                 #enable_registration = true;
                 #enable_registration_without_verification = true;
                 turn_uris = [ "turn:${realm}:3478?transport=udp" "turn:${realm}:3478?transport=tcp" ];
