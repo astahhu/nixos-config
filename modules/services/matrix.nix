@@ -45,9 +45,6 @@
               enable = true;
               settings = with container.config.services.coturn; {
                 server_name = cfg.servername;
-                bind = [
-                  "0.0.0.0"
-                ];
                 database.args = {
                   database = "matrix";
                   user = "matrix";
@@ -85,6 +82,9 @@
                     type = "http";
                     tls = false;
                     x_forwarded = true;
+                    bind_addresses = [
+                      "0.0.0.0"
+                    ];
                     resources = [
                       {
                         names = [ "client" "federation" ];
