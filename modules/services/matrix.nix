@@ -45,6 +45,9 @@
               enable = true;
               settings = with container.config.services.coturn; {
                 server_name = cfg.servername;
+                bind = [
+                  "0.0.0.0"
+                ];
                 database.args = {
                   database = "matrix";
                   user = "matrix";
@@ -57,7 +60,7 @@
                     idp_name = "AStA Intern";
                     issuer = "https://keycloak.astahhu.de/realms/astaintern";
                     client_id = "synapse";
-		    client_auth_method = "client_secret_post";
+                    client_auth_method = "client_secret_post";
                     client_secret_path = config.sops.secrets.matrix-client-secret.path;
                     scopes = [ "openid" "profile" ];
                     user_mapping_provider = {
