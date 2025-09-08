@@ -20,6 +20,10 @@
       sops.secrets.matrix-client-secret = {
         mode = "444";
       };
+
+      sops.secrets.matrix-turn-shared-secret = {
+        mode = "440";
+      };
       sops.secrets.postgresql-matrix-pw = {
         mode = "600";
       };
@@ -51,6 +55,7 @@
                   passfile = config.sops.templates.matrix-pgpass.path;
                   host = "nix-postgresql.ad.astahhu.de";
                 };
+                password_config.enable = false;
                 oidc_providers = [
                   {
                     idp_id = "keycloak";
@@ -74,7 +79,7 @@
                 #enable_registration = true;
                 #enable_registration_without_verification = true;
                 turn_uris = [ "turn:${realm}:3478?transport=udp" "turn:${realm}:3478?transport=tcp" ];
-                turn_shared_secret = static-auth-secret-file;
+                turn_shared_secret_path = static-auth-secret-file;
                 turn_user_lifetime = "1h";
                 listeners = [
                   {
@@ -98,12 +103,13 @@
             # enable coturn
             services.coturn = {
               enable = true;
+              cli-port = 5766;
               no-cli = true;
               no-tcp-relay = true;
               min-port = 49000;
               max-port = 50000;
               use-auth-secret = true;
-              static-auth-secret-file = "/run/secrets/matrix-pass";
+              static-auth-secret-file = config.sops.secrets.matrix-turn-shared-secret.path;
               extraConfig = ''
                 # for debugging
                 verbose
@@ -147,17 +153,38 @@
                 allowedUDPPortRanges = range;
                 allowedUDPPorts = [ 3478 5349 ];
                 allowedTCPPortRanges = [ ];
-                allowedTCPPorts = [ 80 443 8008 3478 5349 ];
+                allowedTCPPorts = [ 80 443 8008 3478 5349 5766 ];
               };
           };
       };
 
-      nix-tun.services.traefik.services."${cfg.servername}" = {
-        router = {
-          rule = "Host(`matrix.${cfg.servername}`) || (Host(`${cfg.servername}`) && (PathPrefix(`/_matrix`) || PathPrefix(`/_synapse`) || Path(`/.well-known/matrix/server`) || Path(`/.well-known/matrix/client`)))";
-          tls.enable = false;
+      nix-tun.services.traefik = {
+        entryPoints = lib.mkMerge [
+          (lib.listToAttrs (
+            map
+              (port: {
+                name = "turn_port_${toString port}";
+                value = {
+                  inherit port;
+                  protocol = "udp";
+                };
+              })
+              (lib.range 49000 50000)
+          ))
+          {
+            turn_port_tcp = {
+              port = 30000;
+              protocol = "tcp";
+            };
+          }
+        ];
+        services."${cfg.servername}" = {
+          router = {
+            rule = "Host(`matrix.${cfg.servername}`) || (Host(`${cfg.servername}`) && (PathPrefix(`/_matrix`) || PathPrefix(`/_synapse`) || Path(`/.well-known/matrix/server`) || Path(`/.well-known/matrix/client`)))";
+            tls.enable = false;
+          };
+          servers = [ "http://${config.containers.matrix.config.networking.hostName}:8008" ];
         };
-        servers = [ "http://${config.containers.matrix.config.networking.hostName}:8008" ];
       };
 
       containers."matrix" = {
@@ -165,6 +192,10 @@
           "secret" = {
             hostPath = config.sops.secrets.matrix-client-secret.path;
             mountPoint = config.sops.secrets.matrix-client-secret.path;
+          };
+          "matrix-turn-shared-secret" = {
+            hostPath = config.sops.secrets.matrix-turn-shared-secret.path;
+            mountPoint = config.sops.secrets.matrix-turn-shared-secret.path;
           };
           "matrix-pgpass" = {
             hostPath = config.sops.templates.matrix-pgpass.path;
