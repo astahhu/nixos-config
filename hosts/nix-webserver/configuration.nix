@@ -128,6 +128,11 @@
     domain = "ntfy.astahhu.de";
   };
 
+  astahhu.services.cinny = {
+    enable = true;
+    domain = "cinny.astahhu.de";
+  };
+
   astahhu.services.vaultwarden = {
     enable = true;
     domain = "vaultwarden.astahhu.de";
