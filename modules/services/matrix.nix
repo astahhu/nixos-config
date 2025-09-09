@@ -159,7 +159,7 @@
       };
 
       nix-tun.services.traefik = {
-        entryPoints = lib.mkMerge [
+        entrypoints = lib.mkMerge [
           (lib.listToAttrs (
             map
               (port: {
