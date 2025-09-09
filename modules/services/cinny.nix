@@ -3,7 +3,7 @@
     enable = lib.mkEnableOption ''
       Enable the Cinny Matrix Client
     '';
-    url = lib.mkOption {
+    domain = lib.mkOption {
       type = lib.types.str;
       description = "The url under which Cinny can be reached";
     };
@@ -27,7 +27,7 @@
         };
         services.caddy = {
           enable = true;
-          virtualHosts."http://${config.astahhu.services.cinny.url}" =
+          virtualHosts."http://${config.astahhu.services.cinny.domain}" =
             let cinny = pkgs.cinny-unwrapped; in
             {
               extraConfig = ''
