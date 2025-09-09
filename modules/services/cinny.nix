@@ -16,7 +16,7 @@
   };
 
   config = lib.mkIf config.astahhu.services.cinny.enable {
-    nix-tun.utils.containers = {
+    nix-tun.utils.containers.cinny = {
 
       domains = {
         cinny = {
