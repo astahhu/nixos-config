@@ -20,7 +20,7 @@
 
       domains = {
         cinny = {
-          domain = config.astahhu.services.cinny.url;
+          domain = config.astahhu.services.cinny.domain;
           port = 80;
         };
       };
