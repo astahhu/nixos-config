@@ -159,25 +159,25 @@
       };
 
       nix-tun.services.traefik = {
-        entrypoints = lib.mkMerge [
-          (lib.listToAttrs (
-            map
-              (port: {
-                name = "turn_port_${toString port}";
-                value = {
-                  inherit port;
-                  protocol = "udp";
-                };
-              })
-              (lib.range 49000 50000)
-          ))
-          {
-            turn_port_tcp = {
-              port = 30000;
-              protocol = "tcp";
-            };
-          }
-        ];
+        #entrypoints = lib.mkMerge [
+        #  (lib.listToAttrs (
+        #    map
+        #      (port: {
+        #        name = "turn_port_${toString port}";
+        #        value = {
+        #          inherit port;
+        #          protocol = "udp";
+        #        };
+        #      })
+        #      (lib.range 49000 50000)
+        #  ))
+        #  {
+        #    turn_port_tcp = {
+        #      port = 30000;
+        #      protocol = "tcp";
+        #    };
+        #  }
+        #];
         services."${cfg.servername}" = {
           router = {
             rule = "Host(`matrix.${cfg.servername}`) || (Host(`${cfg.servername}`) && (PathPrefix(`/_matrix`) || PathPrefix(`/_synapse`) || Path(`/.well-known/matrix/server`) || Path(`/.well-known/matrix/client`)))";
