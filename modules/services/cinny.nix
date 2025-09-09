@@ -18,13 +18,13 @@
   config = lib.mkIf config.astahhu.services.cinny.enable {
     nix-tun.utils.containers = {
 
-      config = {
-        domains = {
-          cinny = {
-            domain = config.astahhu.services.cinny.url;
-            port = 80;
-          };
+      domains = {
+        cinny = {
+          domain = config.astahhu.services.cinny.url;
+          port = 80;
         };
+      };
+      config = { ... }: {
         services.caddy = {
           enable = true;
           virtualHosts."http://${config.astahhu.services.cinny.domain}" =
