@@ -1,5 +1,5 @@
 { lib, pkgs, config, ... }: {
-  options.services.astahhu.cinny = {
+  options.astahhu.services.cinny = {
     enable = lib.mkEnableOption ''
       Enable the Cinny Matrix Client
     '';
@@ -15,19 +15,19 @@
     };
   };
 
-  config = lib.mkIf config.services.astahhu.cinny.enable {
+  config = lib.mkIf config.astahhu.services.cinny.enable {
     nix-tun.utils.containers = {
 
       config = {
         domains = {
           cinny = {
-            domain = config.services.astahhu.cinny.url;
+            domain = config.astahhu.services.cinny.url;
             port = 80;
           };
         };
         services.caddy = {
           enable = true;
-          virtualHosts."http://${config.services.astahhu.cinny.url}" =
+          virtualHosts."http://${config.astahhu.services.cinny.url}" =
             let cinny = pkgs.cinny-unwrapped; in
             {
               extraConfig = ''
