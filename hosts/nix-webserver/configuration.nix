@@ -153,9 +153,6 @@
       sp = {
         hostname = "sphhu.de";
       };
-      finanzen = {
-        hostname = "finanzen.astahhu.de";
-      };
       verleih = {
         hostname = "verleih.astahhu.de";
       };

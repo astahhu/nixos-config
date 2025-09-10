@@ -5,6 +5,7 @@ keys:
   - &sotiris-primary-yubikey 7FBACEF23172884FF4967ABCF9E644AF94BE1EAE
   - &sotiris-backup-yubikey  98FD09AC654B27772A03E6C7C0DC5C74462B385B
   - &sotiris-c-yubikey       93E75346EC76A38F684EFA248125744461D04398
+  - &jonas-laptop 8F53896C4F610ABFDC99F23A63DC8DFEED62EE18
   ## Hosts
   - &nix-asta2012-dc d0e5fcf0861474ca0da4b5cc5538a1ba2f123b83
   - &nix-asta2012-dc-01 5e597c24169388784ef183a09d72b03aceee3c54
@@ -29,6 +30,7 @@ creation_rules:
         - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
         - *sotiris-c-yubikey
+        - *jonas-laptop
   - path_regex: secrets/nix-samba-fs*
     key_groups:
       - pgp:
@@ -38,6 +40,7 @@ creation_rules:
         - *sotiris-backup-yubikey
         - *sotiris-c-yubikey
         - *nix-samba-fs
+        - *jonas-laptop
   - path_regex: secrets/nix-asta2012-dc*
     key_groups:
       - pgp:
@@ -48,6 +51,7 @@ creation_rules:
         - *sotiris-c-yubikey
         - *nix-asta2012-dc
         - *nix-asta2012-dc-01
+        - *jonas-laptop
   - path_regex: secrets/nix-samba-dc*
     key_groups:
       - pgp:
@@ -58,6 +62,7 @@ creation_rules:
         - *sotiris-c-yubikey
         - *nix-samba-dc
         - *nix-samba-dc-01
+        - *jonas-laptop
   - path_regex: secrets/nix-wireguard.yaml
     key_groups:
       - pgp:
@@ -66,6 +71,7 @@ creation_rules:
         - *florian_other_yubikey
         - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
+        - *jonas-laptop
         - *sotiris-c-yubikey
   - path_regex: secrets/nix-webserver*
     key_groups:
@@ -75,6 +81,7 @@ creation_rules:
         - *nix-webserver
         - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
+        - *jonas-laptop
         - *sotiris-c-yubikey
   - path_regex: secrets/nix-nextcloud*
     key_groups:
@@ -84,6 +91,7 @@ creation_rules:
         - *florian-yubikey
         - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
+        - *jonas-laptop
         - *sotiris-c-yubikey
   - path_regex: secrets/nix-build
     key_groups:
@@ -93,5 +101,6 @@ creation_rules:
         - *florian-yubikey
         - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
+        - *jonas-laptop
         - *sotiris-c-yubikey
 
