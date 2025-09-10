@@ -16,6 +16,7 @@
   };
 
   config = lib.mkIf config.astahhu.services.cinny.enable {
+    nix-tun.services.traefik.services."cinny-cinny".router.tls.enable = false;
     nix-tun.utils.containers.cinny = {
 
       domains = {

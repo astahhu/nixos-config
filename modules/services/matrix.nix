@@ -22,7 +22,7 @@
       };
 
       sops.secrets.matrix-turn-shared-secret = {
-        mode = "440";
+        mode = "444";
       };
       sops.secrets.postgresql-matrix-pw = {
         mode = "600";
