@@ -99,6 +99,7 @@
       api_url = "https://keycloak.astahhu.de/realms/astaintern/protocol/openid-connect/userinfo";
       role_attribute_path = "contains(roles[*], 'Admin') && 'Admin' || contains(roles[*], 'Editor') && 'Editor' || 'Viewer'";
     };
+    loki.domain = "loki.astahhu.de";
     domain = "grafana.astahhu.de";
     prometheus = {
       nixosConfigs = inputs.self.nixosConfigurations;
