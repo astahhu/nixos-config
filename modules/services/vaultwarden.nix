@@ -34,6 +34,7 @@
       volumes = {
         "/var/lib/bitwarden_rs" = {
           owner = "vaultwarden";
+          group = "vaultwarden";
         };
       };
       domains = {
@@ -44,6 +45,7 @@
       };
       config = { ... }: {
         boot.isContainer = true;
+        users.users.vaultwarden.uid = 996;
 
         services.vaultwarden = {
           enable = true;
