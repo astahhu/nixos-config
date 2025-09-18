@@ -11,26 +11,14 @@
 
   config = lib.mkIf config.astahhu.services.vaultwarden.enable {
     nix-tun.services.traefik.services.vaultwarden-vaultwarden.router.tls.enable = false;
-    sops.secrets.vaultwarden-env = { };
-    sops.secrets.vaultwarden-ldap-pass = { };
-    sops.secrets.vaultwarden-client-id = { };
-    sops.secrets.vaultwarden-client-secret = { };
 
-    containers.vaultwarden = {
-      bindMounts."${config.sops.secrets.vaultwarden-env.path}" = {
-        hostPath = config.sops.secrets.vaultwarden-env.path;
-      };
-      bindMounts."${config.sops.secrets.vaultwarden-ldap-pass.path}" = {
-        hostPath = config.sops.secrets.vaultwarden-ldap-pass.path;
-      };
-      bindMounts."${config.sops.secrets.vaultwarden-client-id.path}" = {
-        hostPath = config.sops.secrets.vaultwarden-client-id.path;
-      };
-      bindMounts."${config.sops.secrets.vaultwarden-client-secret.path}" = {
-        hostPath = config.sops.secrets.vaultwarden-client-secret.path;
-      };
-    };
     nix-tun.utils.containers.vaultwarden = {
+      secrets = [
+        "env"
+        "ldap-pass"
+        "client-id"
+        "client-secret"
+      ];
       volumes = {
         "/var/lib/bitwarden_rs" = {
           owner = "vaultwarden";
@@ -49,7 +37,7 @@
 
         services.vaultwarden = {
           enable = true;
-          environmentFile = config.sops.secrets.vaultwarden-env.path;
+          environmentFile = "/secret/env";
         };
 
         services.bitwarden-directory-connector-cli = {
@@ -70,10 +58,10 @@
             userFilter = "(objectCategory=CN=Person,CN=Schema,CN=Configuration,DC=ad,DC=astahhu,DC=de)";
           };
           secrets = {
-            ldap = config.sops.secrets.vaultwarden-ldap-pass.path;
+            ldap = "/secret/ldap-pass";
             bitwarden = {
-              client_path_id = config.sops.secrets.vaultwarden-client-id.path;
-              client_path_secret = config.sops.secrets.vaultwarden-client-secret.path;
+              client_path_id = "/secret/client-id";
+              client_path_secret = "/secret/client-secret";
             };
           };
         };

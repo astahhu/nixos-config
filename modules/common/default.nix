@@ -44,6 +44,7 @@
         keyMap = "us";
       };
 
+      sops.useTmpfs = true;
 
       networking.firewall = {
         enable = true;
