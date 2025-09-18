@@ -28,14 +28,17 @@
       config = { ... }: {
         services.caddy = {
           enable = true;
-          virtualHosts."http://${config.astahhu.services.cinny.domain}" =
-            let cinny = pkgs.cinny-unwrapped; in
-            {
-              extraConfig = ''
-                encode gzip
-                root * ${cinny}
-              '';
-            };
+          extraConfig = let cinny = pkgs.cinny-unwrapped; in
+            ''
+              http://cinny.astahhu.de {
+              	log {
+              		output file /var/log/caddy/access-http:__cinny.astahhu.de.log
+              	}
+
+              	encode gzip
+              	root *  ${cinny}
+              }
+            '';
         };
       };
     };

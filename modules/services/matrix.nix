@@ -17,13 +17,6 @@
       cfg = config.astahhu.services.matrix;
     in
     lib.mkIf cfg.enable {
-      sops.secrets.matrix-client-secret = {
-        mode = "444";
-      };
-
-      sops.secrets.matrix-turn-shared-secret = {
-        mode = "444";
-      };
       sops.secrets.postgresql-matrix-pw = {
         mode = "600";
       };
@@ -37,6 +30,10 @@
       };
 
       nix-tun.utils.containers."matrix" = {
+        secrets = [
+          "client-secret"
+          "turn-shared-secret"
+        ];
         volumes = {
           "/var/lib/matrix-synapse" = { };
         };
@@ -63,7 +60,7 @@
                     issuer = "https://keycloak.astahhu.de/realms/astaintern";
                     client_id = "synapse";
                     client_auth_method = "client_secret_post";
-                    client_secret_path = config.sops.secrets.matrix-client-secret.path;
+                    client_secret_path = "/secret/client-secret";
                     scopes = [ "openid" "profile" ];
                     user_mapping_provider = {
                       config = {
@@ -109,7 +106,7 @@
               min-port = 49000;
               max-port = 50000;
               use-auth-secret = true;
-              static-auth-secret-file = config.sops.secrets.matrix-turn-shared-secret.path;
+              static-auth-secret-file = "/secret/turn-shared-secret";
               extraConfig = ''
                 # for debugging
                 verbose
@@ -189,17 +186,9 @@
 
       containers."matrix" = {
         bindMounts = {
-          "secret" = {
-            hostPath = config.sops.secrets.matrix-client-secret.path;
-            mountPoint = config.sops.secrets.matrix-client-secret.path;
-          };
-          "matrix-turn-shared-secret" = {
-            hostPath = config.sops.secrets.matrix-turn-shared-secret.path;
-            mountPoint = config.sops.secrets.matrix-turn-shared-secret.path;
-          };
           "matrix-pgpass" = {
             hostPath = config.sops.templates.matrix-pgpass.path;
-            mountPoint = config.sops.templates.matrix-pgpass.path;
+            mountPoint = "${config.sops.templates.matrix-pgpass.path}:idmap";
           };
         };
       };
