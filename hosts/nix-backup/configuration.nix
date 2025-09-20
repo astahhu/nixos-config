@@ -26,6 +26,17 @@
   nix-tun.storage.backup = {
     enable = true;
     nixosConfigs = inputs.self.nixosConfigurations;
+
+    server = {
+      # This would backup the subvolume /a/d on the host example.de.
+      # On which btrfs is mounted as the rootfs
+      # example.de = {
+      #   btrfs_base = "/";
+      #   subvolumes = [
+      #     "/a/d"
+      #   ];
+      # };
+    };
   };
 
   environment.systemPackages = with pkgs; [

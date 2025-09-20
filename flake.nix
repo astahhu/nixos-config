@@ -39,17 +39,6 @@
           {
 
             nixosConfigurations = {
-              it-laptop = inputs.nixpkgs.lib.nixosSystem {
-                system = "x86_64-linux";
-                modules = [
-                  (import ./hosts/it-laptop/disko.nix { device = "/dev/nvme0n1"; })
-                  ./hosts/it-laptop/configuration.nix
-                  ./hosts/it-laptop/hardware-configuration.nix
-                  ./hosts/it-laptop/boot.nix
-                ];
-                specialArgs = { inherit inputs; };
-              };
-
               nix-nextcloud = inputs.nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [

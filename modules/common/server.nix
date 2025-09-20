@@ -15,8 +15,13 @@
           enable_prometheus = lib.mkDefault true;
           letsencryptMail = lib.mkDefault "it@asta.hhu.de";
         };
-        prometheus.node-exporter = lib.mkDefault true;
       };
+      nix-tun.alloy = lib.mkDefault {
+        enable = true;
+        loki-host = "loki.astahhu.de";
+        prometheus-host = "prometheus.astahhu.de";
+      };
+
 
       services.openssh.enable = true;
       security.pam.sshAgentAuth.enable = true;
