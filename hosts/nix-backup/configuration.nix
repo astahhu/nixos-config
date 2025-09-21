@@ -27,6 +27,8 @@
     "/sops-ssh/host_rsa"
   ];
 
+  nix-tun.yubikey-gpg.enable = true;
+
   nix-tun.alloy = {
     enable = true;
     loki-host = "loki.astahhu.de";
