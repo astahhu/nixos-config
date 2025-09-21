@@ -276,6 +276,7 @@
                 nativeBuildInputs = [
                   (pkgs.callPackage inputs.sops-nix { }).sops-import-keys-hook
                   pkgs.deploy-rs
+                  pkgs.pinentry-curses
                 ];
               };
 
