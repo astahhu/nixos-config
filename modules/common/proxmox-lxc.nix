@@ -1,4 +1,4 @@
-{ lib, config, ... }: {
+{ lib, config, pkgs, ... }: {
   options.astahhu.common.is_lxc = lib.mkEnableOption "Set if this Server is an LXC, this will setup default configs";
 
   config = lib.mkIf config.astahhu.common.is_lxc {
