@@ -22,6 +22,18 @@
 
   networking.hostName = "nix-backup"; # Define your hostname.
   # Pick only one of the below networking options.
+  sops.defaultSopsFile = ../../secrets/nix-backup.yaml;
+  sops.gnupg.sshKeyPaths = [
+    "/sops-ssh/host_rsa"
+  ];
+
+  nix-tun.yubikey-gpg.enable = true;
+
+  nix-tun.alloy = {
+    enable = true;
+    loki-host = "loki.astahhu.de";
+    prometheus-host = "prometheus.astahhu.de";
+  };
 
   nix-tun.storage.backup = {
     enable = true;
@@ -42,6 +54,8 @@
   environment.systemPackages = with pkgs; [
     git
   ];
+
+  programs.gnupg.agent.enable = true;
 
   astahhu.common.disko.enable = lib.mkForce false;
 

@@ -7,6 +7,7 @@ keys:
   - &sotiris-c-yubikey       93E75346EC76A38F684EFA248125744461D04398
   - &jonas-laptop 8F53896C4F610ABFDC99F23A63DC8DFEED62EE18
   ## Hosts
+  - &nix-backup 789f4fb5716bd58b7acf3116b563fd4c6b5d2b21
   - &nix-asta2012-dc d0e5fcf0861474ca0da4b5cc5538a1ba2f123b83
   - &nix-asta2012-dc-01 5e597c24169388784ef183a09d72b03aceee3c54
   - &nix-authentik 28528b7b6322273d9c4178da8c125eb8d6231af2
@@ -21,6 +22,16 @@ keys:
   - &nix-build e1001e8f97a70d863c766ad334b1d990ee9a3226
   - &nix-postgres 1d4a5ee9d9497dc76130cd0f5d57fefee09727bf
 creation_rules:
+  - path_regex: secrets/nix-backup
+    key_groups:
+      - pgp:
+        - *florian-yubikey
+        - *florian_other_yubikey
+        - *nix-backup
+        - *sotiris-primary-yubikey
+        - *sotiris-backup-yubikey
+        - *sotiris-c-yubikey
+        - *jonas-laptop
   - path_regex: secrets/nix-postgresql*
     key_groups:
       - pgp:
