@@ -10,6 +10,9 @@
       };
     };
 
+    environment.systemPackages = [
+      pkgs.btrfs-progs
+    ];
 
     systemd.settings.Manager = {
       DefaultLimitNOFILE = "8192:524288";
