@@ -25,6 +25,23 @@
 
       services.openssh.enable = true;
       security.pam.sshAgentAuth.enable = true;
+      security.sudo.extraRules = [{
+        users = [ "btrbk" ];
+        commands = [
+          {
+            command = "btrfs";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "mkdir";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "readlink";
+            options = [ "NOPASSWD" ];
+          }
+        ]
+      ];
 
       services.btrbk.sshAccess = lib.mkIf config.astahhu.common.uses_btrfs [
         {
