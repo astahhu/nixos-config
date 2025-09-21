@@ -40,8 +40,8 @@
             command = "readlink";
             options = [ "NOPASSWD" ];
           }
-        ]
-      ];
+        ];
+      }];
 
       services.btrbk.sshAccess = lib.mkIf config.astahhu.common.uses_btrfs [
         {
