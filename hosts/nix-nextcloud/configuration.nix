@@ -1,12 +1,14 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-{ config
-, lib
-, pkgs
-, inputs
-, ...
-}: {
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
+{
 
   imports = [
     ./windmill.nix
@@ -76,7 +78,10 @@
         server_name = "collabora.astahhu.de";
         extra_params = "--o:ssl.enable=true --o:remote_font_config.url=https://cloud.astahhu.de/apps/richdocuments/settings/fonts.json";
       };
-      extraOptions = [ "--dns=134.99.154.200" "--dns=134.99.154.201" ];
+      extraOptions = [
+        "--dns=134.99.154.200"
+        "--dns=134.99.154.201"
+      ];
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.collabora.entrypoints" = "websecure";
@@ -94,7 +99,10 @@
         NEXTCLOUD_URL = "https://cloud.astahhu.de";
       };
       environmentFiles = [ config.sops.secrets.whiteboard_jwt.path ];
-      extraOptions = [ "--dns=134.99.154.200" "--dns=134.99.154.201" ];
+      extraOptions = [
+        "--dns=134.99.154.200"
+        "--dns=134.99.154.201"
+      ];
       labels = {
         "traefik.enable" = "true";
         "traefik.http.routers.whiteboard.entrypoints" = "websecure";
@@ -105,6 +113,34 @@
         "traefik.http.services.whiteboard.loadbalancer.server.scheme" = "http";
         "traefik.http.middlewares.strip-whiteboard.stripprefix.prefixes" = "/whiteboard";
         "traefik.http.routers.whiteboard.middlewares" = "strip-whiteboard";
+      };
+    };
+    "appapi-harp" = {
+      image = "ghcr.io/nextcloud/nextcloud-appapi-harp:release";
+      environment = {
+        "HP_SHARED_KEY" = "some_very_secure_password";
+        "NC_INSTANCE_URL" = "https://nextcloud.sotga.de";
+      };
+      volumes = [
+        #"/certs:/certs:rw" #TODO
+        "/var/run/docker.sock:/var/run/docker.sock:rw"
+      ];
+      ports = [
+        "8780:8780/tcp"
+        "8782:8782/tcp"
+      ];
+      log-driver = "journald";
+      extraOptions = [
+        "--hostname=appapi-harp"
+      ];
+      labels = {
+        "traefik.enable" = "true";
+        "traefik.http.routers.exapps.rule" = "Host(`cloud.astahhu.de`) && PathPrefix(`/exapps/`)";
+        "traefik.http.routers.exapps.service" = "exapps-service";
+        "traefik.http.routers.exapps.entrypoints" = "websecure";
+        "traefik.http.routers.exapps.tls" = "true";
+        "traefik.http.routers.exapps.tls.certresolver" = "letsencrypt";
+        "traefik.http.services.exapps-service.loadbalancer.server.url" = "http://appapi-harp:8780";
       };
     };
   };
@@ -127,7 +163,12 @@
     };
   };
 
-  services.traefik.staticConfigOptions.entryPoints.websecure.forwardedHeaders.trustedIPs = [ "192.168.0.0/16" "172.16.0.0/12" "10.0.0.0/8" "127.0.0.1" ];
+  services.traefik.staticConfigOptions.entryPoints.websecure.forwardedHeaders.trustedIPs = [
+    "192.168.0.0/16"
+    "172.16.0.0/12"
+    "10.0.0.0/8"
+    "127.0.0.1"
+  ];
 
   containers.nextcloud = {
     bindMounts.docker = {
@@ -136,17 +177,18 @@
     };
   };
 
-  nix-tun.utils.containers.nextcloud.config = { ... }: {
-    environment.systemPackages = [
-      pkgs.docker
-    ];
+  nix-tun.utils.containers.nextcloud.config =
+    { ... }:
+    {
+      environment.systemPackages = [
+        pkgs.docker
+      ];
 
-    services.nextcloud.settings.default_phone_region = "DE";
-    services.nextcloud.maxUploadSize = "8G";
+      services.nextcloud.settings.default_phone_region = "DE";
+      services.nextcloud.maxUploadSize = "8G";
 
-    users.users.nextcloud.extraGroups = [ "docker" ];
-  };
-
+      users.users.nextcloud.extraGroups = [ "docker" ];
+    };
 
   virtualisation.docker = {
     enable = true;
@@ -155,12 +197,14 @@
 
   networking.firewall.trustedInterfaces = [ "ve-nextcloud" ];
 
-
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   security.pam.sshAgentAuth.enable = true;
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
