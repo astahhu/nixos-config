@@ -123,7 +123,7 @@
       };
       volumes = [
         #"/certs:/certs:rw" #TODO
-        "/var/run/docker.sock:/var/run/docker.sock:rw"
+"/run/docker.sock:/var/run/docker.sock:rw
       ];
       ports = [
         "8780:8780/tcp"
