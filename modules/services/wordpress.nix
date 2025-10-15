@@ -83,9 +83,15 @@ in
             directories = {
               wordpress = {
                 mode = "0755";
+                # This is the uid of the wordpess user
+                owner = "33";
+                group = "33";
               };
               mysql = {
                 mode = "0700";
+                # This is the uid of the mariadb use
+                owner = "999";
+                group = "999";
               };
             };
           };
