@@ -86,10 +86,10 @@
       ];
     };
 
-    security.acme = lib.mkIf config.services.postgresql.acme.enable {
+    security.acme = lib.mkIf config.astahu.services.postgresql.acme.enable {
       acceptTerms = true;
       certs.postgres = {
-        email = config.services.postgresql.acme.email;
+        email = config.astahhu.services.postgresql.acme.email;
         domain = "${lib.strings.toLower config.networking.hostname}.${config.networking.domain}";
         dnsResolver = "134.99.128.5";
         dnsProvider = "cloudflare";
