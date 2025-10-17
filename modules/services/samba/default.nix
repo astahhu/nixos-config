@@ -85,10 +85,8 @@
           postRun = lib.mkIf cfg.acme.enable ''
             systemctl restart samba.target
           '';
-
         };
       };
-
 
       systemd.services.samba-tls = lib.mkIf cfg.acme.enable {
         serviceConfig = {
