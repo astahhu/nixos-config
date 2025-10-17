@@ -86,7 +86,7 @@
       ];
     };
 
-    security.acme = lib.mkIf config.astahu.services.postgresql.acme.enable {
+    security.acme = lib.mkIf config.astahhu.services.postgresql.acme.enable {
       acceptTerms = true;
       certs.postgres = {
         email = config.astahhu.services.postgresql.acme.email;
