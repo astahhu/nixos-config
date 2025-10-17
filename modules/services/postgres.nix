@@ -90,7 +90,7 @@
       acceptTerms = true;
       certs.postgres = {
         email = config.astahhu.services.postgres.acme.email;
-        domain = "${lib.strings.toLower config.networking.hostname}.${config.networking.domain}";
+        domain = "${lib.strings.toLower config.networking.hostName}.${config.networking.domain}";
         dnsResolver = "134.99.128.5";
         dnsProvider = "cloudflare";
         extraLegoFlags = [
