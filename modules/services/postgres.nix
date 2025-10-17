@@ -12,7 +12,7 @@
           Requires Valid Cloudflare Access Token, as Secret "postgres-cloudflare-acme"
         '';
         email = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
+          type = lib.types.str;
         };
       };
       databases = lib.mkOption {
