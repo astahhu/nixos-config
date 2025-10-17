@@ -30,6 +30,8 @@
   };
 
   config = lib.mkIf config.astahhu.services.postgres.enable {
+    sops.secrets.cloudflare-dns = { };
+
 
     services.postgresql = {
       package = pkgs.postgresql_17;
@@ -38,8 +40,6 @@
       enableTCPIP = true;
       settings = {
         "ssl" = "on";
-        "ssl_cert_file" = "";
-        "ssl_key_file" = "";
         "wal_level" = "replica";
         "max_wal_senders" = 10;
         "wal_keep_size" = "1GB";
