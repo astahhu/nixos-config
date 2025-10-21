@@ -12,7 +12,7 @@
   config = lib.mkIf config.astahhu.services.keycloak.enable {
     nix-tun.services.traefik.services.keycloak-keycloak.router.tls.enable = false;
 
-    nix-tun.utils.containers.vaultwarden = {
+    nix-tun.utils.containers.keycloak = {
       secrets = [
         "db_pass"
       ];
@@ -38,7 +38,7 @@
           initialAdminPassword = "initialAdminPassword";
           database = {
             username = "keycloak";
-            type = "postgres";
+            type = "postgresql";
             name = "keycloak";
             host = "nix-postgresql.ad.astahhu.de";
             passwordFile = "/secret/db_pass";
