@@ -101,14 +101,14 @@
     };
 
     sops.secrets = lib.mkMerge
-      (lib.map
+      ((lib.map
         (name: {
           "postgresql-${name}-pw" = {
             owner = "postgres";
           };
         })
         (config.astahhu.services.postgres.databases ++ [ "repluser" ])
-      ) ++ [ {cloudflare-dns = { };} ];
+      ) ++ [{ cloudflare-dns = { }; }]);
 
     systemd.services.postgresql-setup.script = lib.mkAfter (lib.strings.concatLines
       (lib.map
