@@ -30,9 +30,6 @@
   };
 
   config = lib.mkIf config.astahhu.services.postgres.enable {
-    sops.secrets.cloudflare-dns = { };
-
-
     services.postgresql = {
       package = pkgs.postgresql_17;
       enable = true;
@@ -111,7 +108,7 @@
           };
         })
         (config.astahhu.services.postgres.databases ++ [ "repluser" ])
-      );
+      ) ++ [ (cloudflare-dns = { };) ];
 
     systemd.services.postgresql-setup.script = lib.mkAfter (lib.strings.concatLines
       (lib.map
