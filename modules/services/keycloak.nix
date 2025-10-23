@@ -34,6 +34,7 @@
           enable = true;
           settings = {
             http-host = "0.0.0.0";
+            hostname = config.astahhu.services.keycloak.domain;
           };
           initialAdminPassword = "initialAdminPassword";
           database = {
