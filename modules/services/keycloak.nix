@@ -43,6 +43,7 @@
             name = "keycloak";
             host = "nix-postgresql.ad.astahhu.de";
             passwordFile = "/secret/db_pass";
+	    useSSL = false;
           };
         };
         networking.firewall.allowedTCPPorts = [ 80 ];
