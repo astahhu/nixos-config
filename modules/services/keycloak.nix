@@ -14,7 +14,7 @@
 
     nix-tun.utils.containers.keycloak = {
       secrets = [
-        "db_pass"
+        "db-pass"
       ];
       volumes = {
         "/var/lib/private/keycloak" = {
@@ -36,14 +36,14 @@
             http-host = "0.0.0.0";
             hostname = config.astahhu.services.keycloak.domain;
           };
-          initialAdminPassword = "initialAdminPassword";
+          initialAdminPassword = "uekoajaeRae0eegh0phee9phohx6ahp8aangai8sae1Thun2xai5Hah3vee7Ooje";
           database = {
             username = "keycloak";
             type = "postgresql";
             name = "keycloak";
             host = "nix-postgresql.ad.astahhu.de";
-            passwordFile = "/secret/db_pass";
-	    useSSL = false;
+            passwordFile = "/secret/db-pass";
+            useSSL = false;
           };
         };
         networking.firewall.allowedTCPPorts = [ 80 ];

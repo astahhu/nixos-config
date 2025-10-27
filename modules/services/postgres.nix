@@ -36,7 +36,7 @@
       initdbArgs = [ "--locale=C" "--encoding=UTF8" ];
       enableTCPIP = true;
       settings = {
-        "ssl" = "on";
+        #"ssl" = "on";
         "wal_level" = "replica";
         "max_wal_senders" = 10;
         "wal_keep_size" = "1GB";
@@ -60,55 +60,57 @@
       '';
     };
 
-    systemd.services.samba-tls = lib.mkIf config.astahhu.services.postgres.acme.enable {
-      serviceConfig = {
-        Type = "oneshot";
-      };
+    #systemd.services.postgres-tls = lib.mkIf config.astahhu.services.postgres.acme.enable {
+    #  serviceConfig = {
+    #    Type = "oneshot";
+    #  };
 
-      script = ''
-        cp /var/lib/acme/postgres/key.pem /var/lib/postgresql/17/server.key
-        cp /var/lib/acme/samba/cert.pem /var/lib/postgresql/17/server.crt
-        chmod 600 /var/lib/postgresql/17/server.key
-        chmod 600 /var/lib/postgresql/17/server.crt
-        chown postgres:postgres /var/lib/postgresql/17/server.key
-        chown postgres:postgres /var/lib/postgresql/17/server.crt
-      '';
+    # script = ''
+    #   cp /var/lib/acme/postgres/key.pem /var/lib/postgresql/17/server.key
+    #   cp /var/lib/acme/samba/cert.pem /var/lib/postgresql/17/server.crt
+    #   chmod 600 /var/lib/postgresql/17/server.key
+    #   chmod 600 /var/lib/postgresql/17/server.crt
+    #   chown postgres:postgres /var/lib/postgresql/17/server.key
+    #   chown postgres:postgres /var/lib/postgresql/17/server.crt
+    #'';
 
-      requires = [
-        "acme-postgres.service"
-      ];
+    #requires = [
+    #  "acme-postgres.service"
+    # ];
 
-      before = [
-        "postgresql.target"
-      ];
-    };
+    #  before = [
+    #    "postgresql.target"
+    #  ];
+    #};
 
-    security.acme = lib.mkIf config.astahhu.services.postgres.acme.enable {
-      acceptTerms = true;
-      certs.postgres = {
-        email = config.astahhu.services.postgres.acme.email;
-        domain = "${lib.strings.toLower config.networking.hostName}.${config.networking.domain}";
-        dnsResolver = "134.99.128.5";
-        dnsProvider = "cloudflare";
-        extraLegoFlags = [
-          "-dns.propagation-disable-ans=true"
-          "--dns.propagation-rns=true"
-        ];
-        dnsPropagationCheck = true;
-        group = "root";
-        environmentFile = config.sops.secrets.cloudflare-dns.path;
-      };
-    };
+    #security.acme = lib.mkIf config.astahhu.services.postgres.acme.enable {
+    #  acceptTerms = true;
+    #  certs.postgres = {
+    #    email = config.astahhu.services.postgres.acme.email;
+    #    domain = "${lib.strings.toLower config.networking.hostName}.${config.networking.domain}";
+    #    dnsResolver = "134.99.128.5";
+    #    dnsProvider = "cloudflare";
+    #    extraLegoFlags = [
+    #      "-dns.propagation-disable-ans=true"
+    #      "--dns.propagation-rns=true"
+    #    ];
+    #    dnsPropagationCheck = true;
+    #    group = "root";
+    #    environmentFile = config.sops.secrets.cloudflare-dns.path;
+    #  };
+    #};
 
     sops.secrets = lib.mkMerge
-      ((lib.map
-        (name: {
-          "postgresql-${name}-pw" = {
-            owner = "postgres";
-          };
-        })
-        (config.astahhu.services.postgres.databases ++ [ "repluser" ])
-      ) ++ [{ cloudflare-dns = { }; }]);
+      (
+        (lib.map
+          (name: {
+            "postgresql-${name}-pw" = {
+              owner = "postgres";
+            };
+          })
+          (config.astahhu.services.postgres.databases ++ [ "repluser" ])
+        )
+      ); # ++ [{ cloudflare-dns = { }; }]);
 
     systemd.services.postgresql-setup.script = lib.mkAfter (lib.strings.concatLines
       (lib.map
