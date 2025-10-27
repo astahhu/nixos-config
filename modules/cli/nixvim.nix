@@ -63,8 +63,6 @@
 
             ccls.enable = !config.astahhu.common.is_server;
 
-            ansiblels.enable = !config.astahhu.common.is_server;
-
             marksman.enable = !config.astahhu.common.is_server;
           };
         };
