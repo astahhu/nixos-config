@@ -18,6 +18,7 @@
     ./desktop/programs.nix
     ./services/tailscale.nix
     ./services/wordpress.nix
+    ./services/keycloak.nix
     ./services/samba
     ./services/vaultwarden.nix
     ./services/postgres.nix

@@ -125,6 +125,12 @@
     domain = "ntfy.astahhu.de";
   };
 
+
+  astahhu.services.keycloak = {
+    enable = true;
+    domain = "keycloak.astahhu.de";
+  };
+
   astahhu.services.vaultwarden = {
     enable = true;
     domain = "vaultwarden.astahhu.de";

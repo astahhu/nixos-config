@@ -66,6 +66,10 @@
 
   astahhu.services.postgres = {
     enable = true;
+    acme = {
+      enable = true;
+      email = "it@astahhu.de";
+    };
     databases = [
       "matrix"
       "nextcloud"

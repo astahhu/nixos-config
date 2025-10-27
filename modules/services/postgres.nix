@@ -3,7 +3,18 @@
     astahhu.services.postgres = {
       enable = lib.mkEnableOption ''
         Enable Postgres on this server.
+        Postgres will be reachable under \$\{config.networking.hostname\}.\$\{config.networking.domain\}:5432.
       '';
+      acme = {
+        enable = lib.mkEnableOption ''
+          Enable ACME for Postgres.
+          Currently only via Cloudflare DNS Setup.
+          Requires Valid Cloudflare Access Token, as Secret "postgres-cloudflare-acme"
+        '';
+        email = lib.mkOption {
+          type = lib.types.str;
+        };
+      };
       databases = lib.mkOption {
         description = ''
           Databases which should be created.
@@ -19,13 +30,13 @@
   };
 
   config = lib.mkIf config.astahhu.services.postgres.enable {
-
     services.postgresql = {
       package = pkgs.postgresql_17;
       enable = true;
       initdbArgs = [ "--locale=C" "--encoding=UTF8" ];
       enableTCPIP = true;
       settings = {
+        #"ssl" = "on";
         "wal_level" = "replica";
         "max_wal_senders" = 10;
         "wal_keep_size" = "1GB";
@@ -49,15 +60,57 @@
       '';
     };
 
+    #systemd.services.postgres-tls = lib.mkIf config.astahhu.services.postgres.acme.enable {
+    #  serviceConfig = {
+    #    Type = "oneshot";
+    #  };
+
+    # script = ''
+    #   cp /var/lib/acme/postgres/key.pem /var/lib/postgresql/17/server.key
+    #   cp /var/lib/acme/samba/cert.pem /var/lib/postgresql/17/server.crt
+    #   chmod 600 /var/lib/postgresql/17/server.key
+    #   chmod 600 /var/lib/postgresql/17/server.crt
+    #   chown postgres:postgres /var/lib/postgresql/17/server.key
+    #   chown postgres:postgres /var/lib/postgresql/17/server.crt
+    #'';
+
+    #requires = [
+    #  "acme-postgres.service"
+    # ];
+
+    #  before = [
+    #    "postgresql.target"
+    #  ];
+    #};
+
+    #security.acme = lib.mkIf config.astahhu.services.postgres.acme.enable {
+    #  acceptTerms = true;
+    #  certs.postgres = {
+    #    email = config.astahhu.services.postgres.acme.email;
+    #    domain = "${lib.strings.toLower config.networking.hostName}.${config.networking.domain}";
+    #    dnsResolver = "134.99.128.5";
+    #    dnsProvider = "cloudflare";
+    #    extraLegoFlags = [
+    #      "-dns.propagation-disable-ans=true"
+    #      "--dns.propagation-rns=true"
+    #    ];
+    #    dnsPropagationCheck = true;
+    #    group = "root";
+    #    environmentFile = config.sops.secrets.cloudflare-dns.path;
+    #  };
+    #};
+
     sops.secrets = lib.mkMerge
-      (lib.map
-        (name: {
-          "postgresql-${name}-pw" = {
-            owner = "postgres";
-          };
-        })
-        (config.astahhu.services.postgres.databases ++ [ "repluser" ])
-      );
+      (
+        (lib.map
+          (name: {
+            "postgresql-${name}-pw" = {
+              owner = "postgres";
+            };
+          })
+          (config.astahhu.services.postgres.databases ++ [ "repluser" ])
+        )
+      ); # ++ [{ cloudflare-dns = { }; }]);
 
     systemd.services.postgresql-setup.script = lib.mkAfter (lib.strings.concatLines
       (lib.map
