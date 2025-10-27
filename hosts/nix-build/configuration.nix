@@ -44,25 +44,28 @@
   sops.secrets.github-token = { };
 
   users.groups.github-runner = { };
-  services.github-runners = {
-    nix-deploy = {
-      enable = true;
-      name = "nix-deploy";
-      tokenFile = config.sops.secrets.github-token.path;
-      url = "https://github.com/astahhu/nixos-config";
-      extraLabels = [ "deploy" ];
-      noDefaultLabels = true;
-      extraPackages = [
-        pkgs.nix
-        pkgs.deploy-rs
-        pkgs.openssh
-      ];
-      replace = true;
-      serviceOverrides = {
-        BindPaths = "/nix/store /nix/var/nix/db /nix/var/nix/daemon-socket";
-      };
-    };
-  };
+  services.github-runners = lib.mkMerge (lib.map
+    (n:
+      {
+        "nix-deploy-${toString n}" = {
+          enable = true;
+          name = "nix-deploy-${toString n}";
+          tokenFile = config.sops.secrets.github-token.path;
+          url = "https://github.com/astahhu";
+          extraLabels = [ "nix" "deploy" ];
+          noDefaultLabels = true;
+          extraPackages = [
+            pkgs.nix
+            pkgs.deploy-rs
+            pkgs.openssh
+          ];
+          replace = true;
+          serviceOverrides = {
+            BindPaths = "/nix/store /nix/var/nix/db /nix/var/nix/daemon-socket";
+          };
+        };
+      })
+    (lib.range 1 3));
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
