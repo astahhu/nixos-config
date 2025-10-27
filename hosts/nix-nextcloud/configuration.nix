@@ -142,7 +142,7 @@
     ];
 
     services.nextcloud.settings.default_phone_region = "DE";
-    services.nextcloud.settings.appstoreenabled = true;
+    services.nextcloud.appstoreEnable = true;
     services.nextcloud.maxUploadSize = "8G";
 
     users.users.nextcloud.extraGroups = [ "docker" ];
