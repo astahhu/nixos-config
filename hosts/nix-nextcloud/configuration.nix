@@ -60,8 +60,49 @@
     format = "binary";
   };
 
+  services.coturn = {
+    enable = true;
+    no-cli = true;
+    no-tcp-relay = true;
+    min-port = 49000;
+    max-port = 50000;
+    use-auth-secret = true;
+    static-auth-secret-file = config.sops.secrets.coturn;
+    extraConfig = ''
+      # for debugging
+      verbose
+      # ban private IP ranges
+      no-multicast-peers
+      denied-peer-ip=0.0.0.0-0.255.255.255
+      denied-peer-ip=10.0.0.0-10.255.255.255
+      denied-peer-ip=100.64.0.0-100.127.255.255
+      denied-peer-ip=127.0.0.0-127.255.255.255
+      denied-peer-ip=169.254.0.0-169.254.255.255
+      denied-peer-ip=172.16.0.0-172.31.255.255
+      denied-peer-ip=192.0.0.0-192.0.0.255
+      denied-peer-ip=192.0.2.0-192.0.2.255
+      denied-peer-ip=192.88.99.0-192.88.99.255
+      denied-peer-ip=192.168.0.0-192.168.255.255
+      denied-peer-ip=198.18.0.0-198.19.255.255
+      denied-peer-ip=198.51.100.0-198.51.100.255
+      denied-peer-ip=203.0.113.0-203.0.113.255
+      denied-peer-ip=240.0.0.0-255.255.255.255
+      denied-peer-ip=::1
+      denied-peer-ip=64:ff9b::-64:ff9b::ffff:ffff
+      denied-peer-ip=::ffff:0.0.0.0-::ffff:255.255.255.255
+      denied-peer-ip=100::-100::ffff:ffff:ffff:ffff
+      denied-peer-ip=2001::-2001:1ff:ffff:ffff:ffff:ffff:ffff:ffff
+      denied-peer-ip=2002::-2002:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+      denied-peer-ip=fc00::-fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+      denied-peer-ip=fe80::-febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+    '';
+  };
+
+
+
   sops.secrets.dockerproxy_env = { };
   sops.secrets.whiteboard_jwt = { };
+  sops.secrets.coturn = { };
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -134,125 +175,137 @@
       hostPath = "/run/docker.sock";
       mountPoint = "/run/docker.sock";
     };
-  };
+    config = { ... }: {
+      environment.systemPackages = [
+        pkgs.docker
+      ];
 
-  nix-tun.utils.containers.nextcloud.config = { ... }: {
-    environment.systemPackages = [
-      pkgs.docker
+      services.printing = {
+        enable = true;
+      };
+
+      hardware.printers.ensurePrinters = [
+        {
+          name = "AStA-Drucker";
+          location = "Druckerraum";
+          deviceUri = "ipp://134.99.154.211";
+          model = "everywhere";
+        }
+      ];
+
+      services.nextcloud.settings.default_phone_region = "DE";
+      services.nextcloud.appstoreEnable = true;
+      services.nextcloud.maxUploadSize = "8G";
+
+      users.users.nextcloud.extraGroups = [ "docker" ];
+    };
+
+
+    virtualisation.docker = {
+      enable = true;
+      autoPrune.enable = true;
+    };
+
+    networking.firewall.trustedInterfaces = [ "ve-nextcloud" ];
+
+
+    # Enable the OpenSSH daemon.
+    services.openssh.enable = true;
+    security.pam.sshAgentAuth.enable = true;
+    # Open ports in the firewall.
+    networking.firewall.allowedTCPPorts = [ 80 443 3478 ];
+    networking.firewall.allowedUDPPorts = [ 443 3478 ];
+    networking.firewall.allowedUDPPortRanges = [{ from = 49000; to = 50000; }];
+    # Or disable the firewall altogether.
+    networking.firewall.enable = true;
+
+    # This option defines the first version of NixOS you have installed on this particular machine,
+    # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
+    #
+    # Most users should NEVER change this value after the initial install, for any reason,
+    # even if you've upgraded your system to a new NixOS release.
+    #
+    # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
+    # so changing it will NOT upgrade your system.
+    #
+    # This value being lower than the current NixOS release does NOT mean your system is
+    # out of date, out of support, or vulnerable.
+    #
+    # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
+    # and migrated your data accordingly.
+    #
+    # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+    system.stateVersion = "23.11"; # Did you read the comment?
+
+    security.pki.certificates = [
+      ''
+        -----BEGIN CERTIFICATE-----
+        MIIDFTCCAf2gAwIBAgIUOHwthMO3Dw04xRtE3/P9tzcGAc4wDQYJKoZIhvcNAQEL
+        BQAwGTEXMBUGA1UEAwwOMTkyLjE2OC4xMDAuMTAwIBcNMjQxMDE3MTM1NTU3WhgP
+        MzAyNDAyMTgxMzU1NTdaMBkxFzAVBgNVBAMMDjE5Mi4xNjguMTAwLjEwMIIBIjAN
+        BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAobtxgNLyzT1KjhVNmAJil0b4AxhV
+        xfRO5/QvF+ehykVKdB4C8yNv2PSjYA6JDflmYq0if0DoA0fW4znGem4/2wbRL+B/
+        dGiGUTvWnVv6sdPy7kArS8Q+z6b4R56VnDYvqN6N6ADLnCChur0rYu3F0H+vezZx
+        JRRg44Lzpw6KesyrE2YSd8vsdNjMJgu+35RZm91pZxrVzeQyHongTdQRtuabUq55
+        FyXvflbeAwpRTKAXGMxBXsZ7NgsCVm5EX9O0M0tw2Vy3TVAvh4rFAN89t7kIbsOx
+        EAMcMlmTqPr8rvoshh4w0mTP45ON489799/o5vLCLLYHoNkiwZDNbx48twIDAQAB
+        o1MwUTAdBgNVHQ4EFgQU4tteG/vGAU1gbQ6s5O31sRKyQzkwHwYDVR0jBBgwFoAU
+        4tteG/vGAU1gbQ6s5O31sRKyQzkwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0B
+        AQsFAAOCAQEADz1sh6ipSNfbd3rE7hPRG1TN03Atmlq8yJ3uTsAGB7BDmPlad4fq
+        Ak+MrHuqDu0+iYEaOk/qcr0kP6ozBoorahA5GXO+qV1I9YlZH5dccC9RnffyksKT
+        T2epsJL91b9rh5bhUh4pBnQsRdpX8A7479DHNUP0SNYtrCW/vaeJuVbh9zU/VrLQ
+        vZ6Nk04h4X00M10C1v0hCFRJqKPXpUW96SJAmrM7F5TAiMFeO6zeGCoXWpaq7M5X
+        HwORa5h8YfdSozsB2XCDVd/0euDa5BOCBM5O431PhwL3peAwEeaGlXEk1XXnLDQ5
+        ylufmUaJuk6YltROWkNq/821NljZR5j4Nw==
+        -----END CERTIFICATE-----
+      ''
+      ''
+              -----BEGIN CERTIFICATE-----
+        MIIEOTCCAyGgAwIBAgIUOHFmcxpzp3l8pf+DtUFNALkgzEcwDQYJKoZIhvcNAQEL
+        BQAwgaoxCzAJBgNVBAYTAkRFMRwwGgYDVQQIDBNOb3JkcmhlaW4tV2VzdGZhbGVu
+        MRYwFAYDVQQHDA1Ew4PCvHNzZWxkb3JmMRUwEwYDVQQKDAxBU3RBIGRlciBISFUx
+        DzANBgNVBAsMBklULVJlZjEfMB0GA1UEAwwWc2FtYmEtZGMuYWQuYXN0YWhodS5k
+        ZTEcMBoGCSqGSIb3DQEJARYNYXN0YWl0QGhodS5kZTAgFw0yMzEyMzAwMzQzMTJa
+        GA8zMDA0MDMwMjAzNDMxMlowgaoxCzAJBgNVBAYTAkRFMRwwGgYDVQQIDBNOb3Jk
+        cmhlaW4tV2VzdGZhbGVuMRYwFAYDVQQHDA1Ew4PCvHNzZWxkb3JmMRUwEwYDVQQK
+        DAxBU3RBIGRlciBISFUxDzANBgNVBAsMBklULVJlZjEfMB0GA1UEAwwWc2FtYmEt
+        ZGMuYWQuYXN0YWhodS5kZTEcMBoGCSqGSIb3DQEJARYNYXN0YWl0QGhodS5kZTCC
+        ASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPNLvpIkY1VkgjxubzSy8f75
+        SqG/Ei58X77zhdaONxv2H2OudINXUMIqFGGNcKfkPo+cFZZJZY7Yog4JFaayCNdf
+        4QZbPFV8X7af+e651Biuofsc95rR84UwROoJAXjpR0a+F57l+3JytF3mEDFSFmMy
+        f+A5Mj2F4hCkXt3pGBsjY6SszYhQYkQTxa7oGobXTPDQcNm2QUHkkTHTj9jOKyAT
+        k68sP+gY7fhA0TdTEQl2i3GkXQaNeoDRXOqY1boPUD/aS5Iq1kaCrXM3/pBOyLGh
+        jgMS5lu9FvB7VehQ+a2CTT2lsH+tLQ7Tee9xRZKAzRw4jEQKEMQ52HYNyJpXbLkC
+        AwEAAaNTMFEwHQYDVR0OBBYEFG6lrXrIeQDLpNtAbaTtQq38lerFMB8GA1UdIwQY
+        MBaAFG6lrXrIeQDLpNtAbaTtQq38lerFMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZI
+        hvcNAQELBQADggEBAL/IO+ME0v49YWOgbhE4XxmJk8l1kFI9yi7cjChLdAkU9Koa
+        AWuBbwMtS1wHq9jIzr5Hbon13AOOglf5TV8wo06kmN2qorkuerGuh5m5sZoP1mWv
+        cng/Kl0bRKL/RFZRhqqF3CwXm2k6+zbkeUTUbTHuqkKLgyDesVjaJC0XxyMlxR0N
+        25U3rgEKFb2Rc4vYE3Emd6nSsrcCubUoDI/iyYsbTClct0kqsnsNeV3hOlXqCQ6f
+        vlfyEtlpOpUU60aOnxUwT4yqchhe6cg53JFPLRAxjDUW7yYJR1WXP+SPB1+wnFg2
+        LiJjkm+8DliLET2JyhFqWV0n4ljhkwUNBeCvTGA=
+        -----END CERTIFICATE-----
+      ''
+      ''
+        -----BEGIN CERTIFICATE-----
+        MIIDFTCCAf2gAwIBAgIUOHwthMO3Dw04xRtE3/P9tzcGAc4wDQYJKoZIhvcNAQEL
+        BQAwGTEXMBUGA1UEAwwOMTkyLjE2OC4xMDAuMTAwIBcNMjQxMDE3MTM1NTU3WhgP
+        MzAyNDAyMTgxMzU1NTdaMBkxFzAVBgNVBAMMDjE5Mi4xNjguMTAwLjEwMIIBIjAN
+        BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAobtxgNLyzT1KjhVNmAJil0b4AxhV
+        xfRO5/QvF+ehykVKdB4C8yNv2PSjYA6JDflmYq0if0DoA0fW4znGem4/2wbRL+B/
+        dGiGUTvWnVv6sdPy7kArS8Q+z6b4R56VnDYvqN6N6ADLnCChur0rYu3F0H+vezZx
+        JRRg44Lzpw6KesyrE2YSd8vsdNjMJgu+35RZm91pZxrVzeQyHongTdQRtuabUq55
+        FyXvflbeAwpRTKAXGMxBXsZ7NgsCVm5EX9O0M0tw2Vy3TVAvh4rFAN89t7kIbsOx
+        EAMcMlmTqPr8rvoshh4w0mTP45ON489799/o5vLCLLYHoNkiwZDNbx48twIDAQAB
+        o1MwUTAdBgNVHQ4EFgQU4tteG/vGAU1gbQ6s5O31sRKyQzkwHwYDVR0jBBgwFoAU
+        4tteG/vGAU1gbQ6s5O31sRKyQzkwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0B
+        AQsFAAOCAQEADz1sh6ipSNfbd3rE7hPRG1TN03Atmlq8yJ3uTsAGB7BDmPlad4fq
+        Ak+MrHuqDu0+iYEaOk/qcr0kP6ozBoorahA5GXO+qV1I9YlZH5dccC9RnffyksKT
+        T2epsJL91b9rh5bhUh4pBnQsRdpX8A7479DHNUP0SNYtrCW/vaeJuVbh9zU/VrLQ
+        vZ6Nk04h4X00M10C1v0hCFRJqKPXpUW96SJAmrM7F5TAiMFeO6zeGCoXWpaq7M5X
+        HwORa5h8YfdSozsB2XCDVd/0euDa5BOCBM5O431PhwL3peAwEeaGlXEk1XXnLDQ5
+        ylufmUaJuk6YltROWkNq/821NljZR5j4Nw==
+        -----END CERTIFICATE-----
+      ''
     ];
-
-    services.nextcloud.settings.default_phone_region = "DE";
-    services.nextcloud.appstoreEnable = true;
-    services.nextcloud.maxUploadSize = "8G";
-
-    users.users.nextcloud.extraGroups = [ "docker" ];
-  };
-
-
-  virtualisation.docker = {
-    enable = true;
-    autoPrune.enable = true;
-  };
-
-  networking.firewall.trustedInterfaces = [ "ve-nextcloud" ];
-
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  security.pam.sshAgentAuth.enable = true;
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = true;
-
-  # This option defines the first version of NixOS you have installed on this particular machine,
-  # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
-  #
-  # Most users should NEVER change this value after the initial install, for any reason,
-  # even if you've upgraded your system to a new NixOS release.
-  #
-  # This value does NOT affect the Nixpkgs version your packages and OS are pulled from,
-  # so changing it will NOT upgrade your system.
-  #
-  # This value being lower than the current NixOS release does NOT mean your system is
-  # out of date, out of support, or vulnerable.
-  #
-  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
-  # and migrated your data accordingly.
-  #
-  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "23.11"; # Did you read the comment?
-
-  security.pki.certificates = [
-    ''
-      -----BEGIN CERTIFICATE-----
-      MIIDFTCCAf2gAwIBAgIUOHwthMO3Dw04xRtE3/P9tzcGAc4wDQYJKoZIhvcNAQEL
-      BQAwGTEXMBUGA1UEAwwOMTkyLjE2OC4xMDAuMTAwIBcNMjQxMDE3MTM1NTU3WhgP
-      MzAyNDAyMTgxMzU1NTdaMBkxFzAVBgNVBAMMDjE5Mi4xNjguMTAwLjEwMIIBIjAN
-      BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAobtxgNLyzT1KjhVNmAJil0b4AxhV
-      xfRO5/QvF+ehykVKdB4C8yNv2PSjYA6JDflmYq0if0DoA0fW4znGem4/2wbRL+B/
-      dGiGUTvWnVv6sdPy7kArS8Q+z6b4R56VnDYvqN6N6ADLnCChur0rYu3F0H+vezZx
-      JRRg44Lzpw6KesyrE2YSd8vsdNjMJgu+35RZm91pZxrVzeQyHongTdQRtuabUq55
-      FyXvflbeAwpRTKAXGMxBXsZ7NgsCVm5EX9O0M0tw2Vy3TVAvh4rFAN89t7kIbsOx
-      EAMcMlmTqPr8rvoshh4w0mTP45ON489799/o5vLCLLYHoNkiwZDNbx48twIDAQAB
-      o1MwUTAdBgNVHQ4EFgQU4tteG/vGAU1gbQ6s5O31sRKyQzkwHwYDVR0jBBgwFoAU
-      4tteG/vGAU1gbQ6s5O31sRKyQzkwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0B
-      AQsFAAOCAQEADz1sh6ipSNfbd3rE7hPRG1TN03Atmlq8yJ3uTsAGB7BDmPlad4fq
-      Ak+MrHuqDu0+iYEaOk/qcr0kP6ozBoorahA5GXO+qV1I9YlZH5dccC9RnffyksKT
-      T2epsJL91b9rh5bhUh4pBnQsRdpX8A7479DHNUP0SNYtrCW/vaeJuVbh9zU/VrLQ
-      vZ6Nk04h4X00M10C1v0hCFRJqKPXpUW96SJAmrM7F5TAiMFeO6zeGCoXWpaq7M5X
-      HwORa5h8YfdSozsB2XCDVd/0euDa5BOCBM5O431PhwL3peAwEeaGlXEk1XXnLDQ5
-      ylufmUaJuk6YltROWkNq/821NljZR5j4Nw==
-      -----END CERTIFICATE-----
-    ''
-    ''
-            -----BEGIN CERTIFICATE-----
-      MIIEOTCCAyGgAwIBAgIUOHFmcxpzp3l8pf+DtUFNALkgzEcwDQYJKoZIhvcNAQEL
-      BQAwgaoxCzAJBgNVBAYTAkRFMRwwGgYDVQQIDBNOb3JkcmhlaW4tV2VzdGZhbGVu
-      MRYwFAYDVQQHDA1Ew4PCvHNzZWxkb3JmMRUwEwYDVQQKDAxBU3RBIGRlciBISFUx
-      DzANBgNVBAsMBklULVJlZjEfMB0GA1UEAwwWc2FtYmEtZGMuYWQuYXN0YWhodS5k
-      ZTEcMBoGCSqGSIb3DQEJARYNYXN0YWl0QGhodS5kZTAgFw0yMzEyMzAwMzQzMTJa
-      GA8zMDA0MDMwMjAzNDMxMlowgaoxCzAJBgNVBAYTAkRFMRwwGgYDVQQIDBNOb3Jk
-      cmhlaW4tV2VzdGZhbGVuMRYwFAYDVQQHDA1Ew4PCvHNzZWxkb3JmMRUwEwYDVQQK
-      DAxBU3RBIGRlciBISFUxDzANBgNVBAsMBklULVJlZjEfMB0GA1UEAwwWc2FtYmEt
-      ZGMuYWQuYXN0YWhodS5kZTEcMBoGCSqGSIb3DQEJARYNYXN0YWl0QGhodS5kZTCC
-      ASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPNLvpIkY1VkgjxubzSy8f75
-      SqG/Ei58X77zhdaONxv2H2OudINXUMIqFGGNcKfkPo+cFZZJZY7Yog4JFaayCNdf
-      4QZbPFV8X7af+e651Biuofsc95rR84UwROoJAXjpR0a+F57l+3JytF3mEDFSFmMy
-      f+A5Mj2F4hCkXt3pGBsjY6SszYhQYkQTxa7oGobXTPDQcNm2QUHkkTHTj9jOKyAT
-      k68sP+gY7fhA0TdTEQl2i3GkXQaNeoDRXOqY1boPUD/aS5Iq1kaCrXM3/pBOyLGh
-      jgMS5lu9FvB7VehQ+a2CTT2lsH+tLQ7Tee9xRZKAzRw4jEQKEMQ52HYNyJpXbLkC
-      AwEAAaNTMFEwHQYDVR0OBBYEFG6lrXrIeQDLpNtAbaTtQq38lerFMB8GA1UdIwQY
-      MBaAFG6lrXrIeQDLpNtAbaTtQq38lerFMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZI
-      hvcNAQELBQADggEBAL/IO+ME0v49YWOgbhE4XxmJk8l1kFI9yi7cjChLdAkU9Koa
-      AWuBbwMtS1wHq9jIzr5Hbon13AOOglf5TV8wo06kmN2qorkuerGuh5m5sZoP1mWv
-      cng/Kl0bRKL/RFZRhqqF3CwXm2k6+zbkeUTUbTHuqkKLgyDesVjaJC0XxyMlxR0N
-      25U3rgEKFb2Rc4vYE3Emd6nSsrcCubUoDI/iyYsbTClct0kqsnsNeV3hOlXqCQ6f
-      vlfyEtlpOpUU60aOnxUwT4yqchhe6cg53JFPLRAxjDUW7yYJR1WXP+SPB1+wnFg2
-      LiJjkm+8DliLET2JyhFqWV0n4ljhkwUNBeCvTGA=
-      -----END CERTIFICATE-----
-    ''
-    ''
-      -----BEGIN CERTIFICATE-----
-      MIIDFTCCAf2gAwIBAgIUOHwthMO3Dw04xRtE3/P9tzcGAc4wDQYJKoZIhvcNAQEL
-      BQAwGTEXMBUGA1UEAwwOMTkyLjE2OC4xMDAuMTAwIBcNMjQxMDE3MTM1NTU3WhgP
-      MzAyNDAyMTgxMzU1NTdaMBkxFzAVBgNVBAMMDjE5Mi4xNjguMTAwLjEwMIIBIjAN
-      BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAobtxgNLyzT1KjhVNmAJil0b4AxhV
-      xfRO5/QvF+ehykVKdB4C8yNv2PSjYA6JDflmYq0if0DoA0fW4znGem4/2wbRL+B/
-      dGiGUTvWnVv6sdPy7kArS8Q+z6b4R56VnDYvqN6N6ADLnCChur0rYu3F0H+vezZx
-      JRRg44Lzpw6KesyrE2YSd8vsdNjMJgu+35RZm91pZxrVzeQyHongTdQRtuabUq55
-      FyXvflbeAwpRTKAXGMxBXsZ7NgsCVm5EX9O0M0tw2Vy3TVAvh4rFAN89t7kIbsOx
-      EAMcMlmTqPr8rvoshh4w0mTP45ON489799/o5vLCLLYHoNkiwZDNbx48twIDAQAB
-      o1MwUTAdBgNVHQ4EFgQU4tteG/vGAU1gbQ6s5O31sRKyQzkwHwYDVR0jBBgwFoAU
-      4tteG/vGAU1gbQ6s5O31sRKyQzkwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0B
-      AQsFAAOCAQEADz1sh6ipSNfbd3rE7hPRG1TN03Atmlq8yJ3uTsAGB7BDmPlad4fq
-      Ak+MrHuqDu0+iYEaOk/qcr0kP6ozBoorahA5GXO+qV1I9YlZH5dccC9RnffyksKT
-      T2epsJL91b9rh5bhUh4pBnQsRdpX8A7479DHNUP0SNYtrCW/vaeJuVbh9zU/VrLQ
-      vZ6Nk04h4X00M10C1v0hCFRJqKPXpUW96SJAmrM7F5TAiMFeO6zeGCoXWpaq7M5X
-      HwORa5h8YfdSozsB2XCDVd/0euDa5BOCBM5O431PhwL3peAwEeaGlXEk1XXnLDQ5
-      ylufmUaJuk6YltROWkNq/821NljZR5j4Nw==
-      -----END CERTIFICATE-----
-    ''
-  ];
-}
+  }
