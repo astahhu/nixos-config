@@ -67,7 +67,7 @@
     min-port = 49000;
     max-port = 50000;
     use-auth-secret = true;
-    static-auth-secret-file = config.sops.secrets.coturn;
+    static-auth-secret-file = config.sops.secrets.coturn.path;
     extraConfig = ''
       # for debugging
       verbose
