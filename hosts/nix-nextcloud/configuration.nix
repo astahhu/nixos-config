@@ -60,8 +60,49 @@
     format = "binary";
   };
 
+  services.coturn = {
+    enable = true;
+    no-cli = true;
+    no-tcp-relay = true;
+    min-port = 49000;
+    max-port = 50000;
+    use-auth-secret = true;
+    static-auth-secret-file = config.sops.secrets.coturn.path;
+    extraConfig = ''
+      # for debugging
+      verbose
+      # ban private IP ranges
+      no-multicast-peers
+      denied-peer-ip=0.0.0.0-0.255.255.255
+      denied-peer-ip=10.0.0.0-10.255.255.255
+      denied-peer-ip=100.64.0.0-100.127.255.255
+      denied-peer-ip=127.0.0.0-127.255.255.255
+      denied-peer-ip=169.254.0.0-169.254.255.255
+      denied-peer-ip=172.16.0.0-172.31.255.255
+      denied-peer-ip=192.0.0.0-192.0.0.255
+      denied-peer-ip=192.0.2.0-192.0.2.255
+      denied-peer-ip=192.88.99.0-192.88.99.255
+      denied-peer-ip=192.168.0.0-192.168.255.255
+      denied-peer-ip=198.18.0.0-198.19.255.255
+      denied-peer-ip=198.51.100.0-198.51.100.255
+      denied-peer-ip=203.0.113.0-203.0.113.255
+      denied-peer-ip=240.0.0.0-255.255.255.255
+      denied-peer-ip=::1
+      denied-peer-ip=64:ff9b::-64:ff9b::ffff:ffff
+      denied-peer-ip=::ffff:0.0.0.0-::ffff:255.255.255.255
+      denied-peer-ip=100::-100::ffff:ffff:ffff:ffff
+      denied-peer-ip=2001::-2001:1ff:ffff:ffff:ffff:ffff:ffff:ffff
+      denied-peer-ip=2002::-2002:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+      denied-peer-ip=fc00::-fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+      denied-peer-ip=fe80::-febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+    '';
+  };
+
+
+
   sops.secrets.dockerproxy_env = { };
   sops.secrets.whiteboard_jwt = { };
+  sops.secrets.coturn = { };
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -134,18 +175,30 @@
       hostPath = "/run/docker.sock";
       mountPoint = "/run/docker.sock";
     };
-  };
+    config = { ... }: {
+      environment.systemPackages = [
+        pkgs.docker
+      ];
 
-  nix-tun.utils.containers.nextcloud.config = { ... }: {
-    environment.systemPackages = [
-      pkgs.docker
-    ];
+      services.printing = {
+        enable = true;
+      };
 
-    services.nextcloud.settings.default_phone_region = "DE";
-    services.nextcloud.appstoreEnable = true;
-    services.nextcloud.maxUploadSize = "8G";
+      hardware.printers.ensurePrinters = [
+        {
+          name = "AStA-Drucker";
+          location = "Druckerraum";
+          deviceUri = "ipp://134.99.154.211";
+          model = "everywhere";
+        }
+      ];
 
-    users.users.nextcloud.extraGroups = [ "docker" ];
+      services.nextcloud.settings.default_phone_region = "DE";
+      services.nextcloud.appstoreEnable = true;
+      services.nextcloud.maxUploadSize = "8G";
+
+      users.users.nextcloud.extraGroups = [ "docker" ];
+    };
   };
 
 
@@ -161,8 +214,9 @@
   services.openssh.enable = true;
   security.pam.sshAgentAuth.enable = true;
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 80 443 3478 ];
+  networking.firewall.allowedUDPPorts = [ 443 3478 ];
+  networking.firewall.allowedUDPPortRanges = [{ from = 49000; to = 50000; }];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
 
