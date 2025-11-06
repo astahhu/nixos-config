@@ -191,7 +191,7 @@
           name = "AStA-Drucker";
           location = "Druckerraum";
           deviceUri = "ipp://134.99.154.211";
-          model = "everywhere";
+          model = "drv:///cupsfilters.drv/pwgrast.ppd";
           ppdOptions = {
             PageSize = "A4";
           };
