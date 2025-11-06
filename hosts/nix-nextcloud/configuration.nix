@@ -192,6 +192,9 @@
           location = "Druckerraum";
           deviceUri = "ipp://134.99.154.211";
           model = "everywhere";
+          ppdOptions = {
+            PageSize = "A4";
+          };
         }
       ];
 
