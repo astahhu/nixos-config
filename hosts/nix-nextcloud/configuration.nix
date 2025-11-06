@@ -102,7 +102,9 @@
 
   sops.secrets.dockerproxy_env = { };
   sops.secrets.whiteboard_jwt = { };
-  sops.secrets.coturn = { };
+  sops.secrets.coturn = {
+    owner = "turnserver";
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
