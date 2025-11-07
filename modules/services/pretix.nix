@@ -48,7 +48,7 @@
               };
               database = {
                 host = "nix-postgresql.ad.astahhu.de";
-                passfile = config.sops.templates.pretix-pgpass.path;
+                passfile = config.sops.secrets.pretix-pgpass.path;
               };
             };
           };
@@ -58,8 +58,8 @@
     containers."pretix" = {
       bindMounts = {
         "pretix-pgpass" = {
-          hostPath = config.sops.templates.pretix-pgpass.path;
-          mountPoint = config.sops.templates.pretix-pgpass.path;
+          hostPath = config.sops.secrets.pretix-pgpass.path;
+          mountPoint = config.sops.secrets.pretix-pgpass.path;
         };
       };
     };
