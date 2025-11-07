@@ -56,7 +56,6 @@
           };
         };
       };
-    };
 
     containers."pretix" = {
       bindMounts = {
@@ -66,4 +65,5 @@
         };
       };
     };
+   };
 }
