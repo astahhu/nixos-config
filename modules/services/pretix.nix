@@ -32,7 +32,7 @@
         ];
         domains = {
           pretix = {
-            domain = config.astahhu.services.pretix.domain;
+            domain = config.astahhu.services.pretix.hostname;
             port = 80;
           };
         };
@@ -41,11 +41,11 @@
           boot.isContainer = true;
           services.pretix = {
             enable = true;
-            nginx.domain = config.astahhu.services.pretix.domain;
+            nginx.domain = config.astahhu.services.pretix.hostname;
             settings = {
               mail.from = "${config.astahhu.services.pretix.email}";
               pretix = {
-                instance_name = config.astahhu.services.pretix.domain;
+                instance_name = config.astahhu.services.pretix.hostname;
                 url = "https://${config.astahhu.services.pretix.hostname}";
               };
               database = {
