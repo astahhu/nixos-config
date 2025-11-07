@@ -27,6 +27,7 @@
         };
 
       nix-tun.utils.containers.pretix = {
+        volumes = {};
         secrets = [
           "env" #TODO
         ];
