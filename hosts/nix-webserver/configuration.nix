@@ -136,6 +136,12 @@
     domain = "vaultwarden.astahhu.de";
   };
 
+  astahhu.services.pretix = {
+      enable = true;
+      hostname = "pretix.astahhu.de";
+      email = "noreply@asta.hhu.de";
+    };
+
   astahhu.wordpress = {
     enable = true;
     sites = {

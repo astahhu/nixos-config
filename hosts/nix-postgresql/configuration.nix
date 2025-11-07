@@ -75,6 +75,7 @@
       "nextcloud"
       "keycloak"
       "vaultwarden"
+      "pretix"
     ];
   };
 
