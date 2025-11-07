@@ -28,9 +28,6 @@
 
       nix-tun.utils.containers.pretix = {
         volumes = {};
-        secrets = [
-          "env" #TODO
-        ];
         domains = {
           pretix = {
             domain = config.astahhu.services.pretix.hostname;
