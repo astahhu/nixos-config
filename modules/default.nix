@@ -23,6 +23,7 @@
     ./services/vaultwarden.nix
     ./services/postgres.nix
     ./services/ntfy.nix
+    ./services/pretix.nix
     ./development/vm.nix
     ./stylix.nix
   ];
