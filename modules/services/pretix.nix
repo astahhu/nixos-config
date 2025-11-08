@@ -40,7 +40,6 @@
               };
               database = {
                 host = "nix-postgresql.ad.astahhu.de";
-                passfile = config.sops.templates.pretix-pgpass.path;
               };
             };
           };
