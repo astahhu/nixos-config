@@ -13,20 +13,11 @@
 
     config = lib.mkIf config.astahhu.services.pretix.enable {
       nix-tun.services.traefik.services.pretix.router.tls.enable = false;
-
-      sops.secrets.postgresql-pretix-pw = {
-        mode = "600";
-      };
-
-      sops.templates.pretix-pgpass = {
-        mode = "600";
-        uid = config.containers.pretix.config.users.users.pretix.uid;
-        content = ''
-          *:*:pretix:pretix:${config.sops.placeholder.postgresql-pretix-pw}
-          '';
-        };
-
+      
       nix-tun.utils.containers.pretix = {
+        secrets = [
+          "env"
+        ];
         volumes = {};
         domains = {
           pretix = {
@@ -39,6 +30,7 @@
           boot.isContainer = true;
           services.pretix = {
             enable = true;
+            environmentFile = "/secret/env";
             nginx.domain = config.astahhu.services.pretix.hostname;
             settings = {
               mail.from = "${config.astahhu.services.pretix.email}";
@@ -48,20 +40,10 @@
               };
               database = {
                 host = "nix-postgresql.ad.astahhu.de";
-                passfile = config.sops.secrets.pretix-pgpass.path;
               };
             };
           };
         };
       };
-
-    containers."pretix" = {
-      bindMounts = {
-        "pretix-pgpass" = {
-          hostPath = config.sops.secrets.pretix-pgpass.path;
-          mountPoint = config.sops.secrets.pretix-pgpass.path;
-        };
-      };
-    };
    };
 }
