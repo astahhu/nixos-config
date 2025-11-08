@@ -30,7 +30,7 @@
           boot.isContainer = true;
           services.pretix = {
             enable = true;
-            environmentFile = "secret/env";
+            environmentFile = "/secret/env";
             nginx.domain = config.astahhu.services.pretix.hostname;
             settings = {
               mail.from = "${config.astahhu.services.pretix.email}";
