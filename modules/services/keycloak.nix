@@ -34,7 +34,7 @@
           enable = true;
           settings = {
             http-host = "0.0.0.0";
-            http-port = "80";
+            http-port = 80;
             http-enabled = true;
             https-enabled = false;
             hostname = config.astahhu.services.keycloak.domain;
