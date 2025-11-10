@@ -193,8 +193,8 @@
       fspowi = {
         hostname = "fspowi.astahhu.de";
       };
-      koma26 = {
-        hostname = "koma26.astahhu.de";
+      koma95 = {
+        hostname = "koma95.astahhu.de";
       };
     };
   };
