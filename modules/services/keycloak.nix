@@ -37,7 +37,8 @@
             http-port = 80;
             http-enabled = true;
             https-enabled = false;
-            hostname = "https://" + config.astahhu.services.keycloak.domain;
+            proxy-headers = true;
+            hostname = config.astahhu.services.keycloak.domain;
           };
           initialAdminPassword = "uekoajaeRae0eegh0phee9phohx6ahp8aangai8sae1Thun2xai5Hah3vee7Ooje";
           database = {
