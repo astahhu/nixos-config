@@ -22,6 +22,8 @@
         prometheus-host = "prometheus.astahhu.de";
       };
 
+      services.dbus.implementation = "broker";
+
 
       services.openssh.enable = true;
       security.pam.sshAgentAuth.enable = true;
@@ -38,7 +40,7 @@
       ];
       users.users = {
 
-        btrbk = lib.mkIf config.astahhu.common.uses_btrfs {};
+        btrbk = lib.mkIf config.astahhu.common.uses_btrfs { };
         root.openssh.authorizedKeys.keys = [
           # Backup Server Key
           (lib.mkIf config.astahhu.common.uses_btrfs "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKPGx5yVTgRy/oXLuGvsK9PTr0hHbUCLz/+cKukb+L5K asta-backup")
