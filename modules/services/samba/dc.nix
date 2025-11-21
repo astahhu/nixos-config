@@ -227,13 +227,12 @@
             none;
           };
           dnssec-validation ${cfg.dc.dns.dnssec-validation};
-          tkey-gssapi-keytab "/var/lib/samba/bind-dns/dns.keytab";
           minimal-responses yes;
         '';
 
-        #extraConfig = ''
-        #  include "/var/lib/samba/bind-dns/named.conf";
-        #'';
+        extraConfig = ''
+          include "/var/lib/samba/bind-dns/named.conf";
+        '';
       };
 
       systemd.services.bind = {
