@@ -118,41 +118,79 @@
 
       systemd.services.kea-dhcp4-server.serviceConfig.DynamicUser = lib.mkForce false;
 
+      sops.secrets.dhcpduser-keytab = {
+        format = "binary";
+        sopsFile = ../../../secrets/nix-samba-dc/cloudflare-dns;
+        owner = "kea";
+        mode = "400";
+      };
       services.kea = lib.mkIf cfg.dc.dhcp.enable {
         # DDNS via DHCP, with kerberos Authentication
         # Following the example at: https://kea.readthedocs.io/en/kea-2.7.5/arm/integrations.html#gss-tsig
-        #  dhcp-ddns = {
-        #    enable = false;
-        #    # IP + Port for NameChange Requests 
-        #    ip-address = "127.0.0.1";
-        #    port = "53001";
-        #    forward-ddns = {
-        #      ddns-domains = [
-        #        {
-        #          name = cfg.domain;
-        #          comment = "DDNS for ${cfg.domain}";
-        #          dns-servers = [
-        #            {
-        #              ip-address = "127.0.0.1";
-        #            }
-        #          ];
-        #        }
-        #      ];
-        #    };
+        dhcp-ddns = {
+          enable = true;
+          settings = {
+            # IP + Port for NameChange Requests 
+            ip-address = "127.0.0.1";
+            port = "53001";
+            forward-ddns = {
+              ddns-domains = [
+                {
+                  name = cfg.domain;
+                  comment = "DDNS for ${cfg.domain}";
+                  dns-servers = [
+                    {
+                      ip-address = "127.0.0.1";
+                    }
+                  ];
+                }
+              ];
+            };
 
-        #   reverse-ddns = {
-        #    ddns-domains = [
-        #     {
-        #      name = "154.99.134.in-addr.arpa";
-        #     dns-servers = [
-        #      {
-        #        ip-address = "127.0.0.1";
-        #      }
-        #    ];
-        #  }
-        #];
-        #};
-        #};
+            reverse-ddns = {
+              ddns-domains = [
+                {
+                  name = "154.99.134.in-addr.arpa";
+                  dns-servers = [
+                    {
+                      ip-address = "127.0.0.1";
+                    }
+                  ];
+                }
+              ];
+            };
+
+            hooks-libraries = [
+
+              {
+
+                library = "/lib/libddns_gss_tsig.so";
+
+                parameters = {
+
+                  server-principal = "dhcpduser@ad.astahhu.de";
+                  client-principal = "dhcpduser@ad.astahhu.de";
+                  client-keytab = "FILE:${config.sops.secrets.dhcpduser-keytab.path}"; # toplevel only
+                  credentials-cache = "FILE:/etc/ccache"; # toplevel only
+                  gss-replay-flag = true; # GSS anti replay service
+                  gss-sequence-flag = false; #no GSS sequence service
+                  tkey-lifetime = 3600; # 1 hour
+                  rekey-interval = 2700; # 45 minutes
+                  retry-interval = 120; # 2 minutes
+                  tkey-protocol = "TCP";
+                  fallback = false;
+                  servers = [
+                    {
+                      id = "localhost";
+                      ip-address = "127.0.0.1";
+                      port = 53;
+                    }
+                  ];
+                };
+              }
+            ];
+          };
+        };
 
         dhcp4 = {
           enable = true;
