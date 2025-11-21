@@ -120,7 +120,7 @@
 
       sops.secrets.dhcpduser-keytab = lib.mkIf cfg.dc.dhcp.enable {
         format = "binary";
-        sopsFile = ../../../secrets/nix-samba-dc/kea-key;
+        sopsFile = ../../../secrets/nix-samba-dc/dhcpduser.keytab;
         owner = "kea";
         mode = "400";
       };
