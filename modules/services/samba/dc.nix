@@ -128,7 +128,7 @@
         # DDNS via DHCP, with kerberos Authentication
         # Following the example at: https://kea.readthedocs.io/en/kea-2.7.5/arm/integrations.html#gss-tsig
         dhcp-ddns = {
-          enable = false;
+          enable = true;
           settings = {
             # IP + Port for NameChange Requests 
             ip-address = "127.0.0.1";
