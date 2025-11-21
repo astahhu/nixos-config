@@ -231,9 +231,9 @@
           minimal-responses yes;
         '';
 
-        extraConfig = ''
-          include "/var/lib/samba/bind-dns/named.conf";
-        '';
+        #extraConfig = ''
+        #  include "/var/lib/samba/bind-dns/named.conf";
+        #'';
       };
 
       systemd.services.bind = {
