@@ -162,7 +162,7 @@
 
             hooks-libraries = [
               {
-                library = "${pkgs.kea}/lib/hooks/libddns_gss_tsig.so";
+                library = "${pkgs.kea}/lib/kea/hooks/libddns_gss_tsig.so";
                 parameters = {
                   server-principal = "dhcpduser@ad.astahhu.de";
                   client-principal = "dhcpduser@ad.astahhu.de";
