@@ -118,7 +118,7 @@
 
       systemd.services.kea-dhcp4-server.serviceConfig.DynamicUser = lib.mkForce false;
 
-      sops.secrets.dhcpduser-keytab = {
+      sops.secrets.dhcpduser-keytab = lib.mkIf cfg.dc.dhcp.enable {
         format = "binary";
         sopsFile = ../../../secrets/nix-samba-dc/cloudflare-dns;
         owner = "kea";
@@ -132,7 +132,7 @@
           settings = {
             # IP + Port for NameChange Requests 
             ip-address = "127.0.0.1";
-            port = "53001";
+            port = 53001;
             forward-ddns = {
               ddns-domains = [
                 {
@@ -161,13 +161,9 @@
             };
 
             hooks-libraries = [
-
               {
-
-                library = "/lib/libddns_gss_tsig.so";
-
+                library = "${pkgs.kea}/lib/libddns_gss_tsig.so";
                 parameters = {
-
                   server-principal = "dhcpduser@ad.astahhu.de";
                   client-principal = "dhcpduser@ad.astahhu.de";
                   client-keytab = "FILE:${config.sops.secrets.dhcpduser-keytab.path}"; # toplevel only
@@ -198,6 +194,17 @@
             valid-lifetime = 4000;
             renew-timer = 1000;
             rebind-timer = 2000;
+
+            dhcp-ddns = {
+              "enable-updates" = true;
+              "server-ip" = "127.0.0.1";
+              "server-port" = 53001;
+              "sender-ip" = "";
+              "sender-port" = 0;
+              "max-queue-size" = 1024;
+              "ncr-protocol" = "UDP";
+              "ncr-format" = "JSON";
+            };
 
             interfaces-config = {
               interfaces = [
