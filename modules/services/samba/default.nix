@@ -47,7 +47,7 @@
     in lib.mkIf cfg.enable {
       nixpkgs.overlays = [
         (final: prev: {
-          samba4Full = prev.samba4Full.override {
+          samba4Full = prev.samba4Full // {
             pythonPath = prev.pythonPath ++ [
               prev.python3Packages.cryptography
             ];
