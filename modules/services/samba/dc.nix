@@ -120,7 +120,7 @@
 
       sops.secrets.dhcpduser-keytab = lib.mkIf cfg.dc.dhcp.enable {
         format = "binary";
-        sopsFile = ../../../secrets/nix-samba-dc/cloudflare-dns;
+        sopsFile = ../../../secrets/nix-samba-dc/kea-key;
         owner = "kea";
         mode = "400";
       };
@@ -164,8 +164,8 @@
               {
                 library = "${pkgs.kea}/lib/kea/hooks/libddns_gss_tsig.so";
                 parameters = {
-                  server-principal = "dhcpduser@ad.astahhu.de";
-                  client-principal = "dhcpduser@ad.astahhu.de";
+                  server-principal = "dhcpduser@AD.ASTAHHU.DE";
+                  client-principal = "dhcpduser@AD.ASTAHHU.DE";
                   client-keytab = "FILE:${config.sops.secrets.dhcpduser-keytab.path}"; # toplevel only
                   credentials-cache = "FILE:/etc/ccache"; # toplevel only
                   gss-replay-flag = true; # GSS anti replay service
