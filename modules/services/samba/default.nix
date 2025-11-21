@@ -48,7 +48,7 @@
       nixpkgs.overlays = [
         (final: prev: {
           samba4Full = prev.samba4Full.overrideAttrs {
-            pythonPath = prev.pythonPath ++ [
+            pythonPath = prev.samba4Full.pythonPath ++ [
               prev.python3Packages.cryptography
             ];
           };
