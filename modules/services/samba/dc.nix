@@ -167,7 +167,6 @@
                   server-principal = "dhcpduser@AD.ASTAHHU.DE";
                   client-principal = "dhcpduser@AD.ASTAHHU.DE";
                   client-keytab = "FILE:${config.sops.secrets.dhcpduser-keytab.path}"; # toplevel only
-                  credentials-cache = "FILE:/run/kea/ccache"; # toplevel only
                   gss-replay-flag = true; # GSS anti replay service
                   gss-sequence-flag = false; #no GSS sequence service
                   tkey-lifetime = 3600; # 1 hour
