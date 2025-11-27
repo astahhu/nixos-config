@@ -140,7 +140,7 @@
       enable = true;
       hostname = "pretix.astahhu.de";
       email = "noreply@asta.hhu.de";
-  } with config.services.pretix.package.plugins; [
+      plugins with config.services.pretix.package.plugins; [
         pretix-oppwa
         pretix-pages
         pretix-passbook
@@ -163,6 +163,7 @@
         pretix-dbevent
         pretix-fontpack-free
         ];
+  };
 
   astahhu.wordpress = {
     enable = true;
