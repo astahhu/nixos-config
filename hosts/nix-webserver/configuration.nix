@@ -140,7 +140,7 @@
       enable = true;
       hostname = "pretix.astahhu.de";
       email = "noreply@asta.hhu.de";
-      plugins = {
+      plugins = [
         pretix-oppwa
         pretix-pages
         pretix-passbook
@@ -162,7 +162,7 @@
         pretix-sumup-payment
         pretix-dbevent
         pretix-fontpack-free
-      };
+      ];
     };
 
   astahhu.wordpress = {
