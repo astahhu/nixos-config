@@ -140,6 +140,29 @@
       enable = true;
       hostname = "pretix.astahhu.de";
       email = "noreply@asta.hhu.de";
+      plugins = {
+        pretix-oppwa
+        pretix-pages
+        pretix-passbook
+        pretix-sepadebit
+        pretix-servicefees
+        pretix-sofort
+        pretix-taler
+        pretix-venueless
+        pretix-zugferd
+        pretix-batch-emailer
+        pretix-question-placeholders
+        prtx-faq
+        pretix-limit-phone-country
+        pretix-mandatory-product
+        pretix-manualseats
+        pretix-oidc
+        pretix-automated-orders
+        pretix-roomsharing
+        pretix-sumup-payment
+        pretix-dbevent
+        pretix-fontpack-free
+      };
     };
 
   astahhu.wordpress = {
