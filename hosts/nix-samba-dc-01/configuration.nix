@@ -9,7 +9,7 @@
   };
 
   users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBKrYvYAQb5/k7q2WV67O1rdPYgwCbPIkI3mvAYsV7NE root@nix-samba-dc"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1jXyCyjxfxWT/Dj5QDg+UCBT8LG08oxvszyRR16psg root@nix-samba-dc"
   ];
 
   astahhu.services.samba = {

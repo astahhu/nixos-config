@@ -45,6 +45,15 @@
   config =
     let cfg = config.astahhu.services.samba;
     in lib.mkIf cfg.enable {
+      nixpkgs.overlays = [
+        (final: prev: {
+          samba4Full = prev.samba4Full.overrideAttrs {
+            pythonPath = prev.samba4Full.pythonPath ++ [
+              prev.python3Packages.cryptography
+            ];
+          };
+        })
+      ];
 
       astahhu.services.samba = {
         hostname = lib.mkOptionDefault (lib.strings.toUpper config.networking.hostName);
