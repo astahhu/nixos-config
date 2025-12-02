@@ -44,27 +44,27 @@
             };
           };
           plugins = with config.services.pretix.package.plugins; [
-            pretix-oppwa
-            pretix-pages
-            pretix-passbook
-            pretix-sepadebit
-            pretix-servicefees
-            pretix-sofort
-            pretix-taler
-            pretix-venueless
-            pretix-zugferd
-            pretix-batch-emailer
-            pretix-question-placeholders
+            oppwa
+            pages
+            passbook
+            sepadebit
+            servicefees
+            sofort
+            taler
+            venueless
+            zugferd
+            batch-emailer
+            question-placeholders
             prtx-faq
-            pretix-limit-phone-country
-            pretix-mandatory-product
-            pretix-manualseats
-            pretix-oidc
-            pretix-automated-orders
-            pretix-roomsharing
-            pretix-sumup-payment
-            pretix-dbevent
-            pretix-fontpack-free
+            limit-phone-country
+            mandatory-product
+            manualseats
+            oidc
+            automated-orders
+            roomsharing
+            sumup-payment
+            dbevent
+            fontpack-free
           ];
         };
       };
