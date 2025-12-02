@@ -61,7 +61,7 @@
             #manualseats
             #oidc
             #automated-orders
-            roomsharing
+            #roomsharing
             sumup-payment
             dbevent
             fontpack-free
