@@ -50,7 +50,7 @@
             sepadebit
             servicefees
             #sofort
-            taler
+            #taler
             venueless
             zugferd
             batch-emailer
