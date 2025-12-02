@@ -44,27 +44,15 @@
             };
           };
           plugins = with config.services.pretix.package.plugins; [
-            #oppwa
+            dbvat
+            mollie
             pages
             passbook
+            reluctant-stripe
             sepadebit
             servicefees
-            #sofort
-            #taler
-            #venueless
+            stretchgoals
             zugferd
-            #batch-emailer
-            #question-placeholders
-            #prtx-faq
-            #limit-phone-country
-            #mandatory-product
-            #manualseats
-            #oidc
-            #automated-orders
-            #roomsharing
-            #sumup-payment
-            #dbevent
-            #fontpack-free
           ];
         };
       };
