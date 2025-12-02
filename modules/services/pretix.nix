@@ -51,7 +51,7 @@
             servicefees
             #sofort
             #taler
-            venueless
+            #venueless
             zugferd
             batch-emailer
             question-placeholders
