@@ -54,7 +54,7 @@
             #venueless
             zugferd
             #batch-emailer
-            question-placeholders
+            #question-placeholders
             prtx-faq
             limit-phone-country
             mandatory-product
