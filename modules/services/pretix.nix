@@ -63,7 +63,7 @@
             #automated-orders
             #roomsharing
             #sumup-payment
-            dbevent
+            #dbevent
             fontpack-free
           ];
         };
