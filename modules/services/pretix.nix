@@ -43,6 +43,17 @@
               host = "nix-postgresql.ad.astahhu.de";
             };
           };
+          plugins = with config.services.pretix.package.plugins; [
+            dbvat
+            mollie
+            pages
+            passbook
+            reluctant-stripe
+            sepadebit
+            servicefees
+            stretchgoals
+            zugferd
+          ];
         };
       };
     };

@@ -140,7 +140,7 @@
       enable = true;
       hostname = "pretix.astahhu.de";
       email = "noreply@asta.hhu.de";
-    };
+  };
 
   astahhu.wordpress = {
     enable = true;
