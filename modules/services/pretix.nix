@@ -44,7 +44,7 @@
             };
           };
           plugins = with config.services.pretix.package.plugins; [
-            oppwa
+            #oppwa
             pages
             passbook
             sepadebit
