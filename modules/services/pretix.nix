@@ -49,7 +49,7 @@
             passbook
             sepadebit
             servicefees
-            sofort
+            #sofort
             taler
             venueless
             zugferd
