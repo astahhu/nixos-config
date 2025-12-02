@@ -62,7 +62,7 @@
             #oidc
             #automated-orders
             #roomsharing
-            sumup-payment
+            #sumup-payment
             dbevent
             fontpack-free
           ];
