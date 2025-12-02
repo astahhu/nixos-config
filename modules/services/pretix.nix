@@ -60,7 +60,7 @@
             #mandatory-product
             #manualseats
             #oidc
-            automated-orders
+            #automated-orders
             roomsharing
             sumup-payment
             dbevent
