@@ -55,7 +55,7 @@
             zugferd
             #batch-emailer
             #question-placeholders
-            prtx-faq
+            #prtx-faq
             limit-phone-country
             mandatory-product
             manualseats
