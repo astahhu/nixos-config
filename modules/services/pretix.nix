@@ -64,7 +64,7 @@
             #roomsharing
             #sumup-payment
             #dbevent
-            fontpack-free
+            #fontpack-free
           ];
         };
       };
