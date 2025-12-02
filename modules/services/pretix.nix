@@ -59,7 +59,7 @@
             #limit-phone-country
             #mandatory-product
             #manualseats
-            oidc
+            #oidc
             automated-orders
             roomsharing
             sumup-payment
