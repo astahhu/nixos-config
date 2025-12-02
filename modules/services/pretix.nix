@@ -53,7 +53,7 @@
             #taler
             #venueless
             zugferd
-            batch-emailer
+            #batch-emailer
             question-placeholders
             prtx-faq
             limit-phone-country
