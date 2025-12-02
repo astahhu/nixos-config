@@ -58,7 +58,7 @@
             #prtx-faq
             #limit-phone-country
             #mandatory-product
-            manualseats
+            #manualseats
             oidc
             automated-orders
             roomsharing
