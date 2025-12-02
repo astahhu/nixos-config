@@ -57,7 +57,7 @@
             #question-placeholders
             #prtx-faq
             #limit-phone-country
-            mandatory-product
+            #mandatory-product
             manualseats
             oidc
             automated-orders
