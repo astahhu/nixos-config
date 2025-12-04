@@ -106,15 +106,42 @@
   sops.secrets.grafana-ntfy-pass = { };
   containers.grafana.bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}".mountPoint = config.sops.secrets.grafana-ntfy-pass.path;
 
-  nix-tun.utils.containers.grafana.config = { ... }: {
-    services.grafana-to-ntfy = {
-      enable = true;
-      settings = {
-        ntfyBAuthUser = "grafana";
-        ntfyBAuthPass = config.sops.secrets.grafana-ntfy-pass.path;
-        bauthUser = "grafana";
-        bauthPass = config.sops.secrets.grafana-ntfy-pass.path;
-        ntfyUrl = "https://ntfy.astahhu.de";
+  nix-tun.utils.containers.grafana = {
+    secrets = [
+      "token"
+    ];
+    config = { ... }: {
+      provision.plugins = {
+        apps = [{
+          type = "grafana-synthetic-monitoring-app";
+          name = "grafana-synthetic-monitoring-app";
+          disabled = false;
+          jsonData = {
+            apiHost = "synthetic-monitoring-grpc-eu-west.grafana.net";
+            stackId = 1;
+            logs = {
+              grafanaName = "loki";
+              hostedId = 1;
+            };
+            metrics = {
+              grafanaName = "prometheus";
+              hostedId = 1;
+            };
+          };
+          secureJsonData = {
+            publisherToken = "$__file{/secret/token}";
+          };
+        }];
+      };
+      services.grafana-to-ntfy = {
+        enable = true;
+        settings = {
+          ntfyBAuthUser = "grafana";
+          ntfyBAuthPass = config.sops.secrets.grafana-ntfy-pass.path;
+          bauthUser = "grafana";
+          bauthPass = config.sops.secrets.grafana-ntfy-pass.path;
+          ntfyUrl = "https://ntfy.astahhu.de";
+        };
       };
     };
   };
@@ -137,10 +164,10 @@
   };
 
   astahhu.services.pretix = {
-      enable = true;
-      hostname = "pretix.astahhu.de";
-      email = "noreply@asta.hhu.de";
-    };
+    enable = true;
+    hostname = "pretix.astahhu.de";
+    email = "noreply@asta.hhu.de";
+  };
 
   astahhu.wordpress = {
     enable = true;
