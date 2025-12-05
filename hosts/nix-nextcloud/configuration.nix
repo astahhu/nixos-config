@@ -171,7 +171,7 @@
   };
 
   services.traefik.staticConfigOptions.entryPoints.websecure.forwardedHeaders.trustedIPs = [ "192.168.0.0/16" "172.16.0.0/12" "10.0.0.0/8" "127.0.0.1" ];
-
+  nix-tun.services.coturn.enable = true;
   containers.nextcloud = {
     bindMounts.docker = {
       hostPath = "/run/docker.sock";
