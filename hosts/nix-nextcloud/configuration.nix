@@ -62,9 +62,6 @@
 
   sops.secrets.dockerproxy_env = { };
   sops.secrets.whiteboard_jwt = { };
-  sops.secrets.coturn = {
-    owner = "turnserver";
-  };
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -123,6 +120,7 @@
     traefik = {
       enable_docker = true;
     };
+    coturn.enable = true;
     containers.nextcloud = {
       enable = true;
       hostname = "cloud.astahhu.de";
@@ -131,7 +129,6 @@
   };
 
   services.traefik.staticConfigOptions.entryPoints.websecure.forwardedHeaders.trustedIPs = [ "192.168.0.0/16" "172.16.0.0/12" "10.0.0.0/8" "127.0.0.1" ];
-  nix-tun.services.coturn.enable = true;
 
   containers.nextcloud = {
     bindMounts.docker = {
