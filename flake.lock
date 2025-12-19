@@ -676,11 +676,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766142447,
-        "narHash": "sha256-exGWxWVbzXrLFU+W+CB0nqQRmzvN3LnolaXklsA2tnw=",
+        "lastModified": 1766143378,
+        "narHash": "sha256-ezOvs//fo3NrzB3WPvVAiJW5PQ2DPToGj/DQiHOjl6s=",
         "owner": "nix-tun",
         "repo": "nixos-modules",
-        "rev": "d06474e15dae3883ca91beca25b4ed89441828d4",
+        "rev": "a7fabeb8af8c7b5ca88c4c3429b50997814c5107",
         "type": "github"
       },
       "original": {
