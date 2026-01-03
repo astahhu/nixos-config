@@ -2,7 +2,6 @@ keys:
   ## Users
   - &florian-yubikey CFAA36038DF83F58F38090E2358EE66F828961B3
   - &florian_other_yubikey 6CC9DAFA22A1DB345F18A7AD5437D56471EC435B
-  - &sotiris-primary-yubikey 7FBACEF23172884FF4967ABCF9E644AF94BE1EAE
   - &sotiris-backup-yubikey  98FD09AC654B27772A03E6C7C0DC5C74462B385B
   - &sotiris-c-yubikey       93E75346EC76A38F684EFA248125744461D04398
   - &jonas-laptop 8F53896C4F610ABFDC99F23A63DC8DFEED62EE18
@@ -28,7 +27,6 @@ creation_rules:
         - *florian-yubikey
         - *florian_other_yubikey
         - *nix-backup
-        - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
         - *sotiris-c-yubikey
         - *jonas-laptop
@@ -38,7 +36,6 @@ creation_rules:
         - *florian-yubikey
         - *florian_other_yubikey
         - *nix-postgres
-        - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
         - *sotiris-c-yubikey
         - *jonas-laptop
@@ -47,7 +44,6 @@ creation_rules:
       - pgp:
         - *florian-yubikey
         - *florian_other_yubikey
-        - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
         - *sotiris-c-yubikey
         - *nix-samba-fs
@@ -57,7 +53,6 @@ creation_rules:
       - pgp:
         - *florian-yubikey
         - *florian_other_yubikey
-        - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
         - *sotiris-c-yubikey
         - *nix-asta2012-dc
@@ -68,7 +63,6 @@ creation_rules:
       - pgp:
         - *florian-yubikey
         - *florian_other_yubikey
-        - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
         - *sotiris-c-yubikey
         - *nix-samba-dc
@@ -80,7 +74,6 @@ creation_rules:
         - *nix-wireguard
         - *florian-yubikey
         - *florian_other_yubikey
-        - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
         - *jonas-laptop
         - *sotiris-c-yubikey
@@ -90,7 +83,6 @@ creation_rules:
         - *florian_other_yubikey
         - *florian-yubikey
         - *nix-webserver
-        - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
         - *jonas-laptop
         - *sotiris-c-yubikey
@@ -100,7 +92,6 @@ creation_rules:
         - *nix-nextcloud
         - *florian_other_yubikey
         - *florian-yubikey
-        - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
         - *jonas-laptop
         - *sotiris-c-yubikey
@@ -110,7 +101,6 @@ creation_rules:
         - *nix-build
         - *florian_other_yubikey
         - *florian-yubikey
-        - *sotiris-primary-yubikey
         - *sotiris-backup-yubikey
         - *jonas-laptop
         - *sotiris-c-yubikey
