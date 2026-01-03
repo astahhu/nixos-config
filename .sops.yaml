@@ -5,6 +5,7 @@ keys:
   - &sotiris-backup-yubikey  98FD09AC654B27772A03E6C7C0DC5C74462B385B
   - &sotiris-c-yubikey       93E75346EC76A38F684EFA248125744461D04398
   - &jonas-laptop 8F53896C4F610ABFDC99F23A63DC8DFEED62EE18
+  - &Felix-yubikey 499C66E9512BA96797CDAC410562840F5B0C9BD4
   ## Hosts
   - &nix-backup 789f4fb5716bd58b7acf3116b563fd4c6b5d2b21
   - &nix-asta2012-dc d0e5fcf0861474ca0da4b5cc5538a1ba2f123b83
@@ -30,6 +31,7 @@ creation_rules:
         - *sotiris-backup-yubikey
         - *sotiris-c-yubikey
         - *jonas-laptop
+        - *Felix-yubikey
   - path_regex: secrets/nix-postgresql*
     key_groups:
       - pgp:
@@ -39,6 +41,7 @@ creation_rules:
         - *sotiris-backup-yubikey
         - *sotiris-c-yubikey
         - *jonas-laptop
+        - *Felix-yubikey
   - path_regex: secrets/nix-samba-fs*
     key_groups:
       - pgp:
@@ -48,6 +51,7 @@ creation_rules:
         - *sotiris-c-yubikey
         - *nix-samba-fs
         - *jonas-laptop
+        - *Felix-yubikey
   - path_regex: secrets/nix-asta2012-dc*
     key_groups:
       - pgp:
@@ -58,6 +62,7 @@ creation_rules:
         - *nix-asta2012-dc
         - *nix-asta2012-dc-01
         - *jonas-laptop
+        - *Felix-yubikey
   - path_regex: secrets/nix-samba-dc*
     key_groups:
       - pgp:
@@ -68,6 +73,7 @@ creation_rules:
         - *nix-samba-dc
         - *nix-samba-dc-01
         - *jonas-laptop
+        - *Felix-yubikey
   - path_regex: secrets/nix-wireguard.yaml
     key_groups:
       - pgp:
@@ -77,6 +83,7 @@ creation_rules:
         - *sotiris-backup-yubikey
         - *jonas-laptop
         - *sotiris-c-yubikey
+        - *Felix-yubikey
   - path_regex: secrets/nix-webserver*
     key_groups:
       - pgp:
@@ -86,6 +93,7 @@ creation_rules:
         - *sotiris-backup-yubikey
         - *jonas-laptop
         - *sotiris-c-yubikey
+        - *Felix-yubikey
   - path_regex: secrets/nix-nextcloud*
     key_groups:
       - pgp:
@@ -95,6 +103,7 @@ creation_rules:
         - *sotiris-backup-yubikey
         - *jonas-laptop
         - *sotiris-c-yubikey
+        - *Felix-yubikey
   - path_regex: secrets/nix-build
     key_groups:
       - pgp:
@@ -104,4 +113,4 @@ creation_rules:
         - *sotiris-backup-yubikey
         - *jonas-laptop
         - *sotiris-c-yubikey
-
+        - *Felix-yubikey
