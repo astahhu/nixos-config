@@ -117,10 +117,7 @@
     };
     "appapi-harp" = {
       image = "ghcr.io/nextcloud/nextcloud-appapi-harp:release";
-      environment = {
-        "HP_SHARED_KEY" = "some_very_secure_password";
-        "NC_INSTANCE_URL" = "https://nextcloud.sotga.de";
-      };
+environmentFiles = [ config.sops.secrets.nextcloud_app_api.path ];
       volumes = [
         #"/certs:/certs:rw" #TODO
 "/run/docker.sock:/var/run/docker.sock:rw
