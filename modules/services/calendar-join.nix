@@ -1,4 +1,10 @@
-{ inputs, lib, config, pkgs, ... }:
+{
+  inputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 {
   options.astahhu.services.calendar-join = {
     enable = lib.mkEnableOption "Whether to Enable the Calendar Join Tool";
@@ -31,7 +37,9 @@
         Restart = "always";
         #User = "calendar-join";
         Type = "exec";
-        ExecStart = "${inputs.calendar-join.packages."${pkgs.stdenv.hostPlatform.system}".default}/bin/calendar-join --config ${builtins.toFile "calendar-config.json" (builtins.toJSON config.astahhu.services.calendar-join.calendars)}";
+        ExecStart = "${
+          inputs.calendar-join.packages."${pkgs.stdenv.hostPlatform.system}".default
+        }/bin/calendar-join --config ${builtins.toFile "calendar-config.json" (builtins.toJSON config.astahhu.services.calendar-join.calendars)}";
       };
       wantedBy = [ "multi-user.target" ];
     };

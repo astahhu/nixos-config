@@ -1,8 +1,10 @@
-{ pkgs
-, lib
-, config
-, ...
-}: {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   options = {
     astahhu.desktop.programs.enable = lib.mkEnableOption "Enable Standard Desktop Programs";
   };

@@ -1,8 +1,10 @@
-{ config
-, pkgs
-, lib
-, ...
-}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   options = {
     astahhu.services.samba.dc = {
       enable = lib.mkEnableOption "Enable Samba Domain Controller";
@@ -66,23 +68,20 @@
       # This setups the dfs links, with systemd tmpfiles.
       # See also: https://wiki.samba.org/index.php/Distributed_File_System_(DFS)#Configure_stand-alone_DFS_in_Samba
       # and: https://www.freedesktop.org/software/systemd/man/tmpfiles.d
-      systemd.tmpfiles.settings.samba-domain-dfs =
-        lib.mergeAttrsList (
-          lib.attrsets.mapAttrsToList
-            (virtual-share: value:
-              (lib.attrsets.mapAttrs'
-                (file: server: {
-                  name = config.nix-tun.storage.persist.subvolumes."samba-shares/${virtual-share}-dfs".path + "/" + file;
-                  value."L+" = {
-                    argument = "msdfs:${server}";
-                  };
-                })
-                value)
-            )
-            cfg.dc.domain-dfs);
+      systemd.tmpfiles.settings.samba-domain-dfs = lib.mergeAttrsList (
+        lib.attrsets.mapAttrsToList (
+          virtual-share: value:
+          (lib.attrsets.mapAttrs' (file: server: {
+            name =
+              config.nix-tun.storage.persist.subvolumes."samba-shares/${virtual-share}-dfs".path + "/" + file;
+            value."L+" = {
+              argument = "msdfs:${server}";
+            };
+          }) value)
+        ) cfg.dc.domain-dfs
+      );
 
-      security.pam.krb5.enable =
-        false;
+      security.pam.krb5.enable = false;
 
       environment.systemPackages = [
         pkgs.dig.out
@@ -99,22 +98,22 @@
       security.acme = lib.mkIf cfg.acme.enable {
         certs.samba.extraDomainNames = [ cfg.domain ];
       };
-      nix-tun.storage.persist.subvolumes = (lib.attrsets.mapAttrs'
-        (name: value: {
+      nix-tun.storage.persist.subvolumes =
+        (lib.attrsets.mapAttrs' (name: value: {
           name = "samba-shares/${name}-dfs";
           value.mode = "0555";
-        })
-        cfg.dc.domain-dfs) // {
-        kea = {
-          #bindMountDirectories = true;
-          owner = "kea";
-          directories = {
-            "/var/lib/kea" = {
-              mode = "0700";
+        }) cfg.dc.domain-dfs)
+        // {
+          kea = {
+            #bindMountDirectories = true;
+            owner = "kea";
+            directories = {
+              "/var/lib/kea" = {
+                mode = "0700";
+              };
             };
           };
         };
-      };
 
       systemd.services.kea-dhcp4-server.serviceConfig.DynamicUser = lib.mkForce false;
 
@@ -130,7 +129,7 @@
         dhcp-ddns = {
           enable = true;
           settings = {
-            # IP + Port for NameChange Requests 
+            # IP + Port for NameChange Requests
             ip-address = "127.0.0.1";
             port = 53001;
             forward-ddns = {
@@ -168,7 +167,7 @@
                   client-principal = "dhcpduser@AD.ASTAHHU.DE";
                   client-keytab = "FILE:${config.sops.secrets.dhcpduser-keytab.path}"; # toplevel only
                   gss-replay-flag = true; # GSS anti replay service
-                  gss-sequence-flag = false; #no GSS sequence service
+                  gss-sequence-flag = false; # no GSS sequence service
                   tkey-lifetime = 3600; # 1 hour
                   rekey-interval = 2700; # 45 minutes
                   retry-interval = 120; # 2 minutes
@@ -317,7 +316,7 @@
           LimitNOFILE = 16384;
           PIDFile = "/run/samba.pid";
           Type = "notify";
-          NotifyAccess = "all"; #may not do anything...
+          NotifyAccess = "all"; # may not do anything...
         };
         unitConfig.RequiresMountsFor = "/var/lib/samba";
       };
@@ -347,22 +346,22 @@
             path = "/var/lib/samba/sysvol/${cfg.domain}/scripts";
             "read only" = if cfg.dc.primary then "no" else "yes";
           };
-        } // (lib.mergeAttrsList
-          (lib.attrsets.mapAttrsToList
-            (name: value:
-              {
-                "${name}" = {
-                  "msdfs root" = "yes";
-                  "msdfs proxy" = "${lib.strings.toLower config.astahhu.services.samba.hostname}.${config.astahhu.services.samba.domain}/${name}-dfs";
-                  "browseable" = "yes";
-                };
-                "${name}-dfs" = {
-                  "path" = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}-dfs".path;
-                  "msdfs root" = "yes";
-                  "browseable" = "no";
-                };
-              })
-            cfg.dc.domain-dfs));
+        }
+        // (lib.mergeAttrsList (
+          lib.attrsets.mapAttrsToList (name: value: {
+            "${name}" = {
+              "msdfs root" = "yes";
+              "msdfs proxy" =
+                "${lib.strings.toLower config.astahhu.services.samba.hostname}.${config.astahhu.services.samba.domain}/${name}-dfs";
+              "browseable" = "yes";
+            };
+            "${name}-dfs" = {
+              "path" = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}-dfs".path;
+              "msdfs root" = "yes";
+              "browseable" = "no";
+            };
+          }) cfg.dc.domain-dfs
+        ));
       };
 
       networking = {

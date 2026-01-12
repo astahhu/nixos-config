@@ -1,10 +1,10 @@
-{ config
-, lib
-, ...
+{
+  config,
+  lib,
+  ...
 }:
 let
-  inherit
-    (config.lib.topology)
+  inherit (config.lib.topology)
     mkInternet
     mkRouter
     mkSwitch

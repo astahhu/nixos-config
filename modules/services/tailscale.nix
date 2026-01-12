@@ -3,20 +3,21 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   options = {
     myservices.tailscale.enable = lib.mkEnableOption "Enable Tailscale";
   };
 
   config = lib.mkIf config.myservices.tailscale.enable {
     # always allow traffic from your Tailscale network
-    networking.firewall.trustedInterfaces = ["tailscale0"];
+    networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
     # allow the Tailscale UDP port through the firewall
-    networking.firewall.allowedUDPPorts = [config.services.tailscale.port];
+    networking.firewall.allowedUDPPorts = [ config.services.tailscale.port ];
 
     # make the tailscale command usable to users
-    environment.systemPackages = [pkgs.tailscale];
+    environment.systemPackages = [ pkgs.tailscale ];
 
     sops.secrets.tailscale-auth = {
       format = "yaml";
@@ -31,9 +32,15 @@
       description = "Automatic connection to Tailscale";
 
       # make sure tailscale is running before trying to connect to tailscale
-      after = ["network-pre.target" "tailscaled.service"];
-      wants = ["network-pre.target" "tailscaled.service"];
-      wantedBy = ["multi-user.target"];
+      after = [
+        "network-pre.target"
+        "tailscaled.service"
+      ];
+      wants = [
+        "network-pre.target"
+        "tailscaled.service"
+      ];
+      wantedBy = [ "multi-user.target" ];
 
       # set this service as a oneshot job
       serviceConfig.Type = "oneshot";

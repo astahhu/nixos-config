@@ -1,7 +1,9 @@
-{ lib
-, inputs
-, ...
-}: {
+{
+  lib,
+  inputs,
+  ...
+}:
+{
   imports = [
     inputs.disko.nixosModules.default
     inputs.nix-tun.nixosModules.nix-tun
@@ -25,9 +27,7 @@
     ./services/ntfy.nix
     ./services/pretix.nix
     ./development/vm.nix
-    ./stylix.nix
   ];
 
-  myprograms.stylix.enable = lib.mkDefault true;
   astahhu.cli.better-tools.enable = lib.mkDefault true;
 }

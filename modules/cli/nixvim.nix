@@ -1,9 +1,11 @@
-{ pkgs
-, config
-, inputs
-, lib
-, ...
-}: {
+{
+  pkgs,
+  config,
+  inputs,
+  lib,
+  ...
+}:
+{
   options = {
     astahhu.cli.nixvim.enable = lib.mkEnableOption "Enable nixvim";
   };
@@ -70,13 +72,11 @@
           enable = !config.astahhu.common.is_server;
         };
 
-
         web-devicons.enable = !config.astahhu.common.is_server;
 
         lsp-format.enable = !config.astahhu.common.is_server;
 
         lspsaga.enable = !config.astahhu.common.is_server;
-
 
         dap = {
           enable = !config.astahhu.common.is_server;
@@ -99,13 +99,11 @@
 
         crates.enable = !config.astahhu.common.is_server;
 
-
         rainbow-delimiters.enable = !config.astahhu.common.is_server;
 
         cmp = {
           enable = !config.astahhu.common.is_server;
           autoEnableSources = !config.astahhu.common.is_server;
-
 
           settings = {
             mapping = {
@@ -184,4 +182,3 @@
     };
   };
 }
-

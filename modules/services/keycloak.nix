@@ -1,4 +1,10 @@
-{ pkgs, config, lib, ... }: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+{
   options = {
     astahhu.services.keycloak = {
       enable = lib.mkEnableOption "Enable keycloak on this server";
@@ -28,29 +34,31 @@
           port = 80;
         };
       };
-      config = { ... }: {
-        boot.isContainer = true;
-        services.keycloak = {
-          enable = true;
-          settings = {
-            http-host = "0.0.0.0";
-            http-port = 80;
-            http-enabled = true;
-            https-enabled = false;
-            hostname = "https://" + config.astahhu.services.keycloak.domain;
+      config =
+        { ... }:
+        {
+          boot.isContainer = true;
+          services.keycloak = {
+            enable = true;
+            settings = {
+              http-host = "0.0.0.0";
+              http-port = 80;
+              http-enabled = true;
+              https-enabled = false;
+              hostname = "https://" + config.astahhu.services.keycloak.domain;
+            };
+            initialAdminPassword = "uekoajaeRae0eegh0phee9phohx6ahp8aangai8sae1Thun2xai5Hah3vee7Ooje";
+            database = {
+              username = "keycloak";
+              type = "postgresql";
+              name = "keycloak";
+              host = "nix-postgresql.ad.astahhu.de";
+              passwordFile = "/secret/db-pass";
+              useSSL = false;
+            };
           };
-          initialAdminPassword = "uekoajaeRae0eegh0phee9phohx6ahp8aangai8sae1Thun2xai5Hah3vee7Ooje";
-          database = {
-            username = "keycloak";
-            type = "postgresql";
-            name = "keycloak";
-            host = "nix-postgresql.ad.astahhu.de";
-            passwordFile = "/secret/db-pass";
-            useSSL = false;
-          };
+          networking.firewall.allowedTCPPorts = [ 80 ];
         };
-        networking.firewall.allowedTCPPorts = [ 80 ];
-      };
     };
   };
 }

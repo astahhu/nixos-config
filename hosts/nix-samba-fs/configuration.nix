@@ -1,11 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{ pkgs
-, config
-, lib
-, ...
-}: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+{
 
   astahhu.common = {
     is_server = true;
@@ -102,7 +104,6 @@
     };
   };
 
-
   # Networking
   networking.firewall.enable = true;
 
@@ -114,7 +115,10 @@
     domain = "ad.astahhu.de";
     hosts = lib.mkForce {
       "127.0.0.1" = [ "localhost" ];
-      "134.99.154.205" = [ "nix-samba-fs" "nix-samba-fs.ad.astahhu.de" ];
+      "134.99.154.205" = [
+        "nix-samba-fs"
+        "nix-samba-fs.ad.astahhu.de"
+      ];
     };
   };
 

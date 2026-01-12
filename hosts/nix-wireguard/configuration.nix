@@ -1,11 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{ pkgs
-, config
-, modulesPath
-, ...
-}: {
+{
+  pkgs,
+  config,
+  modulesPath,
+  ...
+}:
+{
 
   # Change for each System
   astahhu.common.is_lxc = true;
@@ -42,10 +44,15 @@
       allowedUDPPorts = [ 51820 ];
     };
     domain = "ad.astahhu.de";
-    nameservers = [ "134.99.154.200" "134.99.154.201" ];
-    defaultGateway = { address = "134.99.154.1"; interface = "eth0"; };
+    nameservers = [
+      "134.99.154.200"
+      "134.99.154.201"
+    ];
+    defaultGateway = {
+      address = "134.99.154.1";
+      interface = "eth0";
+    };
   };
-
 
   services.resolved = {
     enable = true;
@@ -73,7 +80,6 @@
           Name = "wg0";
           MTUBytes = "1300";
         };
-
 
         wireguardConfig = {
           PrivateKeyFile = "${config.sops.secrets.wireguard_private.path}";
@@ -232,8 +238,6 @@
       };
     };
   };
-
-
 
   users.users.headscale.uid = 666;
   services.headscale = {

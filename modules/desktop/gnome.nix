@@ -1,8 +1,10 @@
-{ config
-, pkgs
-, lib
-, ...
-}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   options = {
     astahhu.desktop.gnome.enable = lib.mkEnableOption "Enable Gnome";
   };
@@ -14,9 +16,12 @@
     };
     services.pulseaudio.enable = false;
 
-    environment.gnome.excludePackages = lib.mkIf (!config.astahhu.desktop.firefox.enable) (with pkgs; [
-      epiphany
-    ]);
+    environment.gnome.excludePackages = lib.mkIf (!config.astahhu.desktop.firefox.enable) (
+      with pkgs;
+      [
+        epiphany
+      ]
+    );
 
     environment.systemPackages = with pkgs; [
       gnomeExtensions.gsconnect

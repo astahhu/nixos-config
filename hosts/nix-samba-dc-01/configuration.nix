@@ -1,7 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{ pkgs, config, lib, ... }: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+{
   astahhu.common = {
     is_server = true;
     is_lxc = true;
@@ -63,7 +69,8 @@
           "Intern Oekoref" = "nix-samba-fs.ad.astahhu.de/Intern Oekoref";
           "Intern Presseref" = "nix-samba-fs.ad.astahhu.de/Intern Presseref";
           "Intern Rechtsberatung" = "nix-samba-fs.ad.astahhu.de/Intern Rechtsberatung";
-          "Intern Sekretariat Finanz Buchhaltung" = "nix-samba-fs.ad.astahhu.de/Intern Sekretariat Finanz Buchhaltung";
+          "Intern Sekretariat Finanz Buchhaltung" =
+            "nix-samba-fs.ad.astahhu.de/Intern Sekretariat Finanz Buchhaltung";
           "Intern Sozialref" = "nix-samba-fs.ad.astahhu.de/Intern Sozialref";
           "Intern SP" = "nix-samba-fs.ad.astahhu.de/Intern SP";
           "Intern Steuern" = "nix-samba-fs.ad.astahhu.de/Intern Steuern";
@@ -92,7 +99,8 @@
           "Public Praesidium" = "nix-samba-fs.ad.astahhu.de/Public Oekoref";
           "Public Presseref" = "nix-samba-fs.ad.astahhu.de/Public Praesidium";
           "Public Rechtsberatung" = "nix-samba-fs.ad.astahhu.de/Public Rechtsberatung";
-          "Public Sekretariat Finanz Buchhaltung" = "nix-samba-fs.ad.astahhu.de/Public Sekretariat Finanz Buchhaltung";
+          "Public Sekretariat Finanz Buchhaltung" =
+            "nix-samba-fs.ad.astahhu.de/Public Sekretariat Finanz Buchhaltung";
           "Public Sozialref" = "nix-samba-fs.ad.astahhu.de/Public Sozialref";
           "Public Teamassistenz" = "nix-samba-fs.ad.astahhu.de/Public Teamassistenz";
           "Public Vorstand" = "nix-samba-fs.ad.astahhu.de/Public Vorstand";
@@ -108,23 +116,24 @@
     };
   };
 
-
   sops.secrets.cloudflare-dns = {
     sopsFile = ../../secrets/nix-samba-dc/cloudflare-dns;
     format = "binary";
   };
 
   # Change for each System
-  networking =
-    {
-      useDHCP = false;
-      hostName = "nix-samba-dc-01";
-      domain = "ad.astahhu.de";
-      hosts = lib.mkForce {
-        "127.0.0.1" = [ "localhost" ];
-        "134.99.154.200" = [ "nix-samba-dc-01" "nix-samba-dc-01.ad.astahhu.de" ];
-      };
+  networking = {
+    useDHCP = false;
+    hostName = "nix-samba-dc-01";
+    domain = "ad.astahhu.de";
+    hosts = lib.mkForce {
+      "127.0.0.1" = [ "localhost" ];
+      "134.99.154.200" = [
+        "nix-samba-dc-01"
+        "nix-samba-dc-01.ad.astahhu.de"
+      ];
     };
+  };
 
   services.resolved = {
     enable = true;
@@ -154,7 +163,7 @@
       ];
     };
   };
-  # Uncomment if you need Secrets for this Hosts, AFTER the first install  
+  # Uncomment if you need Secrets for this Hosts, AFTER the first install
   sops.defaultSopsFile = ../../secrets/nix-samba-dc.yaml;
 
   # Set your time zone.
@@ -165,7 +174,6 @@
   console = {
     keyMap = "us";
   };
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

@@ -1,8 +1,10 @@
-{ pkgs
-, config
-, lib
-, ...
-}: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+{
   options = {
     astahhu.desktop.firefox.enable = lib.mkEnableOption "Enable Firefox";
   };

@@ -1,4 +1,10 @@
-{ pkgs, config, lib, ... }: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+{
   options.astahhu.services.pretix = {
     enable = lib.mkEnableOption "pretix";
     hostname = lib.mkOption {
@@ -26,36 +32,38 @@
         };
       };
 
-      config = { ... }: {
-        boot.isContainer = true;
-        services.pretix = {
-          enable = true;
-          environmentFile = "/secret/env";
-          database.createLocally = false;
-          nginx.domain = config.astahhu.services.pretix.hostname;
-          settings = {
-            mail.from = "${config.astahhu.services.pretix.email}";
-            pretix = {
-              instance_name = config.astahhu.services.pretix.hostname;
-              url = "https://${config.astahhu.services.pretix.hostname}";
+      config =
+        { ... }:
+        {
+          boot.isContainer = true;
+          services.pretix = {
+            enable = true;
+            environmentFile = "/secret/env";
+            database.createLocally = false;
+            nginx.domain = config.astahhu.services.pretix.hostname;
+            settings = {
+              mail.from = "${config.astahhu.services.pretix.email}";
+              pretix = {
+                instance_name = config.astahhu.services.pretix.hostname;
+                url = "https://${config.astahhu.services.pretix.hostname}";
+              };
+              database = {
+                host = "nix-postgresql.ad.astahhu.de";
+              };
             };
-            database = {
-              host = "nix-postgresql.ad.astahhu.de";
-            };
+            plugins = with config.services.pretix.package.plugins; [
+              dbvat
+              mollie
+              pages
+              passbook
+              reluctant-stripe
+              sepadebit
+              servicefees
+              stretchgoals
+              zugferd
+            ];
           };
-          plugins = with config.services.pretix.package.plugins; [
-            dbvat
-            mollie
-            pages
-            passbook
-            reluctant-stripe
-            sepadebit
-            servicefees
-            stretchgoals
-            zugferd
-          ];
         };
-      };
     };
   };
 }

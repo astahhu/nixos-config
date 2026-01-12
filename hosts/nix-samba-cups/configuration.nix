@@ -6,7 +6,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
 
   astahhu.common = {
     is_server = true;
@@ -17,14 +18,12 @@
     };
   };
 
-  
   #sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
 
   astahhu.services.samba-fs = {
     enable = true;
     shares.scans.browseable = "yes";
   };
-
 
   # Networking
   networking.firewall.enable = true;

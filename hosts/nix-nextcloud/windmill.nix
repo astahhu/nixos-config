@@ -1,5 +1,10 @@
 # Auto-generated using compose2nix v0.3.2-pre.
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 {
 
@@ -277,7 +282,6 @@
     partOf = [ "docker-compose-windmill-root.target" ];
     wantedBy = [ "docker-compose-windmill-root.target" ];
   };
-
 
   # Root service
   # When started, this will automatically create all resources and start
