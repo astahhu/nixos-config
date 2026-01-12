@@ -75,7 +75,6 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  security.pam.sshAgentAuth.enable = true;
 
   myprograms.cli.better-tools.enable = true;
 

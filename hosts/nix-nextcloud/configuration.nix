@@ -188,7 +188,6 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  security.pam.sshAgentAuth.enable = true;
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
     80

@@ -31,6 +31,10 @@
   };
 
   config = {
+    security.sudo = {
+      wheelNeedsPassword = false;
+    };
+
     sops.secrets = lib.attrsets.mapAttrs' (name: value: {
       name = "${name}-pass";
       value = {

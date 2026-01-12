@@ -23,7 +23,6 @@
     };
 
     services.openssh.enable = true;
-    security.pam.sshAgentAuth.enable = true;
 
     services.btrbk.sshAccess = lib.mkIf config.astahhu.common.uses_btrfs [
       {
