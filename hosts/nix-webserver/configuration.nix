@@ -105,6 +105,13 @@
     };
   };
 
+  services.traefik.staticConfigOptions.metrics.prometheus.buckets = [
+    0.1
+    0.3
+    1.2
+    5.0
+  ];
+
   sops.secrets.grafana-ntfy-pass = { };
   containers.grafana.bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}".mountPoint =
     config.sops.secrets.grafana-ntfy-pass.path;
