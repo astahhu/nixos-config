@@ -1,4 +1,10 @@
-{ pkgs, config, lib, ... }: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+{
   options = {
     astahhu.services.vaultwarden = {
       enable = lib.mkEnableOption "Enable vaultwarden on this server";
@@ -31,42 +37,44 @@
           port = 8000;
         };
       };
-      config = { ... }: {
-        boot.isContainer = true;
-        users.users.vaultwarden.uid = 996;
+      config =
+        { ... }:
+        {
+          boot.isContainer = true;
+          users.users.vaultwarden.uid = 996;
 
-        services.vaultwarden = {
-          enable = true;
-          environmentFile = "/secret/env";
-        };
+          services.vaultwarden = {
+            enable = true;
+            environmentFile = "/secret/env";
+          };
 
-        services.bitwarden-directory-connector-cli = {
-          enable = true;
-          domain = "https://" + config.astahhu.services.vaultwarden.domain;
-          ldap = {
-            username = "vaultwarden-connector";
-            ad = true;
-            hostname = "ad.astahhu.de";
-            ssl = true;
-            rootPath = "dc=ad,dc=astahhu,dc=de";
-          };
-          sync = {
-            users = true;
-            groups = true;
-            groupPath = "ou=AStA";
-            userPath = "ou=AStA";
-            userFilter = "(objectCategory=CN=Person,CN=Schema,CN=Configuration,DC=ad,DC=astahhu,DC=de)";
-          };
-          secrets = {
-            ldap = "/secret/ldap-pass";
-            bitwarden = {
-              client_path_id = "/secret/client-id";
-              client_path_secret = "/secret/client-secret";
+          services.bitwarden-directory-connector-cli = {
+            enable = true;
+            domain = "https://" + config.astahhu.services.vaultwarden.domain;
+            ldap = {
+              username = "vaultwarden-connector";
+              ad = true;
+              hostname = "ad.astahhu.de";
+              ssl = true;
+              rootPath = "dc=ad,dc=astahhu,dc=de";
+            };
+            sync = {
+              users = true;
+              groups = true;
+              groupPath = "ou=AStA";
+              userPath = "ou=AStA";
+              userFilter = "(objectCategory=CN=Person,CN=Schema,CN=Configuration,DC=ad,DC=astahhu,DC=de)";
+            };
+            secrets = {
+              ldap = "/secret/ldap-pass";
+              bitwarden = {
+                client_path_id = "/secret/client-id";
+                client_path_secret = "/secret/client-secret";
+              };
             };
           };
+          networking.firewall.allowedTCPPorts = [ 8000 ];
         };
-        networking.firewall.allowedTCPPorts = [ 8000 ];
-      };
     };
   };
 }

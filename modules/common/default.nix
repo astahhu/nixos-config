@@ -1,4 +1,11 @@
-{ pkgs, lib, config, modulesPath, ... }: {
+{
+  pkgs,
+  lib,
+  config,
+  modulesPath,
+  ...
+}:
+{
 
   imports = [
     ./users.nix
@@ -6,7 +13,6 @@
     ./proxmox-lxc.nix
     (modulesPath + "/virtualisation/proxmox-lxc.nix")
   ];
-
 
   options.astahhu.common = {
     is_server = lib.mkEnableOption "Enables default server settings";
@@ -50,14 +56,18 @@
         enable = true;
       };
 
-      nix.settings.trusted-users = [ "root" "@wheel" ];
-
+      nix.settings.trusted-users = [
+        "root"
+        "@wheel"
+      ];
 
     }
-    (lib.mkIf config.astahhu.common.disko.enable (import ./disko.nix {
-      device = config.astahhu.common.disko.device;
-      swap = config.astahhu.common.disko.swap;
-    }))
+    (lib.mkIf config.astahhu.common.disko.enable (
+      import ./disko.nix {
+        device = config.astahhu.common.disko.device;
+        swap = config.astahhu.common.disko.swap;
+      }
+    ))
   ];
 
 }

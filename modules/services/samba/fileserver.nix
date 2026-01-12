@@ -1,8 +1,10 @@
-{ config
-, pkgs
-, lib
-, ...
-}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   options = {
     astahhu.services.samba.fs = {
       enable = lib.mkEnableOption "Enable Samba Fileserver";
@@ -15,8 +17,10 @@
   };
 
   config = lib.mkIf config.astahhu.services.samba.fs.enable (
-    let cfg = config.astahhu.services.samba;
-    in {
+    let
+      cfg = config.astahhu.services.samba;
+    in
+    {
       system.nssDatabases.passwd = [ "winbind" ];
       system.nssDatabases.group = [ "winbind" ];
       astahhu.services.samba.enable = true;
@@ -34,13 +38,11 @@
       #    cfg.fs.shares;
 
       nix-tun.storage.persist.subvolumes =
-        lib.attrsets.mapAttrs'
-          (name: value: {
-            name = "samba-shares/${name}";
-            value.group = "1000512";
-            value.mode = "0770";
-          })
-          cfg.fs.shares
+        lib.attrsets.mapAttrs' (name: value: {
+          name = "samba-shares/${name}";
+          value.group = "1000512";
+          value.mode = "0770";
+        }) cfg.fs.shares
         // {
           samba = {
             bindMountDirectories = true;
@@ -60,11 +62,11 @@
       systemd.services.samba-smbd.environment.LD_LIBRARY_PATH = lib.mkForce "${cfg.package}/lib";
       security.pam.services.samba.text = ''
         account required ${cfg.package}/lib/security/pam_winbind.so
-      
+
         auth required ${cfg.package}/lib/security/pam_winbind.so
-      
+
         password required ${cfg.package}/lib/security/pam_winbind.so
-      
+
         session required ${cfg.package}/lib/security/pam_winbind.so
       '';
 
@@ -86,7 +88,10 @@
         138
       ];
       networking.firewall.allowedTCPPortRanges = [
-        { from = 49152; to = 65535; }
+        {
+          from = 49152;
+          to = 65535;
+        }
       ];
 
       services.samba = {
@@ -96,48 +101,44 @@
         nsswins = false;
         nmbd.enable = false;
 
-
-        settings =
-          {
-            global =
-              {
-                "allow trusted domains" = "yes";
-                "security" = "ads";
-                "server services" = "-nbt";
-                "guest ok" = false;
-                "winbind refresh tickets" = true;
-                "winbind offline logon" = true;
-                "template shell" = "${pkgs.fish}/bin/fish";
-                "idmap config * : range" = "100000 - 199999";
-                "idmap config AD.ASTAHHU : backend" = "rid";
-                "idmap config AD.ASTAHHU : range" = "1000000 - 1999999";
-                "idmap config ASTA2012 : backend" = "rid";
-                "idmap config ASTA2012 : range" = "2000000 - 2999999";
-                "inherit acls" = "yes";
-                "vfs objects" = "acl_xattr";
-              };
-          } //
-          (lib.attrsets.mapAttrs'
-            (name: value: {
-              name = "${name}";
-              value = {
-                path = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}".path;
-                "read only" = "no";
-                "veto files" = "/.snapshots/";
-                "veto oplock files" = "/.snapshots/";
-                "administrative share" = "yes";
-                "vfs objects" = "btrfs shadow_copy2 acl_xattr";
-                "shadow:fixinodes" = "yes";
-                "shadow:localtime" = "yes";
-                "shadow:format" = "${name}.%Y%m%dT%H%M%S%z";
-                "shadow:snapdir" = ".snapshots";
-                "shadow:crossmountpoints" = "yes";
-                "shadow:mountpoint" = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}".path;
-                "inherit permissions" = "yes";
-                "inherit owner" = "yes";
-              } // value;
-            })
-            config.astahhu.services.samba.fs.shares);
+        settings = {
+          global = {
+            "allow trusted domains" = "yes";
+            "security" = "ads";
+            "server services" = "-nbt";
+            "guest ok" = false;
+            "winbind refresh tickets" = true;
+            "winbind offline logon" = true;
+            "template shell" = "${pkgs.fish}/bin/fish";
+            "idmap config * : range" = "100000 - 199999";
+            "idmap config AD.ASTAHHU : backend" = "rid";
+            "idmap config AD.ASTAHHU : range" = "1000000 - 1999999";
+            "idmap config ASTA2012 : backend" = "rid";
+            "idmap config ASTA2012 : range" = "2000000 - 2999999";
+            "inherit acls" = "yes";
+            "vfs objects" = "acl_xattr";
+          };
+        }
+        // (lib.attrsets.mapAttrs' (name: value: {
+          name = "${name}";
+          value = {
+            path = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}".path;
+            "read only" = "no";
+            "veto files" = "/.snapshots/";
+            "veto oplock files" = "/.snapshots/";
+            "administrative share" = "yes";
+            "vfs objects" = "btrfs shadow_copy2 acl_xattr";
+            "shadow:fixinodes" = "yes";
+            "shadow:localtime" = "yes";
+            "shadow:format" = "${name}.%Y%m%dT%H%M%S%z";
+            "shadow:snapdir" = ".snapshots";
+            "shadow:crossmountpoints" = "yes";
+            "shadow:mountpoint" = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}".path;
+            "inherit permissions" = "yes";
+            "inherit owner" = "yes";
+          }
+          // value;
+        }) config.astahhu.services.samba.fs.shares);
       };
     }
   );

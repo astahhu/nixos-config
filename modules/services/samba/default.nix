@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
 
   imports = [
     ./dc.nix
@@ -43,8 +49,10 @@
   };
 
   config =
-    let cfg = config.astahhu.services.samba;
-    in lib.mkIf cfg.enable {
+    let
+      cfg = config.astahhu.services.samba;
+    in
+    lib.mkIf cfg.enable {
       nixpkgs.overlays = [
         (final: prev: {
           samba4Full = prev.samba4Full.overrideAttrs {
@@ -164,6 +172,4 @@
       };
     };
 
-
 }
-

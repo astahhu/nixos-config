@@ -1,11 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{ pkgs
-, inputs
-, config
-, ...
-}: {
+{
+  pkgs,
+  inputs,
+  config,
+  ...
+}:
+{
   imports = [
     ../../fonts.nix
     ../../modules
@@ -104,11 +106,6 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  security.pam.sshAgentAuth.enable = true;
-  programs.ssh.extraConfig = ''
-    Host *
-      ForwardAgent = yes
-  '';
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

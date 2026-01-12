@@ -1,9 +1,11 @@
-{ config
-, pkgs
-, lib
-, inputs
-, ...
-}: {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+{
   imports = [
     inputs.nix-index-database.nixosModules.nix-index
   ];
@@ -14,7 +16,10 @@
 
   config = lib.mkMerge [
     (lib.mkIf config.astahhu.cli.better-tools.enable {
-      nix.settings.experimental-features = [ "nix-command" "flakes" ];
+      nix.settings.experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
 
       environment.systemPackages = with pkgs; [
         dig

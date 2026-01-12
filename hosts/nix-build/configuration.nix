@@ -1,7 +1,14 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{ pkgs, config, modulesPath, lib, ... }: {
+{
+  pkgs,
+  config,
+  modulesPath,
+  lib,
+  ...
+}:
+{
 
   astahhu.common.is_server = true;
   astahhu.common.is_lxc = true;
@@ -38,34 +45,39 @@
     };
   };
 
-  services.resolved.fallbackDns = [ "134.99.154.200" "134.99.154.201" ];
+  services.resolved.fallbackDns = [
+    "134.99.154.200"
+    "134.99.154.201"
+  ];
 
   sops.defaultSopsFile = ../../secrets/nix-build.yaml;
   sops.secrets.github-token = { };
 
   users.groups.github-runner = { };
-  services.github-runners = lib.mkMerge (lib.map
-    (n:
-      {
-        "nix-deploy-${toString n}" = {
-          enable = true;
-          name = "nix-deploy-${toString n}";
-          tokenFile = config.sops.secrets.github-token.path;
-          url = "https://github.com/astahhu";
-          extraLabels = [ "nix" "deploy" ];
-          noDefaultLabels = true;
-          extraPackages = [
-            pkgs.nix
-            pkgs.deploy-rs
-            pkgs.openssh
-          ];
-          replace = true;
-          serviceOverrides = {
-            BindPaths = "/nix/store /nix/var/nix/db /nix/var/nix/daemon-socket";
-          };
+  services.github-runners = lib.mkMerge (
+    lib.map (n: {
+      "nix-deploy-${toString n}" = {
+        enable = true;
+        name = "nix-deploy-${toString n}";
+        tokenFile = config.sops.secrets.github-token.path;
+        url = "https://github.com/astahhu";
+        extraLabels = [
+          "nix"
+          "deploy"
+        ];
+        noDefaultLabels = true;
+        extraPackages = [
+          pkgs.nix
+          pkgs.deploy-rs
+          pkgs.openssh
+        ];
+        replace = true;
+        serviceOverrides = {
+          BindPaths = "/nix/store /nix/var/nix/db /nix/var/nix/daemon-socket";
         };
-      })
-    (lib.range 1 3));
+      };
+    }) (lib.range 1 3)
+  );
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

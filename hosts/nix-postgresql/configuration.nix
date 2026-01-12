@@ -1,17 +1,22 @@
-{ inputs, pkgs, config, ... }: {
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
+{
   astahhu.common = {
     is_server = true;
     is_lxc = true;
     uses_btrfs = true;
   };
 
-
   # Change for each System
   networking.hostName = "nix-postgresql";
   networking.domain = "ad.astahhu.de";
   networking.useDHCP = false;
 
-  # Uncomment if you need Secrets for this Hosts, AFTER the first install  
+  # Uncomment if you need Secrets for this Hosts, AFTER the first install
   sops.defaultSopsFile = ../../secrets/nix-postgresql.yaml;
 
   systemd.network = {
@@ -44,8 +49,6 @@
     fallbackDns = [ ];
   };
 
-
-
   # Networking
   networking.firewall.enable = true;
 
@@ -58,10 +61,9 @@
     keyMap = "us";
   };
 
-
   services.traefik.staticConfigOptions.entryPoints.websecure = {
-    forwardedHeaders.insecure = true; #trustedIPs = [ "134.99.154.48" ];
-    proxyProtocol.insecure = true; #trustedIPs = [ "134.99.154.48" ];
+    forwardedHeaders.insecure = true; # trustedIPs = [ "134.99.154.48" ];
+    proxyProtocol.insecure = true; # trustedIPs = [ "134.99.154.48" ];
   };
 
   astahhu.services.postgres = {

@@ -1,6 +1,7 @@
 {
   ...
-}: {
+}:
+{
   config = {
     astahhu.common.admin-users.sotga = {
       setPassword = false;

@@ -1,8 +1,10 @@
-{ config
-, lib
-, pkgs
-, ...
-}: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   # Boot
   boot.loader.systemd-boot.enable = true;
   boot.kernelParams = [ "quiet" ];

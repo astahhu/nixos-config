@@ -2,7 +2,8 @@
   pkgs,
   sops-nix,
   ...
-}: {
+}:
+{
   # imports all files ending in .asc/.gpg
   sopsPGPKeyDirs = [
     "${toString ./.}/keys/hosts"
@@ -29,6 +30,6 @@
   #sopsGPGHome = "${toString ./.}/../gnupg";
 
   nativeBuildInputs = [
-    (pkgs.callPackage sops-nix {}).sops-import-keys-hook
+    (pkgs.callPackage sops-nix { }).sops-import-keys-hook
   ];
 }

@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   options = {
     jamesofscout.yubikey-gpg.enable = lib.mkEnableOption "Enable Yubikey and GPG Support";
   };

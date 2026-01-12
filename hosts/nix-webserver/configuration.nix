@@ -1,17 +1,22 @@
-{ inputs, pkgs, config, ... }: {
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
+{
   astahhu.common = {
     is_server = true;
     is_lxc = true;
     uses_btrfs = true;
   };
 
-
   # Change for each System
   networking.hostName = "nix-webserver";
   networking.domain = "ad.astahhu.de";
   networking.useDHCP = false;
 
-  # Uncomment if you need Secrets for this Hosts, AFTER the first install  
+  # Uncomment if you need Secrets for this Hosts, AFTER the first install
   sops.defaultSopsFile = ../../secrets/nix-webserver.yaml;
 
   systemd.network = {
@@ -44,8 +49,6 @@
     fallbackDns = [ ];
   };
 
-
-
   # Networking
   networking.firewall.enable = true;
 
@@ -58,22 +61,21 @@
     keyMap = "us";
   };
 
-
   nix-tun.services.traefik = {
     enable_docker = true;
   };
 
-
   services.traefik.staticConfigOptions.entryPoints.websecure = {
-    forwardedHeaders.insecure = true; #trustedIPs = [ "134.99.154.48" ];
-    proxyProtocol.insecure = true; #trustedIPs = [ "134.99.154.48" ];
+    forwardedHeaders.insecure = true; # trustedIPs = [ "134.99.154.48" ];
+    proxyProtocol.insecure = true; # trustedIPs = [ "134.99.154.48" ];
   };
 
   astahhu.services.calendar-join = {
     enable = true;
     calendars = {
       fachschaften = {
-        "FS Physik" = "https://nextcloud.inphima.de/remote.php/dav/public-calendars/6tsADsaDtDHesoXa?export";
+        "FS Physik" =
+          "https://nextcloud.inphima.de/remote.php/dav/public-calendars/6tsADsaDtDHesoXa?export";
         "FS Info" = "https://nextcloud.inphima.de/remote.php/dav/public-calendars/CAx5MEp7cGrQ6cEe?export";
       };
     };
@@ -103,28 +105,37 @@
     };
   };
 
-  sops.secrets.grafana-ntfy-pass = { };
-  containers.grafana.bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}".mountPoint = config.sops.secrets.grafana-ntfy-pass.path;
+  services.traefik.staticConfigOptions.metrics.prometheus.buckets = [
+    0.1
+    0.3
+    1.2
+    5.0
+  ];
 
-  nix-tun.utils.containers.grafana.config = { ... }: {
-    services.grafana-to-ntfy = {
-      enable = true;
-      settings = {
-        ntfyBAuthUser = "grafana";
-        ntfyBAuthPass = config.sops.secrets.grafana-ntfy-pass.path;
-        bauthUser = "grafana";
-        bauthPass = config.sops.secrets.grafana-ntfy-pass.path;
-        ntfyUrl = "https://ntfy.astahhu.de";
+  sops.secrets.grafana-ntfy-pass = { };
+  containers.grafana.bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}".mountPoint =
+    config.sops.secrets.grafana-ntfy-pass.path;
+
+  nix-tun.utils.containers.grafana.config =
+    { ... }:
+    {
+      services.grafana-to-ntfy = {
+        enable = true;
+        settings = {
+          ntfyBAuthUser = "grafana";
+          ntfyBAuthPass = config.sops.secrets.grafana-ntfy-pass.path;
+          bauthUser = "grafana";
+          bauthPass = config.sops.secrets.grafana-ntfy-pass.path;
+          ntfyUrl = "https://ntfy.astahhu.de";
+        };
       };
     };
-  };
 
   nix-tun.services.traefik.services.ntfy-ntfy.router.tls.enable = false;
   astahhu.services.ntfy = {
     enable = true;
     domain = "ntfy.astahhu.de";
   };
-
 
   astahhu.services.keycloak = {
     enable = true;
@@ -137,9 +148,9 @@
   };
 
   astahhu.services.pretix = {
-      enable = true;
-      hostname = "pretix.astahhu.de";
-      email = "noreply@asta.hhu.de";
+    enable = true;
+    hostname = "pretix.astahhu.de";
+    email = "noreply@asta.hhu.de";
   };
 
   astahhu.wordpress = {

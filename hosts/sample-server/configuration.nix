@@ -1,7 +1,8 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   astahhu.common = {
     is_server = true;
     is_qemuvm = true;
@@ -14,7 +15,7 @@
   # Change for each System
   networking.hostName = "nix-sample-server";
 
-  # Uncomment if you need Secrets for this Hosts, AFTER the first install  
+  # Uncomment if you need Secrets for this Hosts, AFTER the first install
   # sops.defaultSopsFile = ../../secrets/nix-sample-server.yaml;
 
   # Networking
@@ -29,7 +30,6 @@
   console = {
     keyMap = "us";
   };
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

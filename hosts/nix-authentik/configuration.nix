@@ -1,7 +1,8 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   imports = [
     ../../modules/modules.nix
     ./hardware-configuration.nix
@@ -16,7 +17,7 @@
   # Networking
   networking.nat = {
     enable = true;
-    internalInterfaces = ["ve-+"];
+    internalInterfaces = [ "ve-+" ];
     externalInterface = "ens192";
     # Lazy IPv6 connectivity for the container
     enableIPv6 = true;
@@ -74,7 +75,6 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  security.pam.sshAgentAuth.enable = true;
 
   myprograms.cli.better-tools.enable = true;
 
