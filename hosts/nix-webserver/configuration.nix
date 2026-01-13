@@ -207,6 +207,9 @@
       koma95 = {
         hostname = "koma95.astahhu.de";
       };
+      old-sp = {
+        hostname = "old.sphhu.de";
+      };
     };
   };
 
