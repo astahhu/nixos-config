@@ -166,8 +166,8 @@
             RestartSec = 5;
             EnvironmentFile = "/secrets/to-ntfy";
           };
+          wantedBy = [ "multi-user.target" ];
         };
-        wantedBy = [ "multi-user.target" ];
       };
   };
 
