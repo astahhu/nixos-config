@@ -146,6 +146,9 @@
 
   containers.grafana.bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}".mountPoint =
     config.sops.secrets.grafana-ntfy-pass.path;
+  containers.grafana.bindMounts."${config.sops.secrets.grafana-to-ntfy.path}" = {
+    hostPath = config.sops.secrets.grafana-to-ntfy.path;
+  };
 
   nix-tun.utils.containers.grafana = {
     secrets = [
@@ -165,6 +168,7 @@
           };
           wantedBy = [ "multi-user.target" ];
         };
+        wantedBy = [ "multi-user.target" ];
       };
   };
 
