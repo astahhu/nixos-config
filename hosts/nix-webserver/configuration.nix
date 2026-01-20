@@ -164,7 +164,7 @@
           serviceConfig = {
             Restart = "always";
             RestartSec = 5;
-            EnvironmentFile = "/secrets/to-ntfy";
+            EnvironmentFile = "/secret/to-ntfy";
           };
           wantedBy = [ "multi-user.target" ];
         };
