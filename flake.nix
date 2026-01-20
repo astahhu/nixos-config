@@ -22,6 +22,8 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     nix-topology.url = "github:oddlama/nix-topology";
+    grafana2ntfy.url = "github:fscs/grafana-to-ntfy";
+    grafana2ntfy.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
