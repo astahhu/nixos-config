@@ -1,6 +1,7 @@
 {
   inputs,
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -138,21 +139,30 @@
   };
 
   sops.secrets.grafana-ntfy-pass = { };
+  sops.secrets.grafana-to-ntfy = {
+    sopsFile = ../../secrets/nix-webserver.yaml;
+    key = "grafana-2-ntfy-env";
+  };
+
   containers.grafana.bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}".mountPoint =
     config.sops.secrets.grafana-ntfy-pass.path;
+  containers.grafana.bindMounts."${config.sops.secrets.grafana-to-ntfy.path}" = {
+    hostPath = config.sops.secrets.grafana-to-ntfy.path;
+  };
 
   nix-tun.utils.containers.grafana.config =
     { ... }:
     {
-      services.grafana-to-ntfy = {
-        enable = true;
-        settings = {
-          ntfyBAuthUser = "grafana";
-          ntfyBAuthPass = config.sops.secrets.grafana-ntfy-pass.path;
-          bauthUser = "grafana";
-          bauthPass = config.sops.secrets.grafana-ntfy-pass.path;
-          ntfyUrl = "https://ntfy.astahhu.de";
+      systemd.services.grafana-to-ntfy = {
+        after = [ "network.target" ];
+        path = [ pkgs.bash ];
+        script = "${lib.getExe inputs.grafana2ntfy.packages.${pkgs.stdenv.system}.default}";
+        serviceConfig = {
+          Restart = "always";
+          RestartSec = 5;
+          EnvironmentFile = config.sops.secrets.grafana-to-ntfy.path;
         };
+        wantedBy = [ "multi-user.target" ];
       };
     };
 
