@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOs/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOs/nixpkgs";
     calendar-join.url = "github:astahhu/calendar-join";
     home-manager.url = "github:nix-community/home-manager";
     nixvim = {
