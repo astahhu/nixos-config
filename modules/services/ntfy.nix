@@ -19,17 +19,10 @@
   config = lib.mkIf config.astahhu.services.ntfy.enable {
 
     sops.secrets.grafana-ntfy-pass = { };
-    sops.secrets.grafana-to-ntfy = {
-      sopsFile = ../../secrets/nix-webserver.yaml;
-      key = "grafana-2-ntfy-env";
-    };
 
     containers.ntfy = {
       bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}" = {
         hostPath = config.sops.secrets.grafana-ntfy-pass.path;
-      };
-      bindMounts."${config.sops.secrets.grafana-to-ntfy.path}" = {
-        hostPath = config.sops.secrets.grafana-to-ntfy.path;
       };
 
     };
@@ -49,17 +42,6 @@
           boot.isContainer = true;
           networking.firewall.allowedTCPPorts = [ 8000 ];
 
-          systemd.services.grafana-to-ntfy = {
-            after = [ "network.target" ];
-            path = [ pkgs.bash ];
-            script = "${lib.getExe inputs.grafana2ntfy.packages.${pkgs.stdenv.system}.default}";
-            serviceConfig = {
-              Restart = "always";
-              RestartSec = 5;
-              EnvironmentFile = config.sops.secrets.grafana-to-ntfy.path;
-            };
-            wantedBy = [ "multi-user.target" ];
-          };
           services.ntfy-sh = {
             enable = true;
             settings = {
