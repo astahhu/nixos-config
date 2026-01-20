@@ -150,21 +150,26 @@
     hostPath = config.sops.secrets.grafana-to-ntfy.path;
   };
 
-  nix-tun.utils.containers.grafana.config =
-    { ... }:
-    {
-      systemd.services.grafana-to-ntfy = {
-        after = [ "network.target" ];
-        path = [ pkgs.bash ];
-        script = "${lib.getExe inputs.grafana2ntfy.packages.${pkgs.stdenv.system}.default}";
-        serviceConfig = {
-          Restart = "always";
-          RestartSec = 5;
-          EnvironmentFile = config.sops.secrets.grafana-to-ntfy.path;
+  nix-tun.utils.containers.grafana = {
+    secrets = [
+      "-to-ntfy"
+    ];
+    config =
+      { ... }:
+      {
+        systemd.services.grafana-to-ntfy = {
+          after = [ "network.target" ];
+          path = [ pkgs.bash ];
+          script = "${lib.getExe inputs.grafana2ntfy.packages.${pkgs.stdenv.system}.default}";
+          serviceConfig = {
+            Restart = "always";
+            RestartSec = 5;
+            EnvironmentFile = config.sops.secrets.grafana-to-ntfy.path;
+          };
+          wantedBy = [ "multi-user.target" ];
         };
-        wantedBy = [ "multi-user.target" ];
       };
-    };
+  };
 
   nix-tun.services.traefik.services.ntfy-ntfy.router.tls.enable = false;
   astahhu.services.ntfy = {
