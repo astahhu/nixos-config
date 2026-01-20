@@ -1,6 +1,6 @@
 {
   inputs,
-  pkgs,
+  lib,
   config,
   ...
 }:
@@ -105,12 +105,37 @@
     };
   };
 
-  services.traefik.staticConfigOptions.metrics.prometheus.buckets = [
-    0.1
-    0.3
-    1.2
-    5.0
-  ];
+  services.traefik.staticConfigOptions.metrics.prometheus = {
+    entryPoint = "metrics";
+    buckets = [
+      0.1
+      0.3
+      1.2
+      5.0
+    ];
+    addEntryPointsLabels = true;
+    addServicesLabels = true;
+    manualRouting = lib.mkForce false;
+    addRoutersLabels = lib.mkForce false;
+  };
+
+  services.prometheus = {
+    enable = true;
+    stateDir = "prometheus";
+    globalConfig.scrape_interval = "1s";
+    retentionTime = "30d";
+    scrapeConfigs = [
+      {
+        job_name = "traefik";
+        metrics_path = "/metrics";
+        static_configs = lib.singleton {
+          targets = [
+            "localhost:9100"
+          ];
+        };
+      }
+    ];
+  };
 
   sops.secrets.grafana-ntfy-pass = { };
   containers.grafana.bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}".mountPoint =
