@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  inputs,
   lib,
   ...
 }:
@@ -15,7 +16,7 @@
     };
   };
 
-  config = lib.mkIf config.astahhu.services.vaultwarden.enable {
+  config = lib.mkIf config.astahhu.services.ntfy.enable {
 
     sops.secrets.grafana-ntfy-pass = { };
 

@@ -1,5 +1,6 @@
 {
   inputs,
+  lib,
   pkgs,
   config,
   ...
@@ -105,31 +106,70 @@
     };
   };
 
-  services.traefik.staticConfigOptions.metrics.prometheus.buckets = [
-    0.1
-    0.3
-    1.2
-    5.0
-  ];
+  services.traefik.staticConfigOptions.metrics.prometheus = {
+    entryPoint = "metrics";
+    buckets = [
+      0.1
+      0.3
+      1.2
+      5.0
+    ];
+    addEntryPointsLabels = true;
+    addServicesLabels = true;
+    manualRouting = lib.mkForce false;
+    addRoutersLabels = lib.mkForce false;
+  };
+
+  services.prometheus = {
+    enable = true;
+    stateDir = "prometheus";
+    globalConfig.scrape_interval = "1s";
+    retentionTime = "30d";
+    scrapeConfigs = [
+      {
+        job_name = "traefik";
+        metrics_path = "/metrics";
+        static_configs = lib.singleton {
+          targets = [
+            "localhost:9100"
+          ];
+        };
+      }
+    ];
+  };
 
   sops.secrets.grafana-ntfy-pass = { };
+  sops.secrets.grafana-to-ntfy = {
+    sopsFile = ../../secrets/nix-webserver.yaml;
+    key = "grafana-2-ntfy-env";
+  };
+
   containers.grafana.bindMounts."${config.sops.secrets.grafana-ntfy-pass.path}".mountPoint =
     config.sops.secrets.grafana-ntfy-pass.path;
+  containers.grafana.bindMounts."${config.sops.secrets.grafana-to-ntfy.path}" = {
+    hostPath = config.sops.secrets.grafana-to-ntfy.path;
+  };
 
-  nix-tun.utils.containers.grafana.config =
-    { ... }:
-    {
-      services.grafana-to-ntfy = {
-        enable = true;
-        settings = {
-          ntfyBAuthUser = "grafana";
-          ntfyBAuthPass = config.sops.secrets.grafana-ntfy-pass.path;
-          bauthUser = "grafana";
-          bauthPass = config.sops.secrets.grafana-ntfy-pass.path;
-          ntfyUrl = "https://ntfy.astahhu.de";
+  nix-tun.utils.containers.grafana = {
+    secrets = [
+      "to-ntfy"
+    ];
+    config =
+      { ... }:
+      {
+        systemd.services.grafana-to-ntfy = {
+          after = [ "network.target" ];
+          path = [ pkgs.bash ];
+          script = "${lib.getExe inputs.grafana2ntfy.packages.${pkgs.stdenv.system}.default}";
+          serviceConfig = {
+            Restart = "always";
+            RestartSec = 5;
+            EnvironmentFile = "/secret/to-ntfy";
+          };
+          wantedBy = [ "multi-user.target" ];
         };
       };
-    };
+  };
 
   nix-tun.services.traefik.services.ntfy-ntfy.router.tls.enable = false;
   astahhu.services.ntfy = {
