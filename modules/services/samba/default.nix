@@ -90,7 +90,7 @@
         certs.samba = {
           email = cfg.acme.email;
           domain = "${lib.strings.toLower cfg.hostname}.${cfg.domain}";
-          dnsResolver = "1.1.1.1";
+          dnsResolver = "134.99.128.2";
           dnsProvider = "cloudflare";
           extraLegoFlags = [
             "-dns.propagation-disable-ans=true"
