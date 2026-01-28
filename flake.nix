@@ -237,7 +237,7 @@
               };
 
               nix-wireguard = {
-                hostname = "134.99.154.242";
+                hostname = "134.99.154.207";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-wireguard;
                   user = "root";
