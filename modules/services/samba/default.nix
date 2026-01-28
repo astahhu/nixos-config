@@ -95,7 +95,7 @@
           extraLegoFlags = [
             #"-dns.propagation-disable-ans=true"
             #"--dns.propagation-rns=true"
-            "--dns.propagation-wait=600"
+            "--dns.propagation-wait=600s"
           ];
           dnsPropagationCheck = true;
           group = "root";
