@@ -110,7 +110,6 @@
   # Networking
   networking.firewall.enable = true;
 
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   # Change for each System
   networking = {
     useDHCP = false;
