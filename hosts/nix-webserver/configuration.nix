@@ -102,6 +102,7 @@
   };
 
   nix-tun.alloy.prometheus-host = "";
+  nix-tun.services.grafana.loki.domain = "loki.astahhu.de";
 
   services.traefik.staticConfigOptions.metrics.prometheus = {
     entryPoint = "metrics";

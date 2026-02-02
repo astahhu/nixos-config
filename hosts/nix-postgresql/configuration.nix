@@ -18,6 +18,8 @@
 
   # Uncomment if you need Secrets for this Hosts, AFTER the first install
   sops.defaultSopsFile = ../../secrets/nix-postgresql.yaml;
+  nix-tun.alloy.prometheus-host = "";
+  environment.etc."alloy/traefik-metrics.alloy".text = "";
 
   systemd.network = {
     enable = true;

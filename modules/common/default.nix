@@ -39,6 +39,9 @@
         ];
       };
 
+      nix-tun.alloy.prometheus-host = "";
+      environment.etc."alloy/traefik-metrics.alloy".text = "";
+
       proxmoxLXC.enable = lib.mkDefault false;
       astahhu = {
         cli.better-tools.enable = true;

@@ -34,7 +34,7 @@
   nix-tun.alloy = {
     enable = true;
     loki-host = "loki.astahhu.de";
-    prometheus-host = "prometheus.astahhu.de";
+    prometheus-host = lib.mkForce "prometheus.astahhu.de";
   };
 
   nix-tun.storage.backup = {

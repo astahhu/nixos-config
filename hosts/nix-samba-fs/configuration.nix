@@ -20,6 +20,9 @@
     format = "binary";
   };
 
+  nix-tun.alloy.prometheus-host = "";
+  environment.etc."alloy/traefik-metrics.alloy".text = "";
+
   sops.defaultSopsFile = ../../secrets/nix-samba-fs.yaml;
 
   astahhu.services.samba = {
