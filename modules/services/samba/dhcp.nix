@@ -119,4 +119,9 @@
     "hostname" = "nix-sp.ad.astahhu.de";
     "hw-address" = "bc2411113683";
   }
+  {
+    "ip-address" = "134.99.154.151";
+    "hostname" = "asta-worspace-01.ad.astahhu.de";
+    "hw-address" = "38f7cdd5299a";
+  }
 ]
