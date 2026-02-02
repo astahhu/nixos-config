@@ -110,10 +110,8 @@
   # Networking
   networking.firewall.enable = true;
 
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   # Change for each System
   networking = {
-    wireless.enable = true;
     useDHCP = false;
     hostName = "nix-samba-fs";
     domain = "ad.astahhu.de";
