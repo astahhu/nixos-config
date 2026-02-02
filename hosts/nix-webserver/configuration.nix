@@ -134,6 +134,17 @@
     ];
   };
 
+  nix-tun.utils.containers.grafana.domains = lib.mkForce {
+    grafana = {
+      domain = "grafana.astahhu.de";
+      port = 3000;
+    };
+    loki = {
+      domain = config.nix-tun.services.grafana.loki.domain;
+      port = 3100;
+    };
+  };
+
   sops.secrets.grafana-ntfy-pass = { };
   sops.secrets.grafana-to-ntfy = {
     sopsFile = ../../secrets/nix-webserver.yaml;
