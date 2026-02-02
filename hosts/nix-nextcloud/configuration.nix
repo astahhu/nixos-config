@@ -24,6 +24,8 @@
     rustc
     cargo
   ];
+  nix-tun.alloy.prometheus-host = "";
+  environment.etc."alloy/traefik-metrics.alloy".text = "";
 
   systemd.network = {
     enable = true;

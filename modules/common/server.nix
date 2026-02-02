@@ -12,14 +12,8 @@
     nix-tun.services = {
       traefik = {
         enable = lib.mkDefault true;
-        enable_prometheus = lib.mkDefault true;
         letsencryptMail = lib.mkDefault "it@asta.hhu.de";
       };
-    };
-    nix-tun.alloy = lib.mkDefault {
-      enable = true;
-      loki-host = "loki.astahhu.de";
-      prometheus-host = "prometheus.astahhu.de";
     };
 
     services.openssh.enable = true;

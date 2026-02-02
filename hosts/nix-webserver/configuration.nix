@@ -98,13 +98,11 @@
       api_url = "https://keycloak.astahhu.de/realms/astaintern/protocol/openid-connect/userinfo";
       role_attribute_path = "contains(roles[*], 'Admin') && 'Admin' || contains(roles[*], 'Editor') && 'Editor' || 'Viewer'";
     };
-    loki.domain = "loki.astahhu.de";
     domain = "grafana.astahhu.de";
-    prometheus = {
-      nixosConfigs = inputs.self.nixosConfigurations;
-      domain = "prometheus.astahhu.de";
-    };
   };
+
+  nix-tun.alloy.prometheus-host = "";
+  nix-tun.services.grafana.loki.domain = "loki.astahhu.de";
 
   services.traefik.staticConfigOptions.metrics.prometheus = {
     entryPoint = "metrics";
@@ -136,6 +134,17 @@
         };
       }
     ];
+  };
+
+  nix-tun.utils.containers.grafana.domains = lib.mkForce {
+    grafana = {
+      domain = "grafana.astahhu.de";
+      port = 3000;
+    };
+    loki = {
+      domain = config.nix-tun.services.grafana.loki.domain;
+      port = 3100;
+    };
   };
 
   sops.secrets.grafana-ntfy-pass = { };

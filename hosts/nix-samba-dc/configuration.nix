@@ -15,6 +15,9 @@
     is_lxc = true;
   };
 
+  nix-tun.alloy.prometheus-host = "";
+  environment.etc."alloy/traefik-metrics.alloy".text = "";
+
   systemd.timers.sync-sysvol = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
