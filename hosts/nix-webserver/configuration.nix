@@ -100,10 +100,6 @@
     };
     loki.domain = "loki.astahhu.de";
     domain = "grafana.astahhu.de";
-    prometheus = {
-      nixosConfigs = inputs.self.nixosConfigurations;
-      domain = "prometheus.astahhu.de";
-    };
   };
 
   services.traefik.staticConfigOptions.metrics.prometheus = {
