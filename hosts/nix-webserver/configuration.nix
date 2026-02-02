@@ -101,6 +101,8 @@
     domain = "grafana.astahhu.de";
   };
 
+  nix-tun.alloy.prometheus-host = { };
+
   services.traefik.staticConfigOptions.metrics.prometheus = {
     entryPoint = "metrics";
     buckets = [
