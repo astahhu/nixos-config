@@ -24,7 +24,7 @@
     rustc
     cargo
   ];
-  nix-tun.alloy.prometheus-host = { };
+  nix-tun.alloy.prometheus-host = "";
 
   systemd.network = {
     enable = true;
