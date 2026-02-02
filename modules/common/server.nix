@@ -15,10 +15,6 @@
         letsencryptMail = lib.mkDefault "it@asta.hhu.de";
       };
     };
-    nix-tun.alloy = lib.mkDefault {
-      enable = true;
-      loki-host = "loki.astahhu.de";
-    };
 
     services.openssh.enable = true;
 
