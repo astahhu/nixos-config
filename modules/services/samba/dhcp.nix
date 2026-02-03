@@ -109,12 +109,6 @@
 
   }
   {
-    "ip-address" = "134.99.154.21";
-    "hostname" = "EPSONEDE236.asta2012.local";
-    "hw-address" = "381a52ede236";
-
-  }
-  {
     "ip-address" = "134.99.154.238";
     "hostname" = "nix-sp.ad.astahhu.de";
     "hw-address" = "bc2411113683";
@@ -135,7 +129,7 @@
     "hw-address" = "94c691a1158f";
   }
   {
-    "ip-address" = "134.99.154.163";
+    "ip-address" = "134.99.154.162";
     "hostname" = "asta-vorstand-02.ad.astahhu.de";
     "hw-address" = "94c691a3aeb4";
   }
