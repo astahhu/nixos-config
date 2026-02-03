@@ -122,6 +122,21 @@
   {
     "ip-address" = "134.99.154.151";
     "hostname" = "asta-worspace-01.ad.astahhu.de";
+    "hw-address" = "38f7cdd285fa";
+  }
+  {
+    "ip-address" = "134.99.154.152";
+    "hostname" = "asta-worspace-02.ad.astahhu.de";
     "hw-address" = "38f7cdd5299a";
+  }
+  {
+    "ip-address" = "134.99.154.161";
+    "hostname" = "asta-vorstand-01.ad.astahhu.de";
+    "hw-address" = "94c691a1158f";
+  }
+  {
+    "ip-address" = "134.99.154.162";
+    "hostname" = "asta-vorstand-02.ad.astahhu.de";
+    "hw-address" = "94c691a3aeb4";
   }
 ]
