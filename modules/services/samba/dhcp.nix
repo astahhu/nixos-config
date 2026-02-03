@@ -135,7 +135,7 @@
     "hw-address" = "94c691a1158f";
   }
   {
-    "ip-address" = "134.99.154.162";
+    "ip-address" = "134.99.154.163";
     "hostname" = "asta-vorstand-02.ad.astahhu.de";
     "hw-address" = "94c691a3aeb4";
   }
