@@ -169,6 +169,7 @@
               static_configs = lib.singleton {
                 targets = [
                   "134.99.154.51:9100"
+                  "134.99.154.202:9100"
                 ];
               };
             }

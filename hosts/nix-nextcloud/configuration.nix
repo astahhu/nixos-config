@@ -186,6 +186,24 @@
     autoPrune.enable = true;
   };
 
+  services.traefik.staticConfigOptions.metrics.prometheus = {
+    entryPoint = "metrics";
+    buckets = [
+      0.1
+      0.3
+      1.2
+      5.0
+    ];
+    addEntryPointsLabels = true;
+    addServicesLabels = true;
+    manualRouting = lib.mkForce false;
+    addRoutersLabels = lib.mkForce false;
+  };
+
+  services.traefik.staticConfigOptions.entryPoints.metrics = {
+    address = ":9100";
+  };
+
   networking.firewall.trustedInterfaces = [ "ve-nextcloud" ];
 
   # Enable the OpenSSH daemon.
