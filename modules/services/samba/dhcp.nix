@@ -144,6 +144,11 @@
     "hw-address" = "94c691a36a79";
   }
   {
+    "ip-address" = "134.99.154.171";
+    "hostname" = "asta-fsref-01.ad.astahhu.de";
+    "hw-address" = "84a9386b688b";
+  }
+  {
     "ip-address" = "134.99.154.213";
     "hostname" = "vorstandsdrucker.ad.astahhu.de";
     "hw-address" = "381A52EDE236";
