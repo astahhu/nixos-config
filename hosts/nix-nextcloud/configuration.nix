@@ -213,6 +213,7 @@
     80
     443
     3478
+    9100
   ];
   networking.firewall.allowedUDPPorts = [
     443
