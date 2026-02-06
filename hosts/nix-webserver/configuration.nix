@@ -118,6 +118,10 @@
     addRoutersLabels = lib.mkForce false;
   };
 
+  services.traefik.staticConfigOptions.entryPoints.metrics = {
+    address = ":9100";
+  };
+
   services.prometheus = {
     enable = true;
     stateDir = "prometheus";
