@@ -173,6 +173,17 @@
                 ];
               };
             }
+            {
+              job_name = "node_exporter";
+              metrics_path = "/";
+              static_configs = lib.singleton {
+                targets = [
+                  "134.99.154.200:9000"
+                  "134.99.154.201:9000"
+                  "134.99.154.207:9000"
+                ];
+              };
+            }
           ];
         };
       };

@@ -42,6 +42,17 @@
       nix-tun.alloy.prometheus-host = "";
       environment.etc."alloy/traefik-metrics.alloy".text = "";
 
+      services.prometheus.exporters.node = {
+        enable = true;
+        port = 9000;
+        enabledCollectors = [
+          "systemd"
+          "meminfo"
+        ];
+      };
+
+      networking.firewall.allowedTCPPorts = [ 9000 ];
+
       proxmoxLXC.enable = lib.mkDefault false;
       astahhu = {
         cli.better-tools.enable = true;
