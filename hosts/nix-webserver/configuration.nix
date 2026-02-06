@@ -101,9 +101,6 @@
     domain = "grafana.astahhu.de";
   };
 
-  nix-tun.alloy.prometheus-host = "";
-  nix-tun.services.grafana.loki.domain = "loki.astahhu.de";
-
   services.traefik.staticConfigOptions.metrics.prometheus = {
     entryPoint = "metrics";
     buckets = [
@@ -124,7 +121,7 @@
 
   services.prometheus = {
     enable = true;
-    stateDir = "prometheus";
+    stateDir = "prometheus2";
     globalConfig.scrape_interval = "1s";
     retentionTime = "30d";
     scrapeConfigs = [
@@ -144,10 +141,6 @@
     grafana = {
       domain = "grafana.astahhu.de";
       port = 3000;
-    };
-    loki = {
-      domain = config.nix-tun.services.grafana.loki.domain;
-      port = 3100;
     };
   };
 
