@@ -175,7 +175,7 @@
             }
             {
               job_name = "node_exporter";
-              metrics_path = "/";
+              metrics_path = "/metrics";
               static_configs = lib.singleton {
                 targets = [
                   "134.99.154.200:9000"
