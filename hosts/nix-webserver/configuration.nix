@@ -119,24 +119,6 @@
     address = ":9100";
   };
 
-  services.prometheus = {
-    enable = true;
-    stateDir = "prometheus2";
-    globalConfig.scrape_interval = "1s";
-    retentionTime = "30d";
-    scrapeConfigs = [
-      {
-        job_name = "traefik";
-        metrics_path = "/metrics";
-        static_configs = lib.singleton {
-          targets = [
-            "134.99.154.51:9100"
-          ];
-        };
-      }
-    ];
-  };
-
   nix-tun.utils.containers.grafana.domains = lib.mkForce {
     grafana = {
       domain = "grafana.astahhu.de";
@@ -173,6 +155,24 @@
             EnvironmentFile = "/secret/to-ntfy";
           };
           wantedBy = [ "multi-user.target" ];
+        };
+
+        services.prometheus = {
+          enable = true;
+          stateDir = "prometheus2";
+          globalConfig.scrape_interval = "1s";
+          retentionTime = "30d";
+          scrapeConfigs = [
+            {
+              job_name = "traefik";
+              metrics_path = "/metrics";
+              static_configs = lib.singleton {
+                targets = [
+                  "134.99.154.51:9100"
+                ];
+              };
+            }
+          ];
         };
       };
   };
