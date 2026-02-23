@@ -166,7 +166,7 @@
   {
     "ip-address" = "134.99.154.175";
     "hostname" = "asta-kultref-01.ad.astahhu.de";
-    "hw-address" = "94c691a36b35";
+    "hw-address" = "94c691a4bd16";
   }
   {
     "ip-address" = "134.99.154.213";
