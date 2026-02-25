@@ -6,8 +6,8 @@
 {
   imports = [
     inputs.disko.nixosModules.default
-    inputs.nix-tun.nixosModules.nix-tun
     inputs.home-manager.nixosModules.home-manager
+    inputs.impermanence.nixosModules.default
     inputs.nixos-generators.nixosModules.all-formats
     inputs.sops-nix.nixosModules.sops
     inputs.nix-topology.nixosModules.default
@@ -26,6 +26,7 @@
     ./services/postgres.nix
     ./services/ntfy.nix
     ./development/vm.nix
+    ./nix-tun
   ];
 
   astahhu.cli.better-tools.enable = lib.mkDefault true;

@@ -9,9 +9,7 @@
     deploy-rs.url = "github:serokell/deploy-rs";
     devshell.url = "github:numtide/devshell";
     sops-nix.url = "github:Mic92/sops-nix";
-    nix-tun.url = "github:nix-tun/nixos-modules";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    nix-tun.inputs.nixpkgs.follows = "nixpkgs";
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
