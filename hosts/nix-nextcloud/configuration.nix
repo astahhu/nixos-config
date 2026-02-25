@@ -227,6 +227,7 @@
   ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
+  networking.hostId = "a1b2c3d4";
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
