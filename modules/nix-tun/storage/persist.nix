@@ -145,6 +145,7 @@ in
       value = {
         device = "${opts.pool}/persist/${name}";
         fsType = "zfs";
+        neededForBoot = true;
       };
     }) opts.datasets;
 
