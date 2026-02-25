@@ -4,41 +4,38 @@
   lib,
   ...
 }:
+
 let
   opts = config.nix-tun.storage.persist;
 in
 {
   options.nix-tun.storage.persist = {
     enable = lib.mkEnableOption ''
-      A wrapper around impermanence and ZFS auto snapshots.
-      Expects a ZFS pool with the following dataset layout:
+      ZFS-based persistence layer.
 
-      - pool/root     <- mounted at /
-      - pool/nix      <- mounted at /nix
-      - pool/persist  <- mounted at /persist
+      Expected layout:
 
-      Each persistent entry will create its own ZFS dataset under pool/persist.
+        pool/root     → /
+        pool/nix      → /nix
+        pool/persist  → /persist
+
+      Each entry creates a ZFS dataset under:
+        <pool>/persist/<name>
     '';
 
     pool = lib.mkOption {
       type = lib.types.str;
       default = "zpool";
-      description = "Name of the ZFS pool used for persistent storage.";
+      description = "Name of the ZFS pool.";
     };
 
     path = lib.mkOption {
       type = lib.types.str;
       default = "/persist";
-      description = ''
-        Root directory for all non-generated persistent storage,
-        except /nix and /boot.
-      '';
+      description = "Root persistence mountpoint.";
     };
 
-    is_server = lib.mkEnableOption ''
-      Enable if this system is a server.
-      Only servers are backed up automatically by the backup-server module.
-    '';
+    is_server = lib.mkEnableOption "Mark this system as a server.";
 
     datasets = lib.mkOption {
       type = lib.types.attrsOf (
@@ -46,6 +43,7 @@ in
           { name, ... }:
           {
             options = {
+
               owner = lib.mkOption {
                 type = lib.types.str;
                 default = "root";
@@ -64,21 +62,18 @@ in
               backup = lib.mkOption {
                 type = lib.types.bool;
                 default = true;
-                description = "Whether this dataset should be snapshotted.";
+                description = "Enable ZFS snapshotting for this dataset.";
               };
 
               bindMountDirectories = lib.mkOption {
                 type = lib.types.bool;
                 default = false;
-                description = ''
-                  If enabled, directories inside this dataset
-                  are bind-mounted to their respective paths in /.
-                '';
+                description = "Enable impermanence bind mounts.";
               };
 
               path = lib.mkOption {
                 type = lib.types.str;
-                default = "${config.nix-tun.storage.persist.path}/${name}";
+                default = "${opts.path}/${name}";
               };
 
               directories = lib.mkOption {
@@ -109,8 +104,8 @@ in
           }
         )
       );
+
       default = { };
-      description = "ZFS datasets that should be persistent.";
     };
   };
 
@@ -121,16 +116,19 @@ in
     ########################################
 
     nix-tun.storage.persist.datasets = {
+
       system = {
+        bindMountDirectories = true;
+
         directories = {
           "/var/log" = { };
           "/var/lib/nixos" = { };
           "/var/lib/systemd/coredump" = { };
+
           "/etc/NetworkManager/system-connections/" = lib.mkIf config.networking.networkmanager.enable {
             mode = "0700";
           };
         };
-        bindMountDirectories = true;
       };
 
       ssh-keys = {
@@ -139,7 +137,7 @@ in
     };
 
     ########################################
-    # ZFS dataset creation
+    # ZFS Filesystem Mounts
     ########################################
 
     fileSystems = lib.mapAttrs' (name: value: {
@@ -151,7 +149,7 @@ in
     }) opts.datasets;
 
     ########################################
-    # Directory creation
+    # Directory Creation
     ########################################
 
     systemd.tmpfiles.rules = builtins.concatLists (
@@ -167,7 +165,7 @@ in
     );
 
     ########################################
-    # Impermanence integration
+    # Impermanence Integration
     ########################################
 
     environment.persistence = lib.mapAttrs' (name: value: {
@@ -182,31 +180,24 @@ in
         }) value.directories;
         files = [ ];
       };
-    }) (lib.filterAttrs (n: v: v.bindMountDirectories) opts.datasets);
+    }) (lib.filterAttrs (_: v: v.bindMountDirectories) opts.datasets);
 
     ########################################
-    # ZFS automatic snapshots
+    # ZFS Auto Snapshot (GLOBAL)
     ########################################
 
     services.zfs.autoSnapshot = {
       enable = true;
 
-      frequent = 6; # hourly snapshots
+      frequent = 6;
       hourly = 24;
       daily = 7;
       weekly = 4;
       monthly = 3;
-
-      datasets = lib.mapAttrs' (name: value: {
-        name = "${opts.pool}/persist/${name}";
-        value = {
-          frequent = value.backup;
-        };
-      }) opts.datasets;
     };
 
     ########################################
-    # SSH Host Keys (persisted)
+    # SSH Host Keys
     ########################################
 
     services.openssh.hostKeys = [
