@@ -4,15 +4,20 @@
   lib,
   ...
 }:
+
 {
-  options = {
-    astahhu.services.samba.fs = {
-      enable = lib.mkEnableOption "Enable Samba Fileserver";
-      shares = lib.mkOption {
-        type = lib.types.attrs;
-        description = "Samba Shares";
-        default = { };
-      };
+  options.astahhu.services.samba.fs = {
+    enable = lib.mkEnableOption "Enable Samba Fileserver";
+
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.samba;
+    };
+
+    shares = lib.mkOption {
+      type = lib.types.attrs;
+      default = { };
+      description = "Samba Shares";
     };
   };
 
@@ -21,28 +26,189 @@
       cfg = config.astahhu.services.samba;
     in
     {
+
+      ########################################
+      # Required Services
+      ########################################
+
+      astahhu.services.samba.enable = true;
+
+      services.samba = {
+        enable = true;
+        package = cfg.package;
+        openFirewall = true;
+        nmbd.enable = false;
+        nsswins = false;
+
+        settings = {
+
+          global = {
+            security = "ads";
+            "allow trusted domains" = "yes";
+            "server services" = "-nbt";
+
+            "winbind refresh tickets" = true;
+            "winbind offline logon" = true;
+
+            "template shell" = "${pkgs.fish}/bin/fish";
+
+            "idmap config * : range" = "100000 - 199999";
+            "idmap config AD : backend" = "rid";
+            "idmap config AD : range" = "1000000 - 1999999";
+
+            "inherit acls" = "yes";
+            "vfs objects" = "acl_xattr";
+          };
+
+        }
+        // (lib.mapAttrs (
+          name: value:
+          let
+            sharePath = config.nix-tun.storage.persist.datasets."samba-shares/${name}".path;
+
+            dataset = "${config.nix-tun.storage.persist.pool}/persist/samba-shares/${name}";
+          in
+          {
+            path = sharePath;
+            { config
+, pkgs
+, lib
+, ...
+}:
+
+{
+  options.astahhu.services.samba.fs = {
+    enable = lib.mkEnableOption "Enable Samba Fileserver";
+
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.samba;
+    };
+
+    shares = lib.mkOption {
+      type = lib.types.attrs;
+      default = { };
+      description = "Samba Shares";
+    };
+  };
+
+  config = lib.mkIf config.astahhu.services.samba.fs.enable
+    (let
+      cfg = config.astahhu.services.samba;
+    in
+    {
+
+      ########################################
+      # Required Services
+      ########################################
+
+      astahhu.services.samba.enable = true;
+
+      services.samba = {
+        enable = true;
+        package = cfg.package;
+        openFirewall = true;
+        nmbd.enable = false;
+        nsswins = false;
+
+        settings = {
+
+          global = {
+            security = "ads";
+            "allow trusted domains" = "yes";
+            "server services" = "-nbt";
+
+            "winbind refresh tickets" = true;
+            "winbind offline logon" = true;
+
+            "template shell" = "${pkgs.fish}/bin/fish";
+
+            "idmap config * : range" = "100000 - 199999";
+            "idmap config AD : backend" = "rid";
+            "idmap config AD : range" = "1000000 - 1999999";
+
+            "inherit acls" = "yes";
+            "vfs objects" = "acl_xattr";
+          };
+
+        }
+        // (lib.mapAttrs
+          (name: value:
+            let
+              sharePath =
+                config.nix-tun.storage.persist.datasets."samba-shares/${name}".path;
+
+              dataset =
+                "${config.nix-tun.storage.persist.pool}/persist/samba-shares/${name}";
+            in
+            {
+              path = sharePath;
+              "read only" = "no";
+              "administrative share" = "yes";
+
+              ####################################
+              # ZFS Shadow Copies
+              ####################################
+
+              "vfs objects" = "shadow_copy_zfs acl_xattr";
+              "shadow:dataset" = dataset;
+              "shadow:format" = "auto-%Y-%m-%d-%H%M";
+              "shadow:sort" = "desc";
+
+              "inherit permissions" = "yes";
+              "inherit owner" = "yes";
+            }
+            // value
+          )
+          cfg.shares);
+      };
+
+      ########################################
+      # NSS / Winbind
+      ########################################
+
       system.nssDatabases.passwd = [ "winbind" ];
       system.nssDatabases.group = [ "winbind" ];
-      astahhu.services.samba.enable = true;
-      #fileSystems =
-      #  lib.attrsets.mapAttrs'
-      #    (name: value: {
-      #      name = "/persist/samba-shares/${name}";
-      #      value = {
-      #        device = "/dev/root_vg/root";
-      #        options = [ "noauto" "subvol=/persist/samba-shares/${name}" ];
-      #        depends = [ "/persist" ];
-      #        fsType = "btrfs";
-      #      };
-      #    })
-      #    cfg.fs.shares;
 
-      nix-tun.storage.persist.subvolumes =
-        lib.attrsets.mapAttrs' (name: value: {
-          name = "samba-shares/${name}";
-          value.group = "1000512";
-          value.mode = "0770";
-        }) cfg.fs.shares
+      services.nscd.enable = false;
+      system.nssModules = lib.mkForce [ ];
+
+      security.pam.services.samba.text = ''
+        account required ${cfg.package}/lib/security/pam_winbind.so
+        auth required ${cfg.package}/lib/security/pam_winbind.so
+        password required ${cfg.package}/lib/security/pam_winbind.so
+        session required ${cfg.package}/lib/security/pam_winbind.so
+      '';
+
+      security.pam.krb5.enable = false;
+
+      ########################################
+      # Firewall
+      ########################################
+
+      networking.firewall.allowedTCPPorts = [ 135 139 445 ];
+      networking.firewall.allowedUDPPorts = [ 137 138 ];
+      networking.firewall.allowedTCPPortRanges = [
+        { from = 49152; to = 65535; }
+      ];
+
+      ########################################
+      # Persistent Storage (ZFS)
+      ########################################
+
+      nix-tun.storage.persist.datasets =
+        lib.mapAttrs'
+          (name: _: {
+            name = "samba-shares/${name}";
+            value = {
+              backup = true;
+              path =
+                "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
+              mode = "0770";
+              group = "1000512";
+            };
+          })
+          cfg.shares
         // {
           samba = {
             bindMountDirectories = true;
@@ -53,93 +219,155 @@
             };
           };
         };
+    });
+{ config
+, pkgs
+, lib
+, ...
+}:
 
-      #systemd.services.samba-smbd.preStart = lib.strings.concatStrings (lib.attrsets.mapAttrsToList (name: _: "${pkgs.mount}/bin/mount \"${config.nix-tun.storage.persist.path}/samba-shares/${name}\"\n") cfg.fs.shares);
-      #systemd.services.samba-smbd.postStop = lib.strings.concatStrings (lib.attrsets.mapAttrsToList (name: _: "${pkgs.mount}/bin/umount \"${config.nix-tun.storage.persist.path}/samba-shares/${name}\"\n") cfg.fs.shares);
-      services.nscd.enable = false;
-      system.nssModules = lib.mkForce [ ];
-      systemd.services.samba-nmbd.environment.LD_LIBRARY_PATH = lib.mkForce "${cfg.package}/lib";
-      systemd.services.samba-smbd.environment.LD_LIBRARY_PATH = lib.mkForce "${cfg.package}/lib";
-      security.pam.services.samba.text = ''
-        account required ${cfg.package}/lib/security/pam_winbind.so
+{
+  options.astahhu.services.samba.fs = {
+    enable = lib.mkEnableOption "Enable Samba Fileserver";
 
-        auth required ${cfg.package}/lib/security/pam_winbind.so
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.samba;
+    };
 
-        password required ${cfg.package}/lib/security/pam_winbind.so
+    shares = lib.mkOption {
+      type = lib.types.attrs;
+      default = { };
+      description = "Samba Shares";
+    };
+  };
 
-        session required ${cfg.package}/lib/security/pam_winbind.so
-      '';
+  config = lib.mkIf config.astahhu.services.samba.fs.enable
+    (let
+      cfg = config.astahhu.services.samba;
+    in
+    {
 
-      environment.etc."security/pam_winbind.conf".text = ''
-        [global]
-        krb5_auth = yes
-        krb5_ccache_type = FILE
-      '';
+      ########################################
+      # Required Services
+      ########################################
 
-      security.pam.krb5.enable = false;
-
-      networking.firewall.allowedTCPPorts = [
-        135
-        139
-        445
-      ];
-      networking.firewall.allowedUDPPorts = [
-        137
-        138
-      ];
-      networking.firewall.allowedTCPPortRanges = [
-        {
-          from = 49152;
-          to = 65535;
-        }
-      ];
+      astahhu.services.samba.enable = true;
 
       services.samba = {
         enable = true;
         package = cfg.package;
         openFirewall = true;
-        nsswins = false;
         nmbd.enable = false;
+        nsswins = false;
 
         settings = {
+
           global = {
+            security = "ads";
             "allow trusted domains" = "yes";
-            "security" = "ads";
             "server services" = "-nbt";
-            "guest ok" = false;
+
             "winbind refresh tickets" = true;
             "winbind offline logon" = true;
+
             "template shell" = "${pkgs.fish}/bin/fish";
+
             "idmap config * : range" = "100000 - 199999";
-            "idmap config AD.ASTAHHU : backend" = "rid";
-            "idmap config AD.ASTAHHU : range" = "1000000 - 1999999";
-            "idmap config ASTA2012 : backend" = "rid";
-            "idmap config ASTA2012 : range" = "2000000 - 2999999";
+            "idmap config AD : backend" = "rid";
+            "idmap config AD : range" = "1000000 - 1999999";
+
             "inherit acls" = "yes";
             "vfs objects" = "acl_xattr";
           };
+
         }
-        // (lib.attrsets.mapAttrs' (name: value: {
-          name = "${name}";
-          value = {
-            path = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}".path;
-            "read only" = "no";
-            "veto files" = "/.snapshots/";
-            "veto oplock files" = "/.snapshots/";
-            "administrative share" = "yes";
-            "vfs objects" = "btrfs shadow_copy2 acl_xattr";
-            "shadow:fixinodes" = "yes";
-            "shadow:localtime" = "yes";
-            "shadow:format" = "${name}.%Y%m%dT%H%M%S%z";
-            "shadow:snapdir" = ".snapshots";
-            "shadow:crossmountpoints" = "yes";
-            "shadow:mountpoint" = config.nix-tun.storage.persist.subvolumes."samba-shares/${name}".path;
-            "inherit permissions" = "yes";
-            "inherit owner" = "yes";
-          }
-          // value;
-        }) config.astahhu.services.samba.fs.shares);
+        // (lib.mapAttrs
+          (name: value:
+            let
+              sharePath =
+                config.nix-tun.storage.persist.datasets."samba-shares/${name}".path;
+
+              dataset =
+                "${config.nix-tun.storage.persist.pool}/persist/samba-shares/${name}";
+            in
+            {
+              path = sharePath;
+              "read only" = "no";
+              "administrative share" = "yes";
+
+              ####################################
+              # ZFS Shadow Copies
+              ####################################
+
+              "vfs objects" = "shadow_copy_zfs acl_xattr";
+              "shadow:dataset" = dataset;
+              "shadow:format" = "auto-%Y-%m-%d-%H%M";
+              "shadow:sort" = "desc";
+
+              "inherit permissions" = "yes";
+              "inherit owner" = "yes";
+            }
+            // value
+          )
+          cfg.shares);
       };
-    }
-  );
+
+      ########################################
+      # NSS / Winbind
+      ########################################
+
+      system.nssDatabases.passwd = [ "winbind" ];
+      system.nssDatabases.group = [ "winbind" ];
+
+      services.nscd.enable = false;
+      system.nssModules = lib.mkForce [ ];
+
+      security.pam.services.samba.text = ''
+        account required ${cfg.package}/lib/security/pam_winbind.so
+        auth required ${cfg.package}/lib/security/pam_winbind.so
+        password required ${cfg.package}/lib/security/pam_winbind.so
+        session required ${cfg.package}/lib/security/pam_winbind.so
+      '';
+
+      security.pam.krb5.enable = false;
+
+      ########################################
+      # Firewall
+      ########################################
+
+      networking.firewall.allowedTCPPorts = [ 135 139 445 ];
+      networking.firewall.allowedUDPPorts = [ 137 138 ];
+      networking.firewall.allowedTCPPortRanges = [
+        { from = 49152; to = 65535; }
+      ];
+
+      ########################################
+      # Persistent Storage (ZFS)
+      ########################################
+
+      nix-tun.storage.persist.datasets =
+        lib.mapAttrs'
+          (name: _: {
+            name = "samba-shares/${name}";
+            value = {
+              backup = true;
+              path =
+                "${config.nix-tun.storage.persist.path}/samba-shares/${name}";
+              mode = "0770";
+              group = "1000512";
+            };
+          })
+          cfg.shares
+        // {
+          samba = {
+            bindMountDirectories = true;
+            directories = {
+              "/var/lib/samba" = { };
+              "/var/lib/samba/private" = { };
+              "/var/lock/samba" = { };
+            };
+          };
+        };
+    });
 }
