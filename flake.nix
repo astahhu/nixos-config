@@ -39,16 +39,16 @@
         flake = {
 
           nixosConfigurations = {
-            nix-nextcloud = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-nextcloud/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
-
+            # nix-nextcloud = inputs.nixpkgs.lib.nixosSystem {
+            #   system = "x86_64-linux";
+            #   modules = [
+            #     ./hosts/nix-nextcloud/configuration.nix
+            #     ./modules
+            #     ./users/admin-users.nix
+            #   ];
+            #   specialArgs = { inherit inputs; };
+            # };
+            #
             nix-postgresql = inputs.nixpkgs.lib.nixosSystem {
               system = "x86_64-linux";
               modules = [
@@ -59,16 +59,16 @@
               specialArgs = { inherit inputs; };
             };
 
-            nix-samba-fs = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-samba-fs/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
-
+            # nix-samba-fs = inputs.nixpkgs.lib.nixosSystem {
+            #   system = "x86_64-linux";
+            #   modules = [
+            #     ./hosts/nix-samba-fs/configuration.nix
+            #     ./modules
+            #     ./users/admin-users.nix
+            #   ];
+            #   specialArgs = { inherit inputs; };
+            # };
+            #
             nix-samba-dc = inputs.nixpkgs.lib.nixosSystem {
               system = "x86_64-linux";
               modules = [
