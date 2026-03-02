@@ -214,6 +214,9 @@
       astahhu-neu = {
         hostname = "neu.astahhu.de";
       };
+      astahhu-dev = {
+        hostname = "dev.astahhu.de";
+      };
       fsref = {
         hostname = "fsref.astahhu.de";
       };
