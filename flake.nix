@@ -195,15 +195,15 @@
                 };
               };
 
-              nix-samba-fs = {
-                hostname = "nix-samba-fs.ad.astahhu.de";
-                profiles.samba = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-fs;
-                  user = "root";
-                  confirmTimeout = 300;
-                  activationTimeout = 600;
-                };
-              };
+              # nix-samba-fs = {
+              #   hostname = "nix-samba-fs.ad.astahhu.de";
+              #   profiles.samba = {
+              #     path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-fs;
+              #     user = "root";
+              #     confirmTimeout = 300;
+              #     activationTimeout = 600;
+              #   };
+              # };
 
               nix-postgresql = {
                 hostname = "134.99.154.212";
@@ -224,17 +224,17 @@
                 };
               };
 
-              nix-nextcloud = {
-                hostname = "nix-nextcloud.ad.astahhu.de";
-                profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-nextcloud;
-                  user = "root";
-                  # Nextcloud should never rollback
-                  autoRollback = false;
-                  confirmTimeout = 180;
-                  activationTimeout = 600;
-                };
-              };
+              # nix-nextcloud = {
+              #   hostname = "nix-nextcloud.ad.astahhu.de";
+              #   profiles.system = {
+              #     path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-nextcloud;
+              #     user = "root";
+              #     # Nextcloud should never rollback
+              #     autoRollback = false;
+              #     confirmTimeout = 180;
+              #     activationTimeout = 600;
+              #   };
+              # };
 
               nix-wireguard = {
                 hostname = "134.99.154.207";
