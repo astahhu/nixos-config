@@ -265,6 +265,9 @@
       old-sp = {
         hostname = "old.sphhu.de";
       };
+      vielfalt = {
+        hostname = "vielfalt.astahhu.de";
+      };
     };
   };
 
