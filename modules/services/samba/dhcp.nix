@@ -111,7 +111,7 @@
   {
     "ip-address" = "134.99.154.238";
     "hostname" = "nix-sp.ad.astahhu.de";
-    "hw-address" = "bc2411113683";
+    "hw-address" = "bc241130a4db";
   }
   {
     "ip-address" = "134.99.154.151";
