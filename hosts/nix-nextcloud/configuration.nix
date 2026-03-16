@@ -142,7 +142,6 @@
     no-tcp-relay = lib.mkForce false;
     extraConfig = lib.mkForce ''
       verbose
-      external-ip=134.99.154.202
     '';
   };
 
