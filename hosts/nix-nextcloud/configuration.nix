@@ -138,9 +138,15 @@
     };
   };
 
-  containers.coturn.config.services.coturn.extraConfig = lib.mkForce ''
-    verbose
-  '';
+  containers.coturn.config.services.coturn = {
+    no-tcp-relay = lib.mkForce false;
+    extraConfig = lib.mkForce ''
+      verbose
+      external-ip=134.99.154.202/192.168.72.238
+      fingerprint
+      stale-nonce
+    '';
+  };
 
   services.traefik.staticConfigOptions.entryPoints.websecure.forwardedHeaders.trustedIPs = [
     "192.168.0.0/16"
