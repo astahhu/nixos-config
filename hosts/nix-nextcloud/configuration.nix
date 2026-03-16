@@ -142,9 +142,7 @@
     no-tcp-relay = lib.mkForce false;
     extraConfig = lib.mkForce ''
       verbose
-      external-ip=134.99.154.202/192.168.72.238
-      fingerprint
-      stale-nonce
+      external-ip=134.99.154.202
     '';
   };
 
