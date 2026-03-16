@@ -138,6 +138,10 @@
     };
   };
 
+  containers.coturn.config.services.coturn.extraConfig = lib.mkForce ''
+    verbose
+  '';
+
   services.traefik.staticConfigOptions.entryPoints.websecure.forwardedHeaders.trustedIPs = [
     "192.168.0.0/16"
     "172.16.0.0/12"
