@@ -115,13 +115,18 @@
   }
   {
     "ip-address" = "134.99.154.151";
-    "hostname" = "asta-worspace-01.ad.astahhu.de";
+    "hostname" = "asta-workspace-01.ad.astahhu.de";
     "hw-address" = "38f7cdd285fa";
   }
   {
     "ip-address" = "134.99.154.152";
-    "hostname" = "asta-worspace-02.ad.astahhu.de";
+    "hostname" = "asta-workspace-02.ad.astahhu.de";
     "hw-address" = "38f7cdd5299a";
+  }
+  {
+    "ip-address" = "134.99.154.153";
+    "hostname" = "asta-workspace-03.ad.astahhu.de";
+    "hw-address" = "38f7cdd5a0ad";
   }
   {
     "ip-address" = "134.99.154.161";
