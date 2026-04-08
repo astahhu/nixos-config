@@ -89,16 +89,6 @@
               specialArgs = { inherit inputs; };
             };
 
-            nix-webserver = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-webserver/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
-
             nix-wireguard = inputs.nixpkgs.lib.nixosSystem {
               system = "x86_64-linux";
               modules = [
