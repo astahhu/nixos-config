@@ -10,7 +10,7 @@
 }:
 {
 
-  astahhu.common.is_server = true;
+  astahhu.common.
   astahhu.common.is_lxc = true;
 
   # Change for each System

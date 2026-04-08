@@ -66,7 +66,7 @@
   # Enable the Persist Storage Module
   nix-tun.storage.persist = {
     enable = true;
-    is_server = true;
+    
   };
 
   # Use the systemd-boot EFI boot loader.

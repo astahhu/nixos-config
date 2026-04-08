@@ -9,7 +9,7 @@
 
   config = lib.mkIf config.astahhu.common.is_lxc {
     astahhu.common = {
-      is_server = true;
+      
       is_qemuvm = false;
       disko = {
         enable = false;

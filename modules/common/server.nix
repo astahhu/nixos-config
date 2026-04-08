@@ -4,7 +4,6 @@
 
     nix-tun.storage.persist = lib.mkIf config.astahhu.common.uses_btrfs {
       enable = true;
-      is_server = true;
     };
 
     # Enable prometheus node-exporter metrics for the servers.
@@ -18,16 +17,6 @@
 
     services.openssh.enable = true;
 
-    services.btrbk.sshAccess = lib.mkIf config.astahhu.common.uses_btrfs [
-      {
-        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKPGx5yVTgRy/oXLuGvsK9PTr0hHbUCLz/+cKukb+L5K btrbk@asta-backup";
-        roles = [
-          "info"
-          "source"
-          "target"
-        ];
-      }
-    ];
     users.users = {
 
       btrbk = lib.mkIf config.astahhu.common.uses_btrfs { };

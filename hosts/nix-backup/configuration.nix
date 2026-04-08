@@ -31,12 +31,6 @@
 
   nix-tun.yubikey-gpg.enable = true;
 
-  nix-tun.alloy = {
-    enable = true;
-    loki-host = "loki.astahhu.de";
-    prometheus-host = lib.mkForce "prometheus.astahhu.de";
-  };
-
   nix-tun.storage.backup = {
     enable = true;
     nixosConfigs = inputs.self.nixosConfigurations;

@@ -10,7 +10,7 @@
 {
 
   astahhu.common = {
-    is_server = true;
+    
     uses_btrfs = true;
     is_lxc = true;
   };

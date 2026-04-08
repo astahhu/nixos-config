@@ -4,7 +4,7 @@
 { pkgs, ... }:
 {
   astahhu.common = {
-    is_server = true;
+    
     is_qemuvm = true;
     disko = {
       enable = true;
