@@ -204,15 +204,6 @@
                   activationTimeout = 600;
                 };
               };
-              nix-webserver = {
-                hostname = "134.99.154.51";
-                profiles.system = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-webserver;
-                  user = "root";
-                  confirmTimeout = 180;
-                  activationTimeout = 600;
-                };
-              };
 
               nix-nextcloud = {
                 hostname = "nix-nextcloud.ad.astahhu.de";
