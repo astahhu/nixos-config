@@ -39,6 +39,16 @@
         flake = {
 
           nixosConfigurations = {
+            nix-webserver = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [
+                ./hosts/nix-webserver/configuration.nix
+                ./modules
+                ./users/admin-users.nix
+              ];
+              specialArgs = { inherit inputs; };
+            };
+
             nix-nextcloud = inputs.nixpkgs.lib.nixosSystem {
               system = "x86_64-linux";
               modules = [
@@ -53,36 +63,6 @@
               system = "x86_64-linux";
               modules = [
                 ./hosts/nix-postgresql/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
-
-            nix-samba-fs = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-samba-fs/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
-
-            nix-samba-dc = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-samba-dc/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
-
-            nix-samba-dc-01 = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-samba-dc-01/configuration.nix
                 ./modules
                 ./users/admin-users.nix
               ];
@@ -109,26 +89,6 @@
               specialArgs = { inherit inputs; };
             };
 
-            nix-asta2012-dc = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-asta2012-dc/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
-
-            nix-asta2012-dc-01 = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              modules = [
-                ./hosts/nix-asta2012-dc-01/configuration.nix
-                ./modules
-                ./users/admin-users.nix
-              ];
-              specialArgs = { inherit inputs; };
-            };
-
             nix-backup = inputs.nixpkgs.lib.nixosSystem {
               system = "x86_64-linux";
               modules = [
@@ -145,60 +105,20 @@
               "system"
             ];
             nodes = {
-              nix-samba-dc-01 = {
-                hostname = "nix-samba-dc-01.ad.astahhu.de";
-                profiles.samba = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc-01;
-                  user = "root";
-                  confirmTimeout = 300;
-                  activationTimeout = 600;
-                };
-              };
-
-              nix-asta2012-dc = {
-                hostname = "134.99.154.226";
-                profiles.samba2012 = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc;
-                  user = "root";
-                  confirmTimeout = 180;
-                  activationTimeout = 600;
-                };
-              };
-
-              nix-asta2012dc1 = {
-                hostname = "134.99.154.228";
-                profiles.samba2012 = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-asta2012-dc-01;
-                  user = "root";
-                  confirmTimeout = 180;
-                  activationTimeout = 600;
-                };
-              };
-
-              nix-samba-dc = {
-                hostname = "nix-samba-dc.ad.astahhu.de";
-                profiles.samba = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-dc;
-                  user = "root";
-                  confirmTimeout = 300;
-                  activationTimeout = 600;
-                };
-              };
-
-              nix-samba-fs = {
-                hostname = "nix-samba-fs.ad.astahhu.de";
-                profiles.samba = {
-                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-samba-fs;
-                  user = "root";
-                  confirmTimeout = 300;
-                  activationTimeout = 600;
-                };
-              };
-
               nix-postgresql = {
                 hostname = "134.99.154.212";
                 profiles.system = {
                   path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-postgresql;
+                  user = "root";
+                  confirmTimeout = 180;
+                  activationTimeout = 600;
+                };
+              };
+
+              nix-webserver = {
+                hostname = "134.99.154.51";
+                profiles.system = {
+                  path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.nix-webserver;
                   user = "root";
                   confirmTimeout = 180;
                   activationTimeout = 600;
