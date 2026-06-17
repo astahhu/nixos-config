@@ -3,13 +3,6 @@
 }:
 {
   config = {
-    astahhu.common.admin-users.sotga = {
-      setPassword = false;
-      sshKeys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIUl4KgG3B68bEE3cW3qaadai/Yv6WpVKduBRysjnXZO Yubikey C"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPQAxDcOnlbYKbWUSYQYEPHHo8JwM6d48mbiRzQTHJtm Yubikey Backup"
-      ];
-    };
     astahhu.common.admin-users.jonas = {
       setPassword = false;
       sshKeys = [
