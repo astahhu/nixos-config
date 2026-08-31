@@ -201,7 +201,7 @@
 
   astahhu.services.vaultwarden = {
     enable = true;
-    domain = "vaultwarden.astahhu.de";
+    domain = "old.vaultwarden.astahhu.de";
   };
 
   astahhu.wordpress = {
